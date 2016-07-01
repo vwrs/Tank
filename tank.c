@@ -2,13 +2,14 @@
 #include <stdlib.h>
 #include <math.h>
 // ======== Windows =======
-// #include <GL/glut.h>
+#include <GL/glut.h>
 // ========================
 
 // ====== Mac OS X ======= //
-#include <OpenGL/gl.h>
-#include <GLUT/glut.h>
+//#include <OpenGL/gl.h>
+//#include <GLUT/glut.h>
 // ======================= //
+
 #define PI (3.14159)
 
 GLfloat pos0[] = { 5.0, 0.0, 0.0, 1.0 };
