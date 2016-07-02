@@ -11,7 +11,7 @@
 // ======================= //
 
 #define PI (3.14159)
-
+#define PI2 (1.570795)
 GLfloat pos0[] = { 5.0, 0.0, 0.0, 1.0 };
 GLfloat pos1[] = { 0.0, 0.0, 5.0, 1.0 };
 enum COLOR { WHITE, RED, GREEN, BLUE, YELLOW, MAGENTA, CYAN, GRAY, BLACK };
@@ -25,9 +25,13 @@ GLfloat color[][4] = {
 		{ 0.0, 1.0, 1.0, 1.0 },
 		{ 0.7, 0.7, 0.7, 1.0 },
 		{ 0.0, 0.0, 0.0, 1.0 } };//色を増やす場合はここに追加
+double xb = 0;
+double yb = 0;
 double x = 0;
 double y = 0;
 double z = 0;
+double l = 0;
+double t = PI2;
 int mySpecialValue = 0;
 double tekiList[][3] = {
 		{ 0.0, 2.0, 0.0 },
@@ -209,14 +213,14 @@ int collision()
 	for (i = 0; i < tekiIndex; i++)
 	{
 		//簡単な衝突判定
-		if ((tekiList[i][0] - x <1 - MARGIN) && (tekiList[i][0] - x >-1 + MARGIN)
-			&& (tekiList[i][1] - y <1 - MARGIN) && (tekiList[i][1] - y >-1 + MARGIN))
+		if ((tekiList[i][0] - xb <1 - MARGIN) && (tekiList[i][0] - xb >-1 + MARGIN)
+			&& (tekiList[i][1] - yb <1 - MARGIN) && (tekiList[i][1] - yb >-1 + MARGIN))
 		{
 			printf("(%.02f,%.02f):(%.02f,%.02f)\n", x, y, tekiList[i][0], tekiList[i][1]);
-			return 1;
+			return 0;
 		}
 	}
-	return 0;
+	return 1;
 }
 int collision2()
 {
@@ -226,14 +230,14 @@ int collision2()
 	for (i = 0; i < tekiIndex; i++)
 	{
 		//簡単な衝突判定
-		if ((tekiList[i][0] - x <1 - MARGIN) && (tekiList[i][0] - x >-1 + MARGIN)
-			&& (tekiList[i][1] - y <1 - MARGIN) && (tekiList[i][1] - y >-1 + MARGIN))
+		if ((tekiList[i][0] - xb <1 - MARGIN) && (tekiList[i][0] - xb >-1 + MARGIN)
+			&& (tekiList[i][1] - yb <1 - MARGIN) && (tekiList[i][1] - yb >-1 + MARGIN))
 		{
 			printf("(%.02f,%.02f):(%.02f,%.02f)\n", x, y, tekiList[i][0], tekiList[i][1]);
-			return 1;
+			return 0;
 		}
 	}
-	return 0;
+	return 1;
 }
 
 void myTimerFunc(int value)
@@ -241,31 +245,35 @@ void myTimerFunc(int value)
 	double MARGIN = 0.05;
 	if (mySpecialValue & (1 << 0))
 	{
-		y += 0.1;
-		if (collision())y -= 0.1;
-		//ここを変更する
-		if (Y*L < y - MARGIN)y -= 0.1;
+		l = 0.1;
+		xb = l*cos(t) + x;
+		yb = l*sin(t) + y;
+		if (collision() && (Y*L > yb - MARGIN) && (0 * L < xb + MARGIN)
+			&& ((X - 1)*L > xb - MARGIN) && (0 * L < yb + MARGIN))
+		{
+			x = xb;
+			y = yb;
+		}
 	}
 	if (mySpecialValue & (1 << 1))
 	{
-		x -= 0.1;
-		if (collision())x += 0.1;
-		//ここを変更する
-		if (0 * L > x + MARGIN)x += 0.1;
+		t -= 0.025;
 	}
 	if (mySpecialValue & (1 << 2))
 	{
-		x += 0.1;
-		if (collision())x -= 0.1;
-		//ここを変更する
-		if ((X - 1)*L < x - MARGIN)x -= 0.1;
+		t += 0.025;
 	}
 	if (mySpecialValue & (1 << 3))
 	{
-		y -= 0.1;
-		if (collision())y += 0.1;
-		//ここを変更する
-		if (0 * L > y + MARGIN)y += 0.1;
+		l = -0.1;
+		xb = x + l*cos(t);
+		yb = y + l*sin(t);
+		if ( collision() && (Y*L > yb - MARGIN) && (0 * L < xb + MARGIN)
+			&& ((X - 1)*L > xb - MARGIN) && (0 * L < yb + MARGIN))
+		{
+			x = xb;
+			y = yb;
+		}
 	}
 
 	if (z > 0)
@@ -286,7 +294,7 @@ void myTimerFunc(int value)
 
 	//視点を移動
 	glLoadIdentity();
-	gluLookAt(0.0 + x, -10.0 + y, 2.0, 0.0 + x, 0.0 + y, 1.5, 0.0, 0.0, 1.0);
+	gluLookAt(-10.0*cos(t) + x, -10.0*sin(t) + y, 2.0, 0.0 + x, 0.0 + y, 1.5, 0.0, 0.0, 1.0);
 
 	glutTimerFunc(10, myTimerFunc, 0);
 }
@@ -380,6 +388,8 @@ int main(int argc, char *argv[])
 {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+	glutInitWindowPosition(300, 0);
+	glutInitWindowSize(650, 650);
 	glutCreateWindow("C Dev");
 	glutDisplayFunc(display);
 	init();
