@@ -11,7 +11,12 @@
 // ======================= //
 
 #define PI (3.14159)
-#define PI2 (1.570795)
+#define PI2 (PI/2)
+#define km (0.01)
+#define g  (0.1) // imaginary gravity constant
+#define fai (PI/4) // inital angle of projectile to the ground
+#define dt  (10/(double)10000) // interval of time 
+
 GLfloat pos0[] = { 5.0, 0.0, 0.0, 1.0 };
 GLfloat pos1[] = { 0.0, 0.0, 5.0, 1.0 };
 enum COLOR { WHITE, RED, GREEN, BLUE, YELLOW, MAGENTA, CYAN, GRAY, BLACK };
@@ -25,13 +30,15 @@ GLfloat color[][4] = {
 		{ 0.0, 1.0, 1.0, 1.0 },
 		{ 0.7, 0.7, 0.7, 1.0 },
 		{ 0.0, 0.0, 0.0, 1.0 } };//色を増やす場合はここに追加
-double xb = 0;
-double yb = 0;
-double x = 0;
-double y = 0;
-double z = 0;
-double l = 0;
-double t = PI2;
+double x = 0, y = 0, z = 0; // position of tank
+double l = 0.1;   // length
+double t = PI2; // angle of direction
+double xb = 0, yb = 0; // variables for checking collision and range of tanc's position
+double xp = 0, yp = 0, zp = 0; // position of projectile
+double vxp = 0, vyp = 0, vzp = 0, vp = 0; // velocity of projectile
+double xpb = 0, ypb = 0, zpb = 0; // variables for checking collision and range of projectile's position 
+int flagproj = 0;  // this flag decides whether to draw a projectile 
+double tt = 0;
 int mySpecialValue = 0;
 double tekiList[][3] = {
 		{ 0.0, 2.0, 0.0 },
@@ -192,6 +199,14 @@ void drawTeki(void)
 	}
 	glPopMatrix();
 }
+void drawproj()
+{
+	glPushMatrix();
+	glTranslatef(xp, yp, zp);
+	glutSolidSphere(0.1, 100, 100);
+	glPopMatrix();
+
+}
 void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -200,11 +215,11 @@ void display(void)
 	drawGround();
 	drawJiki();
 	drawTeki();
-
+	if (flagproj) drawproj();
 	glPopMatrix();
 	glutSwapBuffers();
 }
-int collision()
+int collision() // collision check for tank
 {
 	//衝突判定
 	int i;
@@ -222,7 +237,7 @@ int collision()
 	}
 	return 1;
 }
-int collision2()
+int collision2() // collision check for projectile
 {
 	//衝突判定
 	int i;
@@ -230,14 +245,14 @@ int collision2()
 	for (i = 0; i < tekiIndex; i++)
 	{
 		//簡単な衝突判定
-		if ((tekiList[i][0] - xb <1 - MARGIN) && (tekiList[i][0] - xb >-1 + MARGIN)
-			&& (tekiList[i][1] - yb <1 - MARGIN) && (tekiList[i][1] - yb >-1 + MARGIN))
+		if ((tekiList[i][0] - xpb <1 - MARGIN) && (tekiList[i][0] - xpb >-1 + MARGIN)
+			&& (tekiList[i][1] - ypb <1 - MARGIN) && (tekiList[i][1] - ypb >-1 + MARGIN))
 		{
 			printf("(%.02f,%.02f):(%.02f,%.02f)\n", x, y, tekiList[i][0], tekiList[i][1]);
-			return 0;
+			return 1;
 		}
 	}
-	return 1;
+	return 0;
 }
 
 void myTimerFunc(int value)
@@ -294,9 +309,36 @@ void myTimerFunc(int value)
 
 	//視点を移動
 	glLoadIdentity();
-	gluLookAt(-10.0*cos(t) + x, -10.0*sin(t) + y, 2.0, 0.0 + x, 0.0 + y, 1.5, 0.0, 0.0, 1.0);
+	gluLookAt(-10.0*cos(t) + x, -10.0*sin(t) + y, 4.0, 0.0 + x, 0.0 + y, 1.5, 0.0, 0.0, 1.0);
 
 	glutTimerFunc(10, myTimerFunc, 0);
+}
+
+void projfunc(int value)
+{
+	double MARGIN = 0.05;
+	xpb = xp + vxp*dt;
+	ypb = yp + vyp*dt;
+	zpb = zp + vzp*dt;
+	if (collision2())
+	{
+		flagproj = 0;
+		// we will add processing of delete of teki object
+	}
+	else if ((Y*L < ypb - MARGIN) || (0 * L > xpb + MARGIN)
+		|| ((X - 1)*L < xpb - MARGIN) || (0 * L > ypb + MARGIN)) flagproj = 0;
+	else if (zpb < 0) flagproj = 0;
+	else
+	{
+		xp = xpb;
+		yp = ypb;
+		zp = zpb;
+		vp = sqrt(vxp*vxp + vyp*vyp + vzp*vzp);
+		vxp = vxp - km*vp*vxp*dt;
+		vyp = vyp - km*vp*vyp*dt;
+		vzp = vzp - g*dt - km*vp*vzp*dt;
+		glutTimerFunc(10, projfunc, 0);
+	}
 }
 
 void myKeyboardFunc(unsigned char key, int x, int y)
@@ -304,9 +346,20 @@ void myKeyboardFunc(unsigned char key, int x, int y)
 	switch (key)
 	{
 	case ' ':
-		//ここを変更する
-		v = 0.2;
-		z += v;
+		if (flagproj == 0)
+		{
+			flagproj = 1;
+			tt = t;
+			vp = 0.1;
+			vxp = vp*cos(fai)*cos(tt);
+			vyp = vp*cos(fai)*sin(tt);
+			vzp = vp*sin(fai);
+			xp = x, yp = y, zp = z;
+			projfunc(0);
+			//ここを変更する
+			//v = 0.2;
+			//z += v;
+		}
 		break;
 	}
 }
@@ -378,7 +431,7 @@ void init(void)
 	gluPerspective(30.0, 1, .1, 100.0);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(0.0, -10.0, 2.0, 0.0, 0.0, 1.5, 0.0, 0.0, 1.0);
+	gluLookAt(0.0, -10.0, 4.0, 0.0, 0.0, 1.5, 0.0, 0.0, 1.0);
 	glLightfv(GL_LIGHT1, GL_POSITION, pos1);
 	glLightfv(GL_LIGHT1, GL_DIFFUSE, color[WHITE]);
 	myTimerFunc(0);

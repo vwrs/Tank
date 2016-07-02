@@ -1,5 +1,10 @@
 #Tsucchee
 
+I want tank to projectile by pushing space key but cannot 
+I'm goging to sleep
+
+#Tsucchee
+
 Player can change direction to go
 I added these four variables
 <double t> is an angle of direction
