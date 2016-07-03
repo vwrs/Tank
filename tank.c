@@ -12,9 +12,6 @@
 
 #define PI (3.14159)
 #define PI2 (PI/2)
-#define km (0.01)
-#define g  (0.1) // imaginary gravity constant
-#define fai (PI/4) // inital angle of projectile to the ground
 #define dt  (10/(double)10000) // interval of time 
 
 GLfloat pos0[] = { 5.0, 0.0, 0.0, 1.0 };
@@ -34,11 +31,11 @@ double x = 0, y = 0, z = 0; // position of tank
 double l = 0.1;   // length
 double t = PI2; // angle of direction
 double xb = 0, yb = 0; // variables for checking collision and range of tanc's position
-double xp = 0, yp = 0, zp = 0; // position of projectile
-double vxp = 0, vyp = 0, vzp = 0, vp = 0; // velocity of projectile
-double xpb = 0, ypb = 0, zpb = 0; // variables for checking collision and range of projectile's position 
-int flagproj = 0;  // this flag decides whether to draw a projectile 
-double tt = 0;
+double xp = 0, yp = 0;// position of projectile
+double xpb = 0, ypb = 0; // variables for checking collision and range of projectile's position 
+int flagproj = 0;  // this flag decides whether to draw a projectile
+int flagprojend = 1; //this flag decides whether to end projfunc
+double tt = 0; // angle of projectile 
 int mySpecialValue = 0;
 double tekiList[][3] = {
 		{ 0.0, 2.0, 0.0 },
@@ -56,8 +53,8 @@ double tekiList[][3] = {
 int tekiIndex = 12;
 double v = 0;
 
-int X = 5;//地面
-int Y = 25;
+int X = 50;//地面
+int Y = 250;
 double L = 1;
 
 void calcNormal(GLdouble v0[3], GLdouble v1[3], GLdouble v2[3], GLdouble n[3])
@@ -165,7 +162,6 @@ void drawGround()
 	glPopMatrix();
 }
 
-double theta;
 void drawJiki(void)
 {
 	glPushMatrix();
@@ -202,8 +198,12 @@ void drawTeki(void)
 void drawproj()
 {
 	glPushMatrix();
-	glTranslatef(xp, yp, zp);
-	glutSolidSphere(0.1, 100, 100);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[RED]);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
+	glMaterialf(GL_FRONT, GL_SHININESS, 100.0);
+	glTranslatef(xp, yp, 0.5);
+	glutSolidSphere(0.5, 30, 30);
 	glPopMatrix();
 
 }
@@ -215,7 +215,7 @@ void display(void)
 	drawGround();
 	drawJiki();
 	drawTeki();
-	if (flagproj) drawproj();
+	if(flagproj) drawproj();
 	glPopMatrix();
 	glutSwapBuffers();
 }
@@ -241,7 +241,7 @@ int collision2() // collision check for projectile
 {
 	//衝突判定
 	int i;
-	double MARGIN = 0.05;
+	double MARGIN = 0.3;
 	for (i = 0; i < tekiIndex; i++)
 	{
 		//簡単な衝突判定
@@ -290,23 +290,6 @@ void myTimerFunc(int value)
 			y = yb;
 		}
 	}
-
-	if (z > 0)
-	{
-		v -= 0.01;
-		z += v;
-		if (collision() && z< 1)
-		{
-			z -= v;
-			v = 0;
-		}
-		if (z <= 0)
-		{
-			z = 0;
-			v = 0;
-		}
-	}
-
 	//視点を移動
 	glLoadIdentity();
 	gluLookAt(-10.0*cos(t) + x, -10.0*sin(t) + y, 4.0, 0.0 + x, 0.0 + y, 1.5, 0.0, 0.0, 1.0);
@@ -314,51 +297,67 @@ void myTimerFunc(int value)
 	glutTimerFunc(10, myTimerFunc, 0);
 }
 
-void projfunc(int value)
+void projfunc1(int value)
 {
-	double MARGIN = 0.05;
-	xpb = xp + vxp*dt;
-	ypb = yp + vyp*dt;
-	zpb = zp + vzp*dt;
-	if (collision2())
-	{
-		flagproj = 0;
-		// we will add processing of delete of teki object
-	}
-	else if ((Y*L < ypb - MARGIN) || (0 * L > xpb + MARGIN)
-		|| ((X - 1)*L < xpb - MARGIN) || (0 * L > ypb + MARGIN)) flagproj = 0;
-	else if (zpb < 0) flagproj = 0;
-	else
-	{
-		xp = xpb;
-		yp = ypb;
-		zp = zpb;
-		vp = sqrt(vxp*vxp + vyp*vyp + vzp*vzp);
-		vxp = vxp - km*vp*vxp*dt;
-		vyp = vyp - km*vp*vyp*dt;
-		vzp = vzp - g*dt - km*vp*vzp*dt;
-		glutTimerFunc(10, projfunc, 0);
+	double MARGIN = 0.25;
+	if (flagprojend) {
+		xpb = xp + cos(tt)*l;
+		ypb = yp + sin(tt)*l;
+		if (collision2())
+		{
+			flagproj = 0;
+			// we will add processing of delete of teki object
+		}
+		else if ((Y*L < ypb - MARGIN) || (0 * L > xpb + MARGIN)
+			|| ((X - 1)*L < xpb - MARGIN) || (0 * L > ypb + MARGIN)) flagproj = 0;
+		else
+		{
+			xp = xpb;
+			yp = ypb;
+			glutTimerFunc(10, projfunc1, 0);
+		}
 	}
 }
 
-void myKeyboardFunc(unsigned char key, int x, int y)
+void projfunc2(int value)
+{
+	double MARGIN = 0.25;
+	if (flagprojend==0) {
+		xpb = xp + cos(tt)*l;
+		ypb = yp + sin(tt)*l;
+		if (collision2())
+		{
+			flagproj = 0;
+			// we will add processing of delete of teki object
+		}
+		else if ((Y*L < ypb - MARGIN) || (0 * L > xpb + MARGIN)
+			|| ((X - 1)*L < xpb - MARGIN) || (0 * L > ypb + MARGIN)) flagproj = 0;
+		else
+		{
+			xp = xpb;
+			yp = ypb;
+			glutTimerFunc(10, projfunc2, 0);
+		}
+	}
+}
+
+void myKeyboardFunc(unsigned char key, int xx, int yy)
 {
 	switch (key)
 	{
-	case ' ':
-		if (flagproj == 0)
+	case ' ':    
+		flagproj = 1;
+		tt = t;
+		xp = x, yp = y;
+		if (flagprojend)
 		{
-			flagproj = 1;
-			tt = t;
-			vp = 0.1;
-			vxp = vp*cos(fai)*cos(tt);
-			vyp = vp*cos(fai)*sin(tt);
-			vzp = vp*sin(fai);
-			xp = x, yp = y, zp = z;
-			projfunc(0);
-			//ここを変更する
-			//v = 0.2;
-			//z += v;
+			flagprojend = 0;
+			projfunc2(0);
+		}
+		else
+		{
+			flagprojend = 1;
+			projfunc1(0);
 		}
 		break;
 	}
