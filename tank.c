@@ -13,6 +13,10 @@
 #define PI (3.14159)
 #define PI2 (PI/2)
 #define dt  (10/(double)10000) // interval of time 
+#define X (50)
+#define Y (250)
+#define L (1)
+#define Z (0.5) //height of object
 
 GLfloat pos0[] = { 5.0, 0.0, 0.0, 1.0 };
 GLfloat pos1[] = { 0.0, 0.0, 5.0, 1.0 };
@@ -27,7 +31,8 @@ GLfloat color[][4] = {
 		{ 0.0, 1.0, 1.0, 1.0 },
 		{ 0.7, 0.7, 0.7, 1.0 },
 		{ 0.0, 0.0, 0.0, 1.0 } };//色を増やす場合はここに追加
-double x = 0, y = 0, z = 0; // position of tank
+double xjiki = 0, yjiki = 0; // position of tank
+double xteki = X, yteki = Y;
 double l = 0.1;   // length
 double t = PI2; // angle of direction
 double xb = 0, yb = 0; // variables for checking collision and range of tanc's position
@@ -37,7 +42,7 @@ int flagproj = 0;  // this flag decides whether to draw a projectile
 int flagprojend = 1; //this flag decides whether to end projfunc
 double tt = 0; // angle of projectile 
 int mySpecialValue = 0;
-double tekiList[][3] = {
+double kabeList[][3] = {
 		{ 0.0, 2.0, 0.0 },
 		{ 4.0, 4.0, 0.0 },
 		{ 2.0, 6.0, 0.0 },
@@ -50,12 +55,8 @@ double tekiList[][3] = {
 		{ 2.0, 20.0, 0.0 },
 		{ 1.0, 21.0, 0.0 },
 		{ 0.0, 22.0, 0.0 } };//障害物のリスト
-int tekiIndex = 12;
+int kabeIndex = 12;
 double v = 0;
-
-int X = 50;//地面
-int Y = 250;
-double L = 1;
 
 void calcNormal(GLdouble v0[3], GLdouble v1[3], GLdouble v2[3], GLdouble n[3])
 {
@@ -166,8 +167,7 @@ void drawJiki(void)
 {
 	glPushMatrix();
 
-	glTranslatef(x, y, z);
-	glTranslatef(0.0, 0.0, 0.5);
+	glTranslatef(xjiki, yjiki, Z);
 
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[GREEN]);
 	glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
@@ -177,7 +177,7 @@ void drawJiki(void)
 	glutSolidCube(1);
 	glPopMatrix();
 }
-void drawTeki(void)
+void drawkabe(void)
 {
 	int i;
 	glPushMatrix();
@@ -186,10 +186,10 @@ void drawTeki(void)
 	glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
 	glMaterialf(GL_FRONT, GL_SHININESS, 100.0);
 
-	for (i = 0; i < tekiIndex; i++)
+	for (i = 0; i < kabeIndex; i++)
 	{
 		glPushMatrix();
-		glTranslatef(tekiList[i][0], tekiList[i][1], tekiList[i][2]);
+		glTranslatef(kabeList[i][0], kabeList[i][1], kabeList[i][2]);
 		glutSolidCone(0.5, 1, 30, 30);
 		glPopMatrix();
 	}
@@ -214,7 +214,7 @@ void display(void)
 
 	drawGround();
 	drawJiki();
-	drawTeki();
+	drawkabe();
 	if(flagproj) drawproj();
 	glPopMatrix();
 	glutSwapBuffers();
@@ -224,14 +224,13 @@ int collision() // collision check for tank
 	//衝突判定
 	int i;
 	double MARGIN = 0.05;
-	if (z > 1)return 0;
-	for (i = 0; i < tekiIndex; i++)
+	for (i = 0; i < kabeIndex; i++)
 	{
 		//簡単な衝突判定
-		if ((tekiList[i][0] - xb <1 - MARGIN) && (tekiList[i][0] - xb >-1 + MARGIN)
-			&& (tekiList[i][1] - yb <1 - MARGIN) && (tekiList[i][1] - yb >-1 + MARGIN))
+		if ((kabeList[i][0] - xb <1 - MARGIN) && (kabeList[i][0] - xb >-1 + MARGIN)
+			&& (kabeList[i][1] - yb <1 - MARGIN) && (kabeList[i][1] - yb >-1 + MARGIN))
 		{
-			printf("(%.02f,%.02f):(%.02f,%.02f)\n", x, y, tekiList[i][0], tekiList[i][1]);
+			printf("(%.02f,%.02f):(%.02f,%.02f)\n", xjiki, yjiki, kabeList[i][0], kabeList[i][1]);
 			return 0;
 		}
 	}
@@ -242,13 +241,13 @@ int collision2() // collision check for projectile
 	//衝突判定
 	int i;
 	double MARGIN = 0.3;
-	for (i = 0; i < tekiIndex; i++)
+	for (i = 0; i < kabeIndex; i++)
 	{
 		//簡単な衝突判定
-		if ((tekiList[i][0] - xpb <1 - MARGIN) && (tekiList[i][0] - xpb >-1 + MARGIN)
-			&& (tekiList[i][1] - ypb <1 - MARGIN) && (tekiList[i][1] - ypb >-1 + MARGIN))
+		if ((kabeList[i][0] - xpb <1 - MARGIN) && (kabeList[i][0] - xpb >-1 + MARGIN)
+			&& (kabeList[i][1] - ypb <1 - MARGIN) && (kabeList[i][1] - ypb >-1 + MARGIN))
 		{
-			printf("(%.02f,%.02f):(%.02f,%.02f)\n", x, y, tekiList[i][0], tekiList[i][1]);
+			printf("(%.02f,%.02f):(%.02f,%.02f)\n", xteki, yteki, kabeList[i][0], kabeList[i][1]);
 			return 1;
 		}
 	}
@@ -260,39 +259,37 @@ void myTimerFunc(int value)
 	double MARGIN = 0.05;
 	if (mySpecialValue & (1 << 0))
 	{
-		l = 0.1;
-		xb = l*cos(t) + x;
-		yb = l*sin(t) + y;
+		xb = l*cos(t) + xjiki;
+		yb = l*sin(t) + yjiki;
 		if (collision() && (Y*L > yb - MARGIN) && (0 * L < xb + MARGIN)
 			&& ((X - 1)*L > xb - MARGIN) && (0 * L < yb + MARGIN))
 		{
-			x = xb;
-			y = yb;
+			xjiki = xb;
+			yjiki = yb;
 		}
 	}
 	if (mySpecialValue & (1 << 1))
 	{
-		t -= 0.025;
+		t += 0.025;
 	}
 	if (mySpecialValue & (1 << 2))
 	{
-		t += 0.025;
+		t -= 0.025;
 	}
 	if (mySpecialValue & (1 << 3))
 	{
-		l = -0.1;
-		xb = x + l*cos(t);
-		yb = y + l*sin(t);
+		xb = xjiki - l*cos(t);
+		yb = yjiki - l*sin(t);
 		if ( collision() && (Y*L > yb - MARGIN) && (0 * L < xb + MARGIN)
 			&& ((X - 1)*L > xb - MARGIN) && (0 * L < yb + MARGIN))
 		{
-			x = xb;
-			y = yb;
+			xjiki = xb;
+			yjiki = yb;
 		}
 	}
 	//視点を移動
 	glLoadIdentity();
-	gluLookAt(-10.0*cos(t) + x, -10.0*sin(t) + y, 4.0, 0.0 + x, 0.0 + y, 1.5, 0.0, 0.0, 1.0);
+	gluLookAt(-10.0*cos(t) + xjiki, -10.0*sin(t) + yjiki, 4.0, 0.0 + xjiki, 0.0 + yjiki, 1.5, 0.0, 0.0, 1.0);
 
 	glutTimerFunc(10, myTimerFunc, 0);
 }
@@ -306,7 +303,7 @@ void projfunc1(int value)
 		if (collision2())
 		{
 			flagproj = 0;
-			// we will add processing of delete of teki object
+			// we will add processing of delete of kabe object
 		}
 		else if ((Y*L < ypb - MARGIN) || (0 * L > xpb + MARGIN)
 			|| ((X - 1)*L < xpb - MARGIN) || (0 * L > ypb + MARGIN)) flagproj = 0;
@@ -328,7 +325,7 @@ void projfunc2(int value)
 		if (collision2())
 		{
 			flagproj = 0;
-			// we will add processing of delete of teki object
+			// we will add processing of delete of kabe object
 		}
 		else if ((Y*L < ypb - MARGIN) || (0 * L > xpb + MARGIN)
 			|| ((X - 1)*L < xpb - MARGIN) || (0 * L > ypb + MARGIN)) flagproj = 0;
@@ -348,7 +345,7 @@ void myKeyboardFunc(unsigned char key, int xx, int yy)
 	case ' ':    
 		flagproj = 1;
 		tt = t;
-		xp = x, yp = y;
+		xp = xjiki, yp = yjiki;
 		if (flagprojend)
 		{
 			flagprojend = 0;
