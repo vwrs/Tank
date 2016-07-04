@@ -33,7 +33,7 @@ GLfloat color[][4] = {
 		{ 1.0, 0.0, 1.0, 1.0 },
 		{ 0.0, 1.0, 1.0, 1.0 },
 		{ 0.7, 0.7, 0.7, 1.0 },
-		{ 0.0, 0.0, 0.0, 1.0 } };//色を増やす場合はここに追加
+		{ 0.0, 0.0, 0.0, 1.0 } };
 double xjiki = 0, yjiki = 0; // position of tank
 double xteki = X2, yteki = Y2;
 double xteki_check, yteki_check;
@@ -42,7 +42,7 @@ double l = 0.1;   // length
 double tjiki = PI2; // angle of jiki's direction
 double xjiki_check = 0, yjiki_check = 0; // variables for checking collision and range of tanc's position
 double xpro = 0, ypro = 0;// position of projectile
-double xpro_check = 0, ypro_check = 0; // variables for checking collision and range of projectile's position 
+double xpro_check = 0, ypro_check = 0; // variables for checking collision and range of projectile's position
 int flagpro = 0;  // this flag decides whether to draw a projectile
 int flagproend = 1; //this flag decides whether to end projfunc
 int flagteki = 1;
@@ -60,7 +60,7 @@ double kabeList[][3] = {
 		{ 3.0, 19.0, 0.0 },
 		{ 2.0, 20.0, 0.0 },
 		{ 1.0, 21.0, 0.0 },
-		{ 0.0, 22.0, 0.0 } };//障害物のリスト
+		{ 0.0, 22.0, 0.0 } };
 int kabeIndex = 12;
 double v = 0;
 
@@ -97,12 +97,12 @@ void drawGround()
 	glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
 	glMaterialf(GL_FRONT, GL_SHININESS, 100.0);
 	glBegin(GL_QUADS);
-	glVertex3d(-0.5*L, -0.5*L, 0.0);//スタート
+	glVertex3d(-0.5*L, -0.5*L, 0.0); // start
 	glVertex3d((X - 0.5)*L, -0.5*L, 0.0);
 	glVertex3d((X - 0.5)*L, 0.5*L, 0.0);
 	glVertex3d(-0.5*L, 0.5*L, 0.0);
 
-	glVertex3d(-0.5*L, (Y - 0.5)*L, 0.0);//ゴール
+	glVertex3d(-0.5*L, (Y - 0.5)*L, 0.0); // goal
 	glVertex3d((X - 0.5)*L, (Y - 0.5)*L, 0.0);
 	glVertex3d((X - 0.5)*L, (Y + 0.5)*L, 0.0);
 	glVertex3d(-0.5*L, (Y + 0.5)*L, 0.0);
@@ -137,7 +137,7 @@ void drawGround()
 		}
 	glEnd();
 
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[BLACK]);//黒
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[BLACK]);
 	glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
 	glMaterialf(GL_FRONT, GL_SHININESS, 100.0);
@@ -183,6 +183,7 @@ void drawJiki(void)
 	glutSolidCube(1);
 	glPopMatrix();
 }
+
 void drawkabe(void)
 {
 	int i;
@@ -201,6 +202,7 @@ void drawkabe(void)
 	}
 	glPopMatrix();
 }
+
 void drawproj()
 {
 	glPushMatrix();
@@ -211,7 +213,6 @@ void drawproj()
 	glTranslatef(xpro, ypro, 0.5);
 	glutSolidSphere(0.5, 30, 30);
 	glPopMatrix();
-
 }
 
 void drawteki()
@@ -227,10 +228,8 @@ void drawteki()
 
 	glutSolidCube(1);
 	glPopMatrix();
-
-
-
 }
+
 void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -245,9 +244,9 @@ void display(void)
 	glPopMatrix();
 	glutSwapBuffers();
 }
+
 int collision() // collision check for tank
 {
-	//衝突判定
 	int i;
 	double MARGIN = 0.05;
 	for (i = 0; i < kabeIndex; i++)
@@ -262,9 +261,9 @@ int collision() // collision check for tank
 	}
 	return 1;
 }
+
 int collision2() // collision check for projectile
 {
-	//衝突判定
 	int i;
 	double MARGIN = 0.3;
 	for (i = 0; i < kabeIndex; i++)
@@ -387,7 +386,7 @@ void projfunc2(int value)
 		if (collision2())
 		{
 			flagpro = 0;
-			// we will add processing of delete of kabe object
+			// TODO: add processing of delete of kabe object
 		}
 		else if ((Y*L < ypro_check - MARGIN) || (0 * L > xpro_check + MARGIN)
 			|| ((X - 1)*L < xpro_check - MARGIN) || (0 * L > ypro_check + MARGIN)) flagpro = 0;
@@ -404,7 +403,7 @@ void myKeyboardFunc(unsigned char key, int x, int y)
 {
 	switch (key)
 	{
-	case ' ':    
+	case ' ':
 		flagpro = 1;
 		tpro = tjiki;
 		xpro = xjiki, ypro = yjiki;
