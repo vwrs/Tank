@@ -339,18 +339,34 @@ void jikiTimerFunc(int value)
 void tekiTimerFunc(int value)
 {
 	double MARGIN = 0.05;
-	if(flagteki) tteki = rand()%100;
-	xteki_check = xteki + l*cos(tteki) * 3;
-	yteki_check = yteki + l*sin(tteki) * 3;
-	if ((collision3()) && (Y*L > yteki_check - MARGIN) && (0 * L < xteki_check + MARGIN)
-		&& ((X - 1)*L > xteki_check - MARGIN) && (0 * L < yteki_check + MARGIN))
+	if ((xteki - xjiki)*(xteki - xjiki) + (yteki - yjiki)*(yteki - yjiki)>600)
 	{
-		xteki = xteki_check;
-		yteki = yteki_check;
-		flagteki = 0;
+		if (flagteki) tteki = rand() % 100;
+		xteki_check = xteki + l*cos(tteki) * 3;
+		yteki_check = yteki + l*sin(tteki) * 3;
+		if ((collision3()) && (Y*L > yteki_check - MARGIN) && (0 * L < xteki_check + MARGIN)
+			&& ((X - 1)*L > xteki_check - MARGIN) && (0 * L < yteki_check + MARGIN))
+		{
+			xteki = xteki_check;
+			yteki = yteki_check;
+			flagteki = 0;
+		}
+		else flagteki = 1;
 	}
-	else flagteki = 1;
+	else
+	{
+		tteki = rand() % 100;
+		xteki_check = xteki + l*cos(tteki) * 3;
+		yteki_check = yteki + l*sin(tteki) * 3;
+		if ((collision3()) && (Y*L > yteki_check - MARGIN) && (0 * L < xteki_check + MARGIN)
+			&& ((X - 1)*L > xteki_check - MARGIN) && (0 * L < yteki_check + MARGIN))
+		{
+			xteki = xteki_check;
+			yteki = yteki_check;
+			flagteki = 0;
+		}
 
+	}
 
 	glutTimerFunc(10, tekiTimerFunc, 0);
 }
