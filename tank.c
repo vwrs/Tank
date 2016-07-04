@@ -1,15 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-// ======== Windows =======
+// ======== Windows ======
 #include <GL/glut.h>
-// ========================
-
-// ====== Mac OS X ======= //
-//#include <OpenGL/gl.h>
-//#include <GLUT/glut.h>
-// ======================= //
-
+// ====== Mac OS X =======
+// #include <OpenGL/gl.h>
+// #include <GLUT/glut.h>
+// =======================
 #define PI (3.14159)
 #define PI2 (PI/2)
 #define dt  (10/(double)10000) // interval of time
@@ -30,11 +27,12 @@ GLfloat color[][4] = {
 		{ 1.0, 0.0, 1.0, 1.0 },
 		{ 0.0, 1.0, 1.0, 1.0 },
 		{ 0.7, 0.7, 0.7, 1.0 },
-		{ 0.0, 0.0, 0.0, 1.0 } };
+		{ 0.0, 0.0, 0.0, 1.0 }
+	};
 double xjiki = 0, yjiki = 0; // position of tank
 double xteki = X, yteki = Y;
-double l = 0.1;   // length
-double t = PI2; // angle of direction
+double l = 0.3; // length
+double jiki_angle = PI2; // angle of direction
 double xjiki_check = 0, yjiki_check = 0; // variables for checking collision and range of tanc's position
 double xpro = 0, ypro = 0;// position of projectile
 double xpro_check = 0, ypro_check = 0; // variables for checking collision and range of projectile's position
@@ -76,7 +74,8 @@ void calcNormal(GLdouble v0[3], GLdouble v1[3], GLdouble v2[3], GLdouble n[3])
 	for (i = 0; i < 3; i++)
 		n[i] = vt[i] / abs;
 }
-
+/* drawXXX
+------------------------------------*/
 void drawGround()
 {
 	int i, j;
@@ -102,7 +101,7 @@ void drawGround()
 	glVertex3d(-0.5*L, (Y + 0.5)*L, 0.0);
 	glEnd();
 
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[GRAY]);//ŠDF
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[GRAY]);
 	glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
 	glMaterialf(GL_FRONT, GL_SHININESS, 100.0);
@@ -224,6 +223,19 @@ void drawteki()
 	glPopMatrix();
 }
 
+void aim(void)
+{
+	glPushMatrix();
+	glBegin(GL_LINES);
+	glColor3d(1.0,0,0);
+	glVertex3d(xjiki,yjiki,Z);
+	double aim_x = xjiki + 50*cos(jiki_angle);
+	double aim_y = yjiki + 50*sin(jiki_angle);
+	glVertex3d(aim_x,aim_y,Z);
+	glEnd();
+	glPopMatrix();
+}
+
 void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -233,6 +245,7 @@ void display(void)
 	drawJiki();
 	drawkabe();
 	if(flagpro) drawproj();
+	aim();
 	glPopMatrix();
 	glutSwapBuffers();
 }
@@ -274,8 +287,8 @@ void jikiTimerFunc(int value)
 	double MARGIN = 0.05;
 	if (mySpecialValue & (1 << 0))
 	{
-		xjiki_check = l*cos(t) + xjiki;
-		yjiki_check = l*sin(t) + yjiki;
+		xjiki_check = l*cos(jiki_angle) + xjiki;
+		yjiki_check = l*sin(jiki_angle) + yjiki;
 		if (collision() && (Y*L > yjiki_check - MARGIN) && (0 * L < xjiki_check + MARGIN)
 			&& ((X - 1)*L > xjiki_check - MARGIN) && (0 * L < yjiki_check + MARGIN))
 		{
@@ -285,16 +298,16 @@ void jikiTimerFunc(int value)
 	}
 	if (mySpecialValue & (1 << 1))
 	{
-		t += 0.025;
+		jiki_angle += 0.025;
 	}
 	if (mySpecialValue & (1 << 2))
 	{
-		t -= 0.025;
+		jiki_angle -= 0.025;
 	}
 	if (mySpecialValue & (1 << 3))
 	{
-		xjiki_check = xjiki - l*cos(t);
-		yjiki_check = yjiki - l*sin(t);
+		xjiki_check = xjiki - l*cos(jiki_angle);
+		yjiki_check = yjiki - l*sin(jiki_angle);
 		if ( collision() && (Y*L > yjiki_check - MARGIN) && (0 * L < xjiki_check + MARGIN)
 			&& ((X - 1)*L > xjiki_check - MARGIN) && (0 * L < yjiki_check + MARGIN))
 		{
@@ -302,9 +315,8 @@ void jikiTimerFunc(int value)
 			yjiki = yjiki_check;
 		}
 	}
-	//Ž‹“_‚ðˆÚ“®
 	glLoadIdentity();
-	gluLookAt(-10.0*cos(t) + xjiki, -10.0*sin(t) + yjiki, 4.0, 0.0 + xjiki, 0.0 + yjiki, 1.5, 0.0, 0.0, 1.0);
+	gluLookAt(-10.0*cos(jiki_angle) + xjiki, -10.0*sin(jiki_angle) + yjiki, 4.0, 0.0 + xjiki, 0.0 + yjiki, 1.5, 0.0, 0.0, 1.0);
 
 	glutTimerFunc(10, jikiTimerFunc, 0);
 }
@@ -366,7 +378,7 @@ void myKeyboardFunc(unsigned char key, int xx, int yy)
 	{
 	case ' ':
 		flagpro = 1;
-		tpro = t;
+		tpro = jiki_angle;
 		xpro = xjiki, ypro = yjiki;
 		if (flagproend)
 		{
@@ -427,6 +439,7 @@ void idle(void)
 {
 	glutPostRedisplay();
 }
+
 void init(void)
 {
 	glClearColor(1.0, 1.0, 1.0, 0.0);
