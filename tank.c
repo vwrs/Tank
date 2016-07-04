@@ -35,7 +35,7 @@ double xjiki = 0, yjiki = 0; // position of tank
 double xteki = X, yteki = Y;
 double l = 0.1;   // length
 double t = PI2; // angle of direction
-double xb = 0, yb = 0; // variables for checking collision and range of tanc's position
+double xjiki_check = 0, yjiki_check = 0; // variables for checking collision and range of tanc's position
 double xp = 0, yp = 0;// position of projectile
 double xpb = 0, ypb = 0; // variables for checking collision and range of projectile's position 
 int flagproj = 0;  // this flag decides whether to draw a projectile
@@ -207,6 +207,24 @@ void drawproj()
 	glPopMatrix();
 
 }
+
+void drawteki()
+{
+	glPushMatrix();
+
+	glTranslatef(xteki, yteki, Z);
+
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[BLUE]);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
+	glMaterialf(GL_FRONT, GL_SHININESS, 50.0);
+
+	glutSolidCube(1);
+	glPopMatrix();
+
+
+
+}
 void display(void)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -227,8 +245,8 @@ int collision() // collision check for tank
 	for (i = 0; i < kabeIndex; i++)
 	{
 		//ŠÈ’P‚ÈÕ“Ë”»’è
-		if ((kabeList[i][0] - xb <1 - MARGIN) && (kabeList[i][0] - xb >-1 + MARGIN)
-			&& (kabeList[i][1] - yb <1 - MARGIN) && (kabeList[i][1] - yb >-1 + MARGIN))
+		if ((kabeList[i][0] - xjiki_check <1 - MARGIN) && (kabeList[i][0] - xjiki_check >-1 + MARGIN)
+			&& (kabeList[i][1] - yjiki_check <1 - MARGIN) && (kabeList[i][1] - yjiki_check >-1 + MARGIN))
 		{
 			printf("(%.02f,%.02f):(%.02f,%.02f)\n", xjiki, yjiki, kabeList[i][0], kabeList[i][1]);
 			return 0;
@@ -254,18 +272,18 @@ int collision2() // collision check for projectile
 	return 0;
 }
 
-void myTimerFunc(int value)
+void jikiTimerFunc(int value)
 {
 	double MARGIN = 0.05;
 	if (mySpecialValue & (1 << 0))
 	{
-		xb = l*cos(t) + xjiki;
-		yb = l*sin(t) + yjiki;
-		if (collision() && (Y*L > yb - MARGIN) && (0 * L < xb + MARGIN)
-			&& ((X - 1)*L > xb - MARGIN) && (0 * L < yb + MARGIN))
+		xjiki_check = l*cos(t) + xjiki;
+		yjiki_check = l*sin(t) + yjiki;
+		if (collision() && (Y*L > yjiki_check - MARGIN) && (0 * L < xjiki_check + MARGIN)
+			&& ((X - 1)*L > xjiki_check - MARGIN) && (0 * L < yjiki_check + MARGIN))
 		{
-			xjiki = xb;
-			yjiki = yb;
+			xjiki = xjiki_check;
+			yjiki = yjiki_check;
 		}
 	}
 	if (mySpecialValue & (1 << 1))
@@ -278,20 +296,26 @@ void myTimerFunc(int value)
 	}
 	if (mySpecialValue & (1 << 3))
 	{
-		xb = xjiki - l*cos(t);
-		yb = yjiki - l*sin(t);
-		if ( collision() && (Y*L > yb - MARGIN) && (0 * L < xb + MARGIN)
-			&& ((X - 1)*L > xb - MARGIN) && (0 * L < yb + MARGIN))
+		xjiki_check = xjiki - l*cos(t);
+		yjiki_check = yjiki - l*sin(t);
+		if ( collision() && (Y*L > yjiki_check - MARGIN) && (0 * L < xjiki_check + MARGIN)
+			&& ((X - 1)*L > xjiki_check - MARGIN) && (0 * L < yjiki_check + MARGIN))
 		{
-			xjiki = xb;
-			yjiki = yb;
+			xjiki = xjiki_check;
+			yjiki = yjiki_check;
 		}
 	}
 	//Ž‹“_‚ðˆÚ“®
 	glLoadIdentity();
 	gluLookAt(-10.0*cos(t) + xjiki, -10.0*sin(t) + yjiki, 4.0, 0.0 + xjiki, 0.0 + yjiki, 1.5, 0.0, 0.0, 1.0);
 
-	glutTimerFunc(10, myTimerFunc, 0);
+	glutTimerFunc(10, jikiTimerFunc, 0);
+}
+void tekiTimerfunc(int value)
+{
+	double MARGIN = 0.05;
+
+
 }
 
 void projfunc1(int value)
@@ -430,7 +454,8 @@ void init(void)
 	gluLookAt(0.0, -10.0, 4.0, 0.0, 0.0, 1.5, 0.0, 0.0, 1.0);
 	glLightfv(GL_LIGHT1, GL_POSITION, pos1);
 	glLightfv(GL_LIGHT1, GL_DIFFUSE, color[WHITE]);
-	myTimerFunc(0);
+	jikiTimerFunc(0);
+	tekiTimerFunc(0);
 }
 
 int main(int argc, char *argv[])
