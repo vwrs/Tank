@@ -243,7 +243,6 @@ int collision() // collision check for tank
 	double MARGIN = 0.05;
 	for (i = 0; i < kabeIndex; i++)
 	{
-		//ŠÈ’P‚ÈÕ“Ë”»’è
 		if ((kabeList[i][0] - xjiki_check <1 - MARGIN) && (kabeList[i][0] - xjiki_check >-1 + MARGIN)
 			&& (kabeList[i][1] - yjiki_check <1 - MARGIN) && (kabeList[i][1] - yjiki_check >-1 + MARGIN))
 		{
@@ -260,7 +259,6 @@ int collision2() // collision check for projectile
 	double MARGIN = 0.3;
 	for (i = 0; i < kabeIndex; i++)
 	{
-		//ŠÈ’P‚ÈÕ“Ë”»’è
 		if ((kabeList[i][0] - xpro_check <1 - MARGIN) && (kabeList[i][0] - xpro_check >-1 + MARGIN)
 			&& (kabeList[i][1] - ypro_check <1 - MARGIN) && (kabeList[i][1] - ypro_check >-1 + MARGIN))
 		{
@@ -388,16 +386,16 @@ void mySpcialFunc(int key, int x, int y)
 	switch (key)
 	{
 	case GLUT_KEY_UP:
-		mySpecialValue |= 1 << 0;//mySpecialValue‚Ì1bit–Ú‚ð1‚É‚·‚é
+		mySpecialValue |= 1 << 0;
 		break;
 	case GLUT_KEY_LEFT:
-		mySpecialValue |= 1 << 1;//mySpecialValue‚Ì2bit–Ú‚ð1‚É‚·‚é
+		mySpecialValue |= 1 << 1;
 		break;
 	case GLUT_KEY_RIGHT:
-		mySpecialValue |= 1 << 2;//mySpecialValue‚Ì3bit–Ú‚ð1‚É‚·‚é
+		mySpecialValue |= 1 << 2;
 		break;
 	case GLUT_KEY_DOWN:
-		mySpecialValue |= 1 << 3;//mySpecialValue‚Ì4bit–Ú‚ð1‚É‚·‚é
+		mySpecialValue |= 1 << 3;
 		break;
 	default:
 		break;
@@ -408,16 +406,16 @@ void mySpcialUpFunc(int key, int x, int y)
 	switch (key)
 	{
 	case GLUT_KEY_UP:
-		mySpecialValue &= ~(1 << 0);//mySpecialValue‚Ì1bit–Ú‚ð0‚É‚·‚é
+		mySpecialValue &= ~(1 << 0);
 		break;
 	case GLUT_KEY_LEFT:
-		mySpecialValue &= ~(1 << 1);//mySpecialValue‚Ì2bit–Ú‚ð0‚É‚·‚é
+		mySpecialValue &= ~(1 << 1);
 		break;
 	case GLUT_KEY_RIGHT:
-		mySpecialValue &= ~(1 << 2);//mySpecialValue‚Ì3bit–Ú‚ð0‚É‚·‚é
+		mySpecialValue &= ~(1 << 2);
 		break;
 	case GLUT_KEY_DOWN:
-		mySpecialValue &= ~(1 << 3);//mySpecialValue‚Ì4bit–Ú‚ð0‚É‚·‚é
+		mySpecialValue &= ~(1 << 3);
 		break;
 	default:
 		break;
