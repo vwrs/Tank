@@ -295,7 +295,6 @@ int collision3()  // collision check for teki
 	double MARGIN = 0.05;
 	for (i = 0; i < kabeIndex; i++)
 	{
-		//�ȒP�ȏՓ˔���
 		if ((kabeList[i][0] - xjiki_check <1 - MARGIN) && (kabeList[i][0] - xjiki_check >-1 + MARGIN)
 			&& (kabeList[i][1] - yjiki_check <1 - MARGIN) && (kabeList[i][1] - yjiki_check >-1 + MARGIN))
 		{
@@ -332,7 +331,7 @@ void jikiTimerFunc(int value)
 	{
 		xjiki_check = xjiki - l*cos(tjiki);
 		yjiki_check = yjiki - l*sin(tjiki);
-		if ( collision() && (Y*L > yjiki_check - MARGIN) && (0 * L < xjiki_check + MARGIN)
+		if (collision() && (Y*L > yjiki_check - MARGIN) && (0 * L < xjiki_check + MARGIN)
 			&& ((X - 1)*L > xjiki_check - MARGIN) && (0 * L < yjiki_check + MARGIN))
 		{
 			xjiki = xjiki_check;
@@ -529,7 +528,7 @@ int main(int argc, char *argv[])
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 	glutInitWindowPosition(300, 0);
 	glutInitWindowSize(650, 650);
-	glutCreateWindow("C Dev");
+	glutCreateWindow("Tank Game");
 	glutDisplayFunc(display);
 	init();
 	glutMainLoop();
