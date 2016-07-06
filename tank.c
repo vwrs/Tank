@@ -16,7 +16,7 @@
 #define Y (50) // range of the field
 #define Y2 (Y/2)
 #define L (1)
-#define z (0.5) //height of object
+#define z (0.5) // height of object
 
 GLfloat pos0[] = { 5.0, 0.0, 0.0, 1.0 };
 GLfloat pos1[] = { 0.0, 0.0, 5.0, 1.0 };
@@ -234,10 +234,10 @@ void aim(void)
 	glPushMatrix();
 	glBegin(GL_LINES);
 	glColor3d(1.0,0,0);
-	glVertex3d(xjiki,yjiki,Z);
-	double aim_x = xjiki + 50*cos(jiki_angle);
-	double aim_y = yjiki + 50*sin(jiki_angle);
-	glVertex3d(aim_x,aim_y,Z);
+	glVertex3d(xjiki,yjiki,z);
+	double aim_x = xjiki + 50*cos(tjiki);
+	double aim_y = yjiki + 50*sin(tjiki);
+	glVertex3d(aim_x,aim_y,z);
 	glEnd();
 	glPopMatrix();
 }
