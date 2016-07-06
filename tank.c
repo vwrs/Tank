@@ -8,6 +8,7 @@
 // #include <OpenGL/gl.h>
 // #include <GLUT/glut.h>
 // =======================
+#include "tank.h"
 #define PI (3.14159)
 #define PI2 (PI/2)
 #define dt  (10/(double)10000) // interval of time
@@ -18,6 +19,9 @@
 #define L (1)
 #define z (0.5) // height of object
 
+/*
+ Global variables
+---------------------------------------------------*/
 GLfloat pos0[] = { 5.0, 0.0, 0.0, 1.0 };
 GLfloat pos1[] = { 0.0, 0.0, 5.0, 1.0 };
 enum COLOR { WHITE, RED, GREEN, BLUE, YELLOW, MAGENTA, CYAN, GRAY, BLACK };
@@ -32,19 +36,17 @@ GLfloat color[][4] = {
 		{ 0.7, 0.7, 0.7, 1.0 },
 		{ 0.0, 0.0, 0.0, 1.0 }
 	};
-double xjiki = 0, yjiki = 0; // position of tank
+Tank jiki = {0};
+Tank teki[5] = {0};
 double xteki = X2, yteki = Y2;
 double xteki_check, yteki_check;
 double tteki;
 double l = 0.1;   // length
-double tjiki = PI2; // angle of jiki's direction
 double xjiki_check = 0, yjiki_check = 0; // variables for checking collision and range of tanc's position
-double xpro = 0, ypro = 0;// position of projectile
 double xpro_check = 0, ypro_check = 0; // variables for checking collision and range of projectile's position
 int flagpro = 0;  // this flag decides whether to draw a projectile
 int flagproend = 1; //this flag decides whether to end projfunc
 int flagteki = 1;
-double tpro = 0; // angle of projectile
 int mySpecialValue = 0;
 double kabeList[][3] = {
 		{ 0.0, 2.0, 0.0 },
@@ -80,8 +82,9 @@ void calcNormal(GLdouble v0[3], GLdouble v1[3], GLdouble v2[3], GLdouble n[3])
 	for (i = 0; i < 3; i++)
 		n[i] = vt[i] / abs;
 }
-/* drawXXX
-------------------------------------*/
+/*
+  drawXXX
+-----------------------------------------*/
 void drawGround()
 {
 	int i, j;
@@ -172,14 +175,14 @@ void drawJiki(void)
 {
 	glPushMatrix();
 
-	glTranslatef(xjiki, yjiki, z);
+	glTranslatef(jiki.x, jiki.y, z);
 
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[GREEN]);
 	glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
 	glMaterialf(GL_FRONT, GL_SHININESS, 50.0);
 
-	glutSolidCube(1);
+	glutSolidCube(jiki.w);
 	glPopMatrix();
 }
 
@@ -209,7 +212,7 @@ void drawproj()
 	glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
 	glMaterialf(GL_FRONT, GL_SHININESS, 100.0);
-	glTranslatef(xpro, ypro, 0.5);
+	glTranslatef(jiki.tama.x, jiki.tama.y, 0.5);
 	glutSolidSphere(0.5, 30, 30);
 	glPopMatrix();
 }
@@ -217,7 +220,7 @@ void drawproj()
 void drawteki()
 {
 	glPushMatrix();
-
+  // TODO: xteki -> teki.x[i]
 	glTranslatef(xteki, yteki, z);
 
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[BLUE]);
@@ -234,9 +237,9 @@ void aim(void)
 	glPushMatrix();
 	glBegin(GL_LINES);
 	glColor3d(1.0,0,0);
-	glVertex3d(xjiki,yjiki,z);
-	double aim_x = xjiki + 50*cos(tjiki);
-	double aim_y = yjiki + 50*sin(tjiki);
+	glVertex3d(jiki.x,jiki.y,z);
+	double aim_x = jiki.x + 50*cos(jiki.t);
+	double aim_y = jiki.y + 50*sin(jiki.t);
 	glVertex3d(aim_x,aim_y,z);
 	glEnd();
 	glPopMatrix();
@@ -256,7 +259,7 @@ void display(void)
 	glPopMatrix();
 	glutSwapBuffers();
 }
-
+// TODO: unify collision check func
 int collision() // collision check for tank
 {
 	int i;
@@ -266,7 +269,7 @@ int collision() // collision check for tank
 		if ((kabeList[i][0] - xjiki_check <1 - MARGIN) && (kabeList[i][0] - xjiki_check >-1 + MARGIN)
 			&& (kabeList[i][1] - yjiki_check <1 - MARGIN) && (kabeList[i][1] - yjiki_check >-1 + MARGIN))
 		{
-			printf("(%.02f,%.02f):(%.02f,%.02f)\n", xjiki, yjiki, kabeList[i][0], kabeList[i][1]);
+			printf("(%.02f,%.02f):(%.02f,%.02f)\n", jiki.x, jiki.y, kabeList[i][0], kabeList[i][1]);
 			return 0;
 		}
 	}
@@ -298,48 +301,50 @@ int collision3()  // collision check for teki
 		if ((kabeList[i][0] - xjiki_check <1 - MARGIN) && (kabeList[i][0] - xjiki_check >-1 + MARGIN)
 			&& (kabeList[i][1] - yjiki_check <1 - MARGIN) && (kabeList[i][1] - yjiki_check >-1 + MARGIN))
 		{
-			printf("(%.02f,%.02f):(%.02f,%.02f)\n", xjiki, yjiki, kabeList[i][0], kabeList[i][1]);
+			printf("(%.02f,%.02f):(%.02f,%.02f)\n", jiki.x, jiki.y, kabeList[i][0], kabeList[i][1]);
 			return 0;
 		}
 	}
 	return 1;
 }
-
+/*
+ TimerFunc
+-----------------------------------*/
 void jikiTimerFunc(int value)
 {
 	double MARGIN = 0.05;
 	if (mySpecialValue & (1 << 0))
 	{
-		xjiki_check = l*cos(tjiki) + xjiki;
-		yjiki_check = l*sin(tjiki) + yjiki;
+		xjiki_check = jiki.x + jiki.v*cos(jiki.t);
+		yjiki_check = jiki.y + jiki.v*sin(jiki.t);
 		if (collision() && (Y*L > yjiki_check - MARGIN) && (0 * L < xjiki_check + MARGIN)
 			&& ((X - 1)*L > xjiki_check - MARGIN) && (0 * L < yjiki_check + MARGIN))
 		{
-			xjiki = xjiki_check;
-			yjiki = yjiki_check;
+			jiki.x = xjiki_check;
+			jiki.y = yjiki_check;
 		}
 	}
 	if (mySpecialValue & (1 << 1))
 	{
-		tjiki += 0.025;
+		jiki.t += jiki.v_turn;
 	}
 	if (mySpecialValue & (1 << 2))
 	{
-		tjiki -= 0.025;
+		jiki.t -= jiki.v_turn;
 	}
 	if (mySpecialValue & (1 << 3))
 	{
-		xjiki_check = xjiki - l*cos(tjiki);
-		yjiki_check = yjiki - l*sin(tjiki);
+		xjiki_check = jiki.x - jiki.v*cos(jiki.t);
+		yjiki_check = jiki.y - jiki.v*sin(jiki.t);
 		if (collision() && (Y*L > yjiki_check - MARGIN) && (0 * L < xjiki_check + MARGIN)
 			&& ((X - 1)*L > xjiki_check - MARGIN) && (0 * L < yjiki_check + MARGIN))
 		{
-			xjiki = xjiki_check;
-			yjiki = yjiki_check;
+			jiki.x = xjiki_check;
+			jiki.y = yjiki_check;
 		}
 	}
 	glLoadIdentity();
-	gluLookAt(-10.0*cos(tjiki) + xjiki, -10.0*sin(tjiki) + yjiki, 4.0, 0.0 + xjiki, 0.0 + yjiki, 1.5, 0.0, 0.0, 1.0);
+	gluLookAt(-10.0*cos(jiki.t) + jiki.x, -10.0*sin(jiki.t) + jiki.y, 4.0, 0.0 + jiki.x, 0.0 + jiki.y, 1.5, 0.0, 0.0, 1.0);
 
 	glutTimerFunc(10, jikiTimerFunc, 0);
 }
@@ -347,7 +352,7 @@ void jikiTimerFunc(int value)
 void tekiTimerFunc(int value)
 {
 	double MARGIN = 0.05;
-	if ((xteki - xjiki)*(xteki - xjiki) + (yteki - yjiki)*(yteki - yjiki)>600)
+	if ((xteki - jiki.x)*(xteki - jiki.x) + (yteki - jiki.y)*(yteki - jiki.y)>600)
 	{
 		if (flagteki) tteki = rand() % 100;
 		xteki_check = xteki + l*cos(tteki) * 3;
@@ -378,13 +383,13 @@ void tekiTimerFunc(int value)
 
 	glutTimerFunc(10, tekiTimerFunc, 0);
 }
-
+// TODO: unify projfunc1,2
 void projfunc1(int value)
 {
 	double MARGIN = 0.25;
 	if (flagproend) {
-		xpro_check = xpro + cos(tpro)*l;
-		ypro_check = ypro + sin(tpro)*l;
+		xpro_check = jiki.tama.x + cos(jiki.tama.t)*jiki.tama.v;
+		ypro_check = jiki.tama.y + sin(jiki.tama.t)*jiki.tama.v;
 		if (collision2())
 		{
 			flagpro = 0;
@@ -394,8 +399,8 @@ void projfunc1(int value)
 			|| ((X - 1)*L < xpro_check - MARGIN) || (0 * L > ypro_check + MARGIN)) flagpro = 0;
 		else
 		{
-			xpro = xpro_check;
-			ypro = ypro_check;
+			jiki.tama.x = xpro_check;
+			jiki.tama.y = ypro_check;
 			glutTimerFunc(10, projfunc1, 0);
 		}
 	}
@@ -405,8 +410,8 @@ void projfunc2(int value)
 {
 	double MARGIN = 0.25;
 	if (flagproend==0) {
-		xpro_check = xpro + cos(tpro)*l;
-		ypro_check = ypro + sin(tpro)*l;
+		xpro_check = jiki.tama.x + cos(jiki.tama.t)*jiki.tama.v;
+		ypro_check = jiki.tama.y + sin(jiki.tama.t)*jiki.tama.v;
 		if (collision2())
 		{
 			flagpro = 0;
@@ -416,8 +421,8 @@ void projfunc2(int value)
 			|| ((X - 1)*L < xpro_check - MARGIN) || (0 * L > ypro_check + MARGIN)) flagpro = 0;
 		else
 		{
-			xpro = xpro_check;
-			ypro = ypro_check;
+			jiki.tama.x = xpro_check;
+			jiki.tama.y = ypro_check;
 			glutTimerFunc(10, projfunc2, 0);
 		}
 	}
@@ -427,10 +432,13 @@ void myKeyboardFunc(unsigned char key, int x, int y)
 {
 	switch (key)
 	{
+	// launch
 	case ' ':
 		flagpro = 1;
-		tpro = tjiki;
-		xpro = xjiki, ypro = yjiki;
+		jiki.tama.t = jiki.t;
+		jiki.tama.x = jiki.x;
+		jiki.tama.y = jiki.y;
+		// TODO: delete else{...}
 		if (flagproend)
 		{
 			flagproend = 0;
@@ -493,6 +501,15 @@ void idle(void)
 
 void init(void)
 {
+	/* variables
+	----------------------*/
+	jiki.t = PI2;
+	jiki.w = 1;
+	jiki.v = 0.3;
+	jiki.v_turn = 0.03;
+	jiki.tama.v = 1;
+	// TODO: teki
+	/* ------------------ */
 	glClearColor(1.0, 1.0, 1.0, 0.0);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
