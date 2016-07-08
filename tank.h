@@ -9,6 +9,7 @@ typedef struct projectile
 	double v;  // velocity of  a projectile
 	double w;  // length of the shorter side
 	double h;  // length of the longer side
+	int flag_tama; //decide whether to draw the projectile
 } Projectile;
 
 typedef struct tank
@@ -19,7 +20,8 @@ typedef struct tank
 	double v;  // velocity
 	double v_turn;  // rotational speed
 	double w;  // length of each side of a tank
-	Projectile tama;
+	double flag_tank; // this changes motion of the tank
+	Projectile tama[5];
 } Tank;
 
 #endif
