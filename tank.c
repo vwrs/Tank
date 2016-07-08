@@ -34,8 +34,6 @@ GLfloat color[][4] = {
 	};
 Tank jiki = {0};
 Tank teki[5] = {0};
-int flagproend[5] = { 1 }; //this flag decides whether to end projfunc
-int tama_index = 0;
 int mySpecialValue = 0;
 double kabeList[][3] = {
 		{ 0.0, 2.0, 0.0 },
@@ -243,12 +241,12 @@ void display(void)
 	drawJiki();
 	drawteki();
 	drawkabe();
-	for (int index = 0; index < 5;index++) if (jiki.tama[index].flag_tama) drawproj(index);
+	for (int index = 0; index < 5;index++) if (jiki.tama[index].flag) drawproj(index);
 	aim();
 	glPopMatrix();
 	glutSwapBuffers();
 }
-// TODO: unify collision check func
+
 int collision(double x1,double y1,double x2,double y2,double MARGIN) // collision check for kabe
 {
 	if ((x1 - x2 <1 - MARGIN) && (x1 - x2 >-1 + MARGIN) && (y1 - y2 <1 - MARGIN) && (y1 - y2 >-1 + MARGIN))
@@ -317,7 +315,7 @@ void tekiTimerFunc(int value)
 {
 	int sum_kabe;
 	double MARGIN = 0.05;
-	if (teki[0].flag_tank) teki[0].t = rand() % 100;
+	if (teki[0].flag) teki[0].t = rand() % 100;
 	teki[0].x += teki[0].v*cos(teki[0].t) ;
 	teki[0].y += teki[0].v*sin(teki[0].t) ;
 
@@ -330,85 +328,53 @@ void tekiTimerFunc(int value)
 	{
 		teki[0].x -= teki[0].v*cos(teki[0].t);
 		teki[0].y -= teki[0].v*sin(teki[0].t);
-		teki[0].flag_tank = 1;
+		teki[0].flag = 1;
 	}
-	else teki[0].flag_tank = 0;
+	else teki[0].flag = 0;
 
 	glutTimerFunc(10, tekiTimerFunc, 0);
 }
-// TODO: unify projfunc1,2
-void projfunc1(int value)
+
+void projJikiTimerFunc(int index)
 {
 	int sum_kabe;
 	double MARGIN = 0.25;
-	if (flagproend[value]) {
-		jiki.tama[value].x += cos(jiki.tama[value].t)*jiki.tama[value].v;
-		jiki.tama[value].y += sin(jiki.tama[value].t)*jiki.tama[value].v;
+	jiki.tama[index].x += cos(jiki.tama[index].t)*jiki.tama[index].v;
+	jiki.tama[index].y += sin(jiki.tama[index].t)*jiki.tama[index].v;
 
-		sum_kabe = 0;
-		for (int i = 0;i<kabeIndex;i++)
-			sum_kabe += collision(kabeList[i][0], kabeList[i][1], jiki.tama[value].x, jiki.tama[value].y, MARGIN*2);
+	sum_kabe = 0;
+	for (int i = 0;i<kabeIndex;i++)
+		sum_kabe += collision(kabeList[i][0], kabeList[i][1], jiki.tama[index].x, jiki.tama[index].y, MARGIN*2);
 
-		if (sum_kabe>0)
-		{
-			jiki.tama[value].flag_tama = 0;
-			//TODO: add processing of delete of kabe object
-		}
-		else if ((Y*L < jiki.tama[value].y - MARGIN) || (0 * L > jiki.tama[value].x + MARGIN)
-			|| ((X - 1)*L < jiki.tama[value].x - MARGIN) || (0 * L > jiki.tama[value].y + MARGIN)) jiki.tama[value].flag_tama = 0;
-		else glutTimerFunc(10, projfunc1, value);
-	}
-}
-
-void projfunc2(int value)
-{
-	int sum_kabe;
-	double MARGIN = 0.25;
-	if ((flagproend[value]==0))
+	if (sum_kabe>0)
 	{
-		jiki.tama[value].x += cos(jiki.tama[value].t)*jiki.tama[value].v;
-		jiki.tama[value].y += sin(jiki.tama[value].t)*jiki.tama[value].v;
-
-		sum_kabe = 0;
-		for (int i = 0;i<kabeIndex;i++)
-			sum_kabe += collision(kabeList[i][0], kabeList[i][1], jiki.tama[value].x, jiki.tama[value].y, MARGIN*2);
-
-		if (sum_kabe > 0)
-		{
-			jiki.tama[value].flag_tama = 0;
-			// TODO: add processing of delete of kabe object
-		}
-		else if ((Y*L < jiki.tama[value].y - MARGIN) || (0 * L > jiki.tama[value].x + MARGIN)
-			|| ((X - 1)*L < jiki.tama[value].x - MARGIN) || (0 * L > jiki.tama[value].y + MARGIN)) jiki.tama[value].flag_tama = 0;
-		else glutTimerFunc(10, projfunc2, value);
+		jiki.tama[index].flag = 0;
+		//TODO: add processing of delete of kabe object
 	}
+	else if ((Y*L < jiki.tama[index].y - MARGIN) || (0 * L > jiki.tama[index].x + MARGIN)
+		|| ((X - 1)*L < jiki.tama[index].x - MARGIN) || (0 * L > jiki.tama[index].y + MARGIN)) jiki.tama[index].flag = 0;
+	else glutTimerFunc(10, projJikiTimerFunc, index);
 }
 
 void myKeyboardFunc(unsigned char key, int x, int y)
 {
-	switch (key)
-	{
-	// launch
-	case ' ':
-		jiki.tama[tama_index].flag_tama = 1;
-		jiki.tama[tama_index].t = jiki.t;
-		jiki.tama[tama_index].x = jiki.x;
-		jiki.tama[tama_index].y = jiki.y;
-		// TODO: delete else{...}
-		if (flagproend[tama_index])
+	int i;
+	for (i = 0; i < TAMA_MAX; i++)
+	  if (jiki.tama[i].flag == 0)
+			break;
+  if (i < TAMA_MAX) {
+		switch (key)
 		{
-			flagproend[tama_index] = 0;
-			projfunc2(tama_index);
+		// launch
+		case ' ':
+			jiki.tama[i].flag = 1;
+			jiki.tama[i].t = jiki.t;
+			jiki.tama[i].x = jiki.x;
+			jiki.tama[i].y = jiki.y;
+		  projJikiTimerFunc(i);
+			break;
 		}
-		else
-		{
-			flagproend[tama_index] = 1;
-			projfunc1(tama_index);
-		}
-		if (tama_index < 4) tama_index++;
-		else tama_index = 0;
-		break;
-	}
+  }
 }
 void mySpcialFunc(int key, int x, int y)
 {
@@ -463,9 +429,14 @@ void init(void)
 	----------------------*/
 	jiki.t = PI/2;
 	jiki.w = 1;
-	jiki.v = 0.1;
-	jiki.v_turn = 0.03;
-	for (int i = 0; i < 5;i++) jiki.tama[i].v = 0.2;
+	jiki.v = 0.5;
+	jiki.v_turn = 0.05;
+	jiki.life = 3;
+	int i;
+	for (i = 0; i < 5;i++) {
+		jiki.tama[i].v = 1;
+		jiki.tama[i].damage = 1;
+	}
 
 	teki[0].x = X/2;
 	teki[0].y = Y/2;
@@ -473,7 +444,11 @@ void init(void)
 	teki[0].w = 1;
 	teki[0].v = 0.1;
 	teki[0].v_turn = 0.03;
-	for (int i = 0;i < 5;i++) teki[0].tama[i].v = 0.2;
+	for (i = 0;i < 5;i++) {
+		teki[0].tama[i].v = 0.2;
+		teki[0].tama[i].damage = 1;
+		teki[0].life = 3;
+	}
 	/* ------------------ */
 	glClearColor(1.0, 1.0, 1.0, 0.0);
 	glEnable(GL_DEPTH_TEST);

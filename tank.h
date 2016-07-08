@@ -9,9 +9,11 @@ typedef struct projectile
 	double v;  // velocity of  a projectile
 	double w;  // length of the shorter side
 	double h;  // length of the longer side
-	int flag_tama; //decide whether to draw the projectile
+	int damage;  // damage of a projectile
+	int flag; //decide whether to draw the projectile
 } Projectile;
 
+const int TAMA_MAX = 5;
 typedef struct tank
 {
 	double x;  // x coordinate
@@ -20,8 +22,9 @@ typedef struct tank
 	double v;  // velocity
 	double v_turn;  // rotational speed
 	double w;  // length of each side of a tank
-	double flag_tank; // this changes motion of the tank
-	Projectile tama[5];
+	int life;  // life of a tank
+	int flag; // this changes motion of the tank
+	Projectile tama[TAMA_MAX];
 } Tank;
 
 #endif
