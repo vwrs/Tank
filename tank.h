@@ -13,7 +13,7 @@ typedef struct projectile
 	int flag; //decide whether to draw the projectile
 } Projectile;
 
-const int TAMA_MAX = 5;
+#define TAMA_MAX 5
 typedef struct tank
 {
 	double x;  // x coordinate

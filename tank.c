@@ -234,6 +234,7 @@ void aim(void)
 
 void display(void)
 {
+	int index;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glPushMatrix();
 
@@ -241,7 +242,7 @@ void display(void)
 	drawJiki();
 	drawteki();
 	drawkabe();
-	for (int index = 0; index < 5;index++) if (jiki.tama[index].flag) drawproj(index);
+	for (index = 0; index < 5;index++) if (jiki.tama[index].flag) drawproj(index);
 	aim();
 	glPopMatrix();
 	glutSwapBuffers();
@@ -262,7 +263,7 @@ int collision(double x1,double y1,double x2,double y2,double MARGIN) // collisio
 -----------------------------------*/
 void jikiTimerFunc(int value)
 {
-	int sum_kabe;
+	int i,sum_kabe;
 	double MARGIN = 0.05;
 	if (mySpecialValue & (1 << 0))
 	{
@@ -271,7 +272,7 @@ void jikiTimerFunc(int value)
 		jiki.y += jiki.v*sin(jiki.t);
 
 		sum_kabe = 0;
-		for (int i = 0; i<kabeIndex;i++)
+		for (i = 0; i<kabeIndex;i++)
 			sum_kabe += collision(kabeList[i][0], kabeList[i][1], jiki.x, jiki.y, MARGIN);
 
 		if ((sum_kabe>0) || (Y*L < jiki.y - MARGIN) || (0 * L > jiki.x + MARGIN)
@@ -295,7 +296,7 @@ void jikiTimerFunc(int value)
 		jiki.y -= jiki.v*sin(jiki.t);
 
 		sum_kabe = 0;
-		for (int i = 0; i<kabeIndex;i++)
+		for (i = 0; i<kabeIndex;i++)
 			sum_kabe += collision(kabeList[i][0], kabeList[i][1], jiki.x, jiki.y, MARGIN);
 
 		if ((sum_kabe>0) || (Y*L < jiki.y - MARGIN) || (0 * L > jiki.x + MARGIN)
@@ -313,14 +314,14 @@ void jikiTimerFunc(int value)
 
 void tekiTimerFunc(int value)
 {
-	int sum_kabe;
+	int i,sum_kabe;
 	double MARGIN = 0.05;
 	if (teki[0].flag) teki[0].t = rand() % 100;
 	teki[0].x += teki[0].v*cos(teki[0].t) ;
 	teki[0].y += teki[0].v*sin(teki[0].t) ;
 
 	sum_kabe = 0;
-	for (int i = 0;i<kabeIndex;i++)
+	for (i = 0;i<kabeIndex;i++)
 		sum_kabe += collision(kabeList[i][0], kabeList[i][1], teki[0].x, teki[0].y, MARGIN);
 
 	if ((sum_kabe>0) || (Y*L < teki[0].y - MARGIN) || (0 * L > teki[0].x + MARGIN)
@@ -337,13 +338,13 @@ void tekiTimerFunc(int value)
 
 void projJikiTimerFunc(int index)
 {
-	int sum_kabe;
+	int i,sum_kabe;
 	double MARGIN = 0.25;
 	jiki.tama[index].x += cos(jiki.tama[index].t)*jiki.tama[index].v;
 	jiki.tama[index].y += sin(jiki.tama[index].t)*jiki.tama[index].v;
 
 	sum_kabe = 0;
-	for (int i = 0;i<kabeIndex;i++)
+	for (i = 0;i<kabeIndex;i++)
 		sum_kabe += collision(kabeList[i][0], kabeList[i][1], jiki.tama[index].x, jiki.tama[index].y, MARGIN*2);
 
 	if (sum_kabe>0)
