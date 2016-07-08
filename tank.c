@@ -212,7 +212,7 @@ void drawproj()
 	glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
 	glMaterialf(GL_FRONT, GL_SHININESS, 100.0);
-	glTranslatef(jiki.tama.x, jiki.tama.y, 0.5);
+	glTranslatef(jiki.tama.x, jiki.tama.y, z);
 	glutSolidSphere(0.5, 30, 30);
 	glPopMatrix();
 }
