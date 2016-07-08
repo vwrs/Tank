@@ -430,12 +430,12 @@ void init(void)
 	----------------------*/
 	jiki.t = PI/2;
 	jiki.w = 1;
-	jiki.v = 0.5;
-	jiki.v_turn = 0.05;
+	jiki.v = 0.2;
+	jiki.v_turn = 0.02;
 	jiki.life = 3;
 	int i;
 	for (i = 0; i < 5;i++) {
-		jiki.tama[i].v = 1;
+		jiki.tama[i].v = 0.7;
 		jiki.tama[i].damage = 1;
 	}
 
