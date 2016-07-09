@@ -9,11 +9,13 @@
 //#include <GLUT/glut.h>
 // =======================
 #include "tank.h"
-#define PI (3.14159)
+#define PI (3.1415926536)
 #define X (50)  //range of the field
 #define Y (50) // range of the field
 #define L (1)
 #define z (0.5) // height of object
+#define kabeIndex 12
+#define TEKI_MAX 3
 
 /*
  Global variables
@@ -33,9 +35,9 @@ GLfloat color[][4] = {
 		{ 0.0, 0.0, 0.0, 1.0 }
 	};
 Tank jiki = { 0 };
-Tank teki[5] = {{ 0 }};
+Tank teki[TEKI_MAX] = { 0 };
 int flag_kabe[kabeIndex];
-int count_interval[5] = { 0 };
+int count_interval[TEKI_MAX] = { 0 };
 int mySpecialValue = 0;
 double kabeList[][3] = {
 		{ 0.0, 2.0, 0.0 },
@@ -219,18 +221,18 @@ void drawTekiProj(int i, int j)
 	glPopMatrix();
 }
 
-void drawTeki()
+void drawTeki(int i)
 {
 	glPushMatrix();
  
-	glTranslatef(teki[0].x, teki[0].y, z);
+	glTranslatef(teki[i].x, teki[i].y, z);
 
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[BLUE]);
 	glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
 	glMaterialf(GL_FRONT, GL_SHININESS, 50.0);
 
-	glutSolidCube(teki[0].w);
+	glutSolidCube(teki[i].w);
 	glPopMatrix();
 }
 
@@ -256,10 +258,11 @@ void display(void)
 
 	drawGround();
 	if (jiki.life > 0)drawJiki();
-	if(teki[0].life>0) drawTeki();
+	for (index = 0;index < TEKI_MAX;index++)
+		if (teki[index].life > 0) drawTeki(index);
 	drawKabe();
     for (index = 0; index < TAMA_MAX; index++) if (jiki.tama[index].flag) drawJikiProj(index);
-    for (index = 0; index < TAMA_MAX; index++)
+    for (index = 0; index < TEKI_MAX; index++)
 		for (j = 0;j < TAMA_MAX; j++) if (teki[index].tama[j].flag) drawTekiProj(index, j);
 	aim();
 	glPopMatrix();
@@ -315,7 +318,7 @@ void projJikiTimerFunc(int index)
 				|| ((X - 1)*L < jiki.tama[index].x - MARGIN) || (0 * L > jiki.tama[index].y + MARGIN))
 				jiki.tama[index].flag = 0;
 			else if (k >= kabeIndex) {
-				for (i = 0;i < 5;i++) {
+				for (i = 0;i < TEKI_MAX;i++) {
 					if ((teki[i].life>0) && (collision(jiki.tama[index].x, jiki.tama[index].y,
 						teki[i].x, teki[i].y, jiki.tama[index].r + teki[i].w / 2)))
 					{
@@ -379,8 +382,7 @@ void projTekiTimerFunc(int index)
 		}
 
 		else if (k >= kabeIndex) {
-			fflush(stdout);
-			for (l = 0;l < 5;l++) {
+			for (l = 0;l < TEKI_MAX;l++) {
 				/*if (teki[l].life > 0)
 				{
 					if (collision(teki[l].x, teki[l].y,
@@ -421,19 +423,21 @@ ESC:;
 -------------------------------------------*/
 void jikiTimerFunc(int value)
 {
-	int i,sum_kabe;
+	int i,j;
 	double MARGIN = 0.05;
 	if (mySpecialValue & (1 << 0))
 	{
 		jiki.x += jiki.v*cos(jiki.t);
 		jiki.y += jiki.v*sin(jiki.t);
 
-		sum_kabe = 0;
 		for (i = 0; i < kabeIndex;i++)
-			if(flag_kabe[i])
-				sum_kabe += collision(kabeList[i][0], kabeList[i][1], jiki.x, jiki.y, jiki.w / 2 + 0.5);
+			if ((flag_kabe[i])&&
+				(collision(kabeList[i][0], kabeList[i][1], jiki.x, jiki.y, jiki.w / 2 + 0.5))) break;
+		for (j = 0;j < TEKI_MAX;j++)
+			if ((teki[j].life>0) &&
+				(collision(teki[j].x, teki[j].y, jiki.x, jiki.y, jiki.w / 2 + teki[j].w / 2))) break;
 
-		if ((sum_kabe>0) || (Y*L < jiki.y - MARGIN) || (0 * L > jiki.x + MARGIN)
+		if ((i<kabeIndex) ||(j<TEKI_MAX)|| (Y*L < jiki.y - MARGIN) || (0 * L > jiki.x + MARGIN)
 			|| ((X - 1)*L < jiki.x - MARGIN) || (0 * L > jiki.y + MARGIN))
 		{
 			jiki.x -= jiki.v*cos(jiki.t);
@@ -453,12 +457,15 @@ void jikiTimerFunc(int value)
 		jiki.x -= jiki.v*cos(jiki.t);
 		jiki.y -= jiki.v*sin(jiki.t);
 
-		sum_kabe = 0;
 		for (i = 0; i < kabeIndex;i++)
-			if(flag_kabe[i])
-				sum_kabe += collision(kabeList[i][0], kabeList[i][1], jiki.x, jiki.y, jiki.w / 2 + 0.5);
+			if ((flag_kabe[i]) &&
+				(collision(kabeList[i][0], kabeList[i][1], jiki.x, jiki.y, jiki.w / 2 + 0.5))) break;
 
-		if ((sum_kabe>0) || (Y*L < jiki.y - MARGIN) || (0 * L > jiki.x + MARGIN)
+		for (j = 0;j < TEKI_MAX;j++)
+			if ((teki[j].life>0) &&
+				(collision(teki[j].x, teki[j].y, jiki.x, jiki.y, jiki.w / 2 + teki[j].w / 2))) break;
+
+		if ((i<kabeIndex) ||(j<TEKI_MAX)|| (Y*L < jiki.y - MARGIN) || (0 * L > jiki.x + MARGIN)
 			|| ((X - 1)*L < jiki.x - MARGIN) || (0 * L > jiki.y + MARGIN))
 		{
 			jiki.x += jiki.v*cos(jiki.t);
@@ -473,51 +480,176 @@ void jikiTimerFunc(int value)
 
 void teki0TimerFunc(int index)
 {
-	if (teki[0].life > 0) {
-		int i, sum_kabe;
+	if (teki[index].life > 0) {
+		int i, j;
 		double MARGIN = 0.05;
 		double length;
 
-		length = sqrt((jiki.x - teki[0].x)*(jiki.x - teki[0].x)
-			+ (jiki.y - teki[0].y)*(jiki.y - teki[0].y));
+		length = sqrt((jiki.x - teki[index].x)*(jiki.x - teki[index].x)
+			+ (jiki.y - teki[index].y)*(jiki.y - teki[index].y));
 
-		teki[0].x += teki[0].v*cos(teki[0].t);
-		teki[0].y += teki[0].v*sin(teki[0].t);
+		teki[index].x += teki[index].v*cos(teki[index].t);
+		teki[index].y += teki[index].v*sin(teki[index].t);
 
-		sum_kabe = 0;
 		for (i = 0;i < kabeIndex;i++)
-			if (flag_kabe[i]) sum_kabe += collision(kabeList[i][0], kabeList[i][1], teki[0].x, teki[0].y, teki[0].w / 2 + 0.5);
+			if ((flag_kabe[i])&&
+				(collision(kabeList[i][0], kabeList[i][1], teki[index].x, teki[index].y, teki[index].w / 2 + 0.5))) break;
 
-		if ((sum_kabe > 0) || (Y*L < teki[index].y - MARGIN) || (0 * L > teki[index].x + MARGIN)
+		for (j = 0;j < TEKI_MAX;j++)
+			if ((teki[j].life>0) && (j != index) &&
+				(collision(teki[j].x, teki[j].y, teki[index].x, teki[index].y, teki[j].w / 2 + teki[index].w / 2))) break;
+
+		if ((i < kabeIndex)||(j<TEKI_MAX) || (Y*L < teki[index].y - MARGIN) || (0 * L > teki[index].x + MARGIN)
 			|| ((X - 1)*L < teki[index].x - MARGIN) || (0 * L > teki[index].y + MARGIN))
 		{
-			teki[0].x -= teki[0].v*cos(teki[0].t);
-			teki[0].y -= teki[0].v*sin(teki[0].t);
-			teki[0].t = rand() % 100;
+			teki[index].x -= teki[index].v*cos(teki[index].t);
+			teki[index].y -= teki[index].v*sin(teki[index].t);
+			teki[index].t = (rand() / RAND_MAX) * 2 * PI;
 		}
+
 		if (length < 25)
 		{
 			for (i = 0;i < TAMA_MAX;i++)
-				if (teki[0].tama[i].flag == 0) break;
+				if (teki[index].tama[i].flag == 0) break;
 
 			if (i < TAMA_MAX)
 			{
-				count_interval[0]++;
-				if ((count_interval[0] % 100) == 1)
+				count_interval[index]++;
+				if ((count_interval[index] % 100) == 1)
 				{
-					teki[0].tama[i].flag = 1;
-					teki[0].tama[i].x = teki[0].x;
-					teki[0].tama[i].y = teki[0].y;
-					teki[0].tama[i].t = atan2(jiki.y - teki[0].y, jiki.x - teki[0].x);
-					projTekiTimerFunc(i + 0 * TAMA_MAX);
+					count_interval[index] = 1;
+					teki[index].tama[i].flag = 1;
+					teki[index].tama[i].x = teki[index].x;
+					teki[index].tama[i].y = teki[index].y;
+					teki[index].tama[i].t = atan2(jiki.y - teki[index].y, jiki.x - teki[index].x);
+					projTekiTimerFunc(i + index * TAMA_MAX);
 				}
 			}
 		}
 
-		glutTimerFunc(10, teki0TimerFunc, 0);
+		glutTimerFunc(10, teki0TimerFunc, index);
 	}
 }
 
+void teki1TimerFunc(int index)
+{
+	if (teki[index].life>0) {
+		int i, j, flag = 1;
+		double MARGIN = 0.25;
+		double length;
+
+		length = sqrt((jiki.x - teki[index].x)*(jiki.x - teki[index].x)
+			+ (jiki.y - teki[index].y)*(jiki.y - teki[index].y));
+
+		if (flag) teki[index].x += teki[index].v;
+		else teki[index].x -= teki[index].v;
+
+		for (i = 0;i < kabeIndex;i++)
+			if ((flag_kabe[i]) &&
+				(collision(kabeList[i][0], kabeList[i][1], teki[index].x, teki[index].y, teki[index].w / 2 + 0.5))) break;
+
+		for (j = 0;j < TEKI_MAX;j++)
+			if ((teki[j].life>0) && (j != index) &&
+				(collision(teki[j].x, teki[j].y, teki[index].x, teki[index].y, teki[j].w / 2 + teki[index].w / 2))) break;
+
+		if ((i < kabeIndex) || (j < TEKI_MAX) || (Y*L < teki[index].y - MARGIN) || (0 * L > teki[index].x + MARGIN)
+			|| ((X - 1)*L < teki[index].x - MARGIN) || (0 * L > teki[index].y + MARGIN))
+		{
+			if (flag)
+			{
+				teki[index].y -= teki[index].v;
+				flag = 0;
+			}
+			else
+			{
+				teki[index].y += teki[index].v;
+				flag = 1;
+			}
+		}
+
+		if (length < 50)
+		{
+			for (i = 0;i < TAMA_MAX;i++)
+				if (teki[index].tama[i].flag == 0) break;
+
+			if (i < TAMA_MAX)
+			{
+				count_interval[index]++;
+				if ((count_interval[index] % 100) == 1)
+				{
+					count_interval[index] = 1;
+					teki[index].tama[i].flag = 1;
+					teki[index].tama[i].x = teki[index].x;
+					teki[index].tama[i].y = teki[index].y;
+					teki[index].tama[i].t = atan2(jiki.y - teki[index].y, jiki.x - teki[index].x);
+					projTekiTimerFunc(i + index * TAMA_MAX);
+				}
+			}
+		}
+		glutTimerFunc(10, teki1TimerFunc, index);
+	}
+}
+
+void teki2TimerFunc(int index)
+{
+	if (teki[index].life>0) {
+		int i, j,flag=1;
+		double MARGIN = 0.25;
+		double length;
+
+		length = sqrt((jiki.x - teki[index].x)*(jiki.x - teki[index].x)
+			+ (jiki.y - teki[index].y)*(jiki.y - teki[index].y));
+
+		if (flag) teki[index].y += teki[index].v;
+		else teki[index].y -= teki[index].v;
+
+		for (i = 0;i < kabeIndex;i++)
+			if ((flag_kabe[i]) &&
+				(collision(kabeList[i][0], kabeList[i][1], teki[index].x, teki[index].y, teki[index].w / 2 + 0.5))) break;
+
+		for (j = 0;j < TEKI_MAX;j++)
+			if ((teki[j].life>0) && (j != index) &&
+				(collision(teki[j].x, teki[j].y, teki[index].x, teki[index].y, teki[j].w / 2 + teki[index].w / 2))) break;
+
+		if ((i < kabeIndex) || (j<TEKI_MAX) || (Y*L < teki[index].y - MARGIN) || (0 * L > teki[index].x + MARGIN)
+			|| ((X - 1)*L < teki[index].x - MARGIN) || (0 * L > teki[index].y + MARGIN))
+		{
+			if (flag)
+			{
+				teki[index].y -= teki[index].v;
+				flag = 0;
+			}
+			else
+			{
+				teki[index].y += teki[index].v;
+				flag = 1;
+			}
+		}
+
+		if (length < 50)
+		{
+			for (i = 0;i < TAMA_MAX;i++)
+				if (teki[index].tama[i].flag == 0) break;
+
+			if (i < TAMA_MAX)
+			{
+				count_interval[index]++;
+				if ((count_interval[index] % 100) == 1)
+				{
+					count_interval[index] = 1;
+					teki[index].tama[i].flag = 1;
+					teki[index].tama[i].x = teki[index].x;
+					teki[index].tama[i].y = teki[index].y;
+					teki[index].tama[i].t = atan2(jiki.y - teki[index].y, jiki.x - teki[index].x);
+					projTekiTimerFunc(i + index * TAMA_MAX);
+				}
+			}
+		}
+		glutTimerFunc(10, teki2TimerFunc, index);
+	}
+
+
+}
 
 void myKeyboardFunc(unsigned char key, int x, int y)
 {
@@ -587,33 +719,42 @@ void idle(void)
 
 void init(void)
 {
-	int i;
+	int i,j;
+	srand((unsigned)time(NULL));
 	/* variables
 	----------------------*/
 	for (i = 0;i < kabeIndex;i++) flag_kabe[i] = 1;
 	jiki.t = PI/2;
 	jiki.w = 1;
 	jiki.v = 0.2;
-	jiki.v_turn = 0.02;
+	jiki.v_turn = 0.03;
 	jiki.life = 5;
 	for (i = 0; i < TAMA_MAX; i++) {
 		jiki.tama[i].v = 0.5;
-		jiki.tama[i].r = 0.5;
+		jiki.tama[i].r = 0.3;
 		jiki.tama[i].damage = 1;
 	}
 
-	teki[0].x = X/2;
-	teki[0].y = Y/2;
-	teki[0].t = PI/2;
-	teki[0].w = 1;
-	teki[0].v = 0.1;
-	teki[0].v_turn = 0.03;
-	for (i = 0;i < TAMA_MAX; i++) {
-		teki[0].tama[i].v = 0.2;
-		teki[0].tama[i].damage = 1;
-		teki[0].tama[i].r = 0.5;
+	teki[0].x = X/(double)2;
+	teki[0].y = Y/(double)2;
+	teki[0].t = rand();
+	teki[1].x = X / (double)4;
+	teki[1].y = Y / (double)4;
+	teki[2].x = X * 3 / (double)4;
+	teki[2].y = Y / (double)4;
+	for (j = 0;j < TEKI_MAX;j++)
+	{
+		teki[j].life = 3;
+		teki[j].w = 1;
+		teki[j].v = 0.1;
+		teki[j].v_turn = 0.03;
+		for (i = 0;i < TAMA_MAX; i++) {
+			teki[j].tama[i].v = 0.2;
+			teki[j].tama[i].damage = 1;
+			teki[j].tama[i].r = 0.3;
+		}
 	}
-	teki[0].life = 3;
+	teki[1].life = 5;
 	/* ------------------ */
 	glClearColor(1.0, 1.0, 1.0, 0.0);
 	glEnable(GL_DEPTH_TEST);
@@ -630,7 +771,7 @@ void init(void)
 	glEnable(GL_LIGHT0);
 	glEnable(GL_LIGHT1);
 
-	srand((unsigned)time(NULL));
+	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(30.0, 1, .1, 100.0);
@@ -641,6 +782,8 @@ void init(void)
 	glLightfv(GL_LIGHT1, GL_DIFFUSE, color[WHITE]);
 	jikiTimerFunc(0);
 	teki0TimerFunc(0);
+	teki1TimerFunc(1);
+	teki2TimerFunc(2);
 
 }
 

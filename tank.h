@@ -13,7 +13,6 @@ typedef struct projectile
 } Projectile;
 
 #define TAMA_MAX 5
-#define kabeIndex 12
 
 typedef struct tank
 {
