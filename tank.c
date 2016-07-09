@@ -173,7 +173,7 @@ void drawJiki(void)
 	glPopMatrix();
 }
 
-void drawkabe(void)
+void drawKabe(void)
 {
 	int i;
 	glPushMatrix();
@@ -195,7 +195,7 @@ void drawkabe(void)
 	glPopMatrix();
 }
 
-void drawjiki_proj(int index)
+void drawJikiProj(int index)
 {
 	glPushMatrix();
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[RED]);
@@ -207,7 +207,7 @@ void drawjiki_proj(int index)
 	glPopMatrix();
 }
 
-void drawteki_proj(int i, int j)
+void drawTekiProj(int i, int j)
 {
 	glPushMatrix();
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[MAGENTA]);
@@ -219,7 +219,7 @@ void drawteki_proj(int i, int j)
 	glPopMatrix();
 }
 
-void drawteki()
+void drawTeki()
 {
 	glPushMatrix();
  
@@ -256,11 +256,11 @@ void display(void)
 
 	drawGround();
 	drawJiki();
-	drawteki();
-	drawkabe();
-    for (index = 0; index < TAMA_MAX; index++) if (jiki.tama[index].flag) drawjiki_proj(index);
+	drawTeki();
+	drawKabe();
+    for (index = 0; index < TAMA_MAX; index++) if (jiki.tama[index].flag) drawJikiProj(index);
     for (index = 0; index < TAMA_MAX; index++)
-		for (j = 0;j < TAMA_MAX; j++) if (teki[index].tama[j].flag) drawteki_proj(index, j);
+		for (j = 0;j < TAMA_MAX; j++) if (teki[index].tama[j].flag) drawTekiProj(index, j);
 	aim();
 	glPopMatrix();
 	glutSwapBuffers();
@@ -339,7 +339,7 @@ ESC:;
 
 
 
-void projtekiTimerFunc(int index)
+void projTekiTimerFunc(int index)
 {
 	int i, j, k, l, m;
 	double MARGIN = 0.25;
@@ -406,7 +406,7 @@ void projtekiTimerFunc(int index)
 				}
 
 			}
-			glutTimerFunc(10, projtekiTimerFunc, index);
+			glutTimerFunc(10, projTekiTimerFunc, index);
 		}
 	}
 ESC:;
@@ -428,7 +428,7 @@ void jikiTimerFunc(int value)
 
 		sum_kabe = 0;
 		for (i = 0; i < kabeIndex;i++)
-			if(flag_kabe[i]) 
+			if(flag_kabe[i])
 				sum_kabe += collision(kabeList[i][0], kabeList[i][1], jiki.x, jiki.y, jiki.w / 2 + 0.5);
 
 		if ((sum_kabe>0) || (Y*L < jiki.y - MARGIN) || (0 * L > jiki.x + MARGIN)
@@ -475,7 +475,7 @@ void teki0TimerFunc(int index)
 	double MARGIN = 0.05;
 	double length;
 
-	length = sqrt((jiki.x - teki[0].x)*(jiki.x - teki[0].x) 
+	length = sqrt((jiki.x - teki[0].x)*(jiki.x - teki[0].x)
 					+ (jiki.y - teki[0].y)*(jiki.y - teki[0].y));
 
 	teki[0].x += teki[0].v*cos(teki[0].t) ;
@@ -506,7 +506,7 @@ void teki0TimerFunc(int index)
 				teki[0].tama[i].x = teki[0].x;
 				teki[0].tama[i].y = teki[0].y;
 				teki[0].tama[i].t = atan2(jiki.y - teki[0].y, jiki.x - teki[0].x);
-				projtekiTimerFunc(i + 0 * TAMA_MAX);
+				projTekiTimerFunc(i + 0 * TAMA_MAX);
 			}
 		}
 	}
