@@ -22,6 +22,7 @@ typedef struct tank
 	double v;  // velocity
 	double v_turn;  // rotational speed
 	double w;  // length of each side of a tank
+	double flag; // decide motion of tank
 	int life;  // life of a tank
 	Projectile tama[TAMA_MAX];
 } Tank;
