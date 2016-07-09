@@ -7,13 +7,14 @@ typedef struct projectile
 	double y;  // y coordinate
 	double t;  // direction of a projectile [rad]
 	double v;  // velocity of  a projectile
-	double w;  // length of the shorter side
-	double h;  // length of the longer side
+	double r;  // radious of the projectile
 	int damage;  // damage of a projectile
 	int flag; //decide whether to draw the projectile
 } Projectile;
 
 #define TAMA_MAX 5
+#define kabeIndex 12
+
 typedef struct tank
 {
 	double x;  // x coordinate
@@ -23,7 +24,6 @@ typedef struct tank
 	double v_turn;  // rotational speed
 	double w;  // length of each side of a tank
 	int life;  // life of a tank
-	int flag; // this changes motion of the tank
 	Projectile tama[TAMA_MAX];
 } Tank;
 
