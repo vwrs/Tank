@@ -342,8 +342,8 @@ void projtekiTimerFunc(int index)
 {
 	int i, j, k, l, m;
 	double MARGIN = 0.25;
-	j = index % TAMA_MAX;
-	i = index / TAMA_MAX;
+	j = index;
+	i = 0;
 
 	if (teki[i].tama[j].flag)
 	{
@@ -386,8 +386,7 @@ void projtekiTimerFunc(int index)
 				}
 				for (m = 0;m < TAMA_MAX;m++)
 				{
-					if ((m == j) && (l == i));
-					else
+					if ((l != i) && (m != j))
 					{
 						if (teki[l].tama[m].flag)
 						{
@@ -398,12 +397,9 @@ void projtekiTimerFunc(int index)
 								teki[l].tama[m].flag = 0;
 								goto ESC;
 							}
-
 						}
 					}
-
 				}
-
 			}
 			glutTimerFunc(10, projtekiTimerFunc, index);
 		}
@@ -501,13 +497,13 @@ void teki0TimerFunc(int value)
 		if (i < TAMA_MAX)
 		{
 			count_interval[0]++;
-			if (count_interval[0] % 20)
+			if ((count_interval[0] % 100)==1)
 			{
 				teki[0].tama[i].flag = 1;
 				teki[0].tama[i].x = teki[0].x;
 				teki[0].tama[i].y = teki[0].y;
 				teki[0].tama[i].t = atan2(jiki.y - teki[0].y, jiki.x - teki[0].x);
-				projtekiTimerFunc(i + 0 * TAMA_MAX);
+				projtekiTimerFunc(i);
 			}
 		}
 	}
