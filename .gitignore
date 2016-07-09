@@ -1,2 +1,4 @@
 a.out
 *.gch
+*.s
+Tank/
