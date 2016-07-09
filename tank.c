@@ -600,9 +600,8 @@ void teki2TimerFunc(int index)
 		length = sqrt((jiki.x - teki[index].x)*(jiki.x - teki[index].x)
 			+ (jiki.y - teki[index].y)*(jiki.y - teki[index].y));
 
-		teki[index].y = Y / 4.0;
-		//if (teki[index].flag) teki[index].y += teki[index].v;
-		//else teki[index].y -= teki[index].v;
+		if (teki[index].flag) teki[index].y += teki[index].v;
+		else teki[index].y -= teki[index].v;
 
 		for (i = 0;i < kabeIndex;i++)
 			if ((flag_kabe[i]) &&
@@ -638,7 +637,7 @@ void teki2TimerFunc(int index)
 				if ((count_interval[index] % 100) == 1)
 				{
 					count_interval[index] = 1;
-					//teki[index].tama[i].flag = 1;
+					teki[index].tama[i].flag = 1;
 					teki[index].tama[i].t = atan2(jiki.y - teki[index].y, jiki.x - teki[index].x);
 					teki[index].tama[i].x =
 						teki[index].x + (teki[index].w / 2.0 + teki[index].tama[i].r + MARGIN)*cos(teki[index].tama[i].t);
