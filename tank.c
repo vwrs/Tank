@@ -3,10 +3,10 @@
 #include <math.h>
 #include <time.h>
 // ======== Windows ======
-#include <GL/glut.h>
+// #include <GL/glut.h>
 // ====== Mac OS X =======
-// #include <OpenGL/gl.h>
-// #include <GLUT/glut.h>
+#include <OpenGL/gl.h>
+#include <GLUT/glut.h>
 // =======================
 #include "tank.h"
 #define PI (3.14159)
@@ -33,7 +33,7 @@ GLfloat color[][4] = {
 		{ 0.0, 0.0, 0.0, 1.0 }
 	};
 Tank jiki = {0};
-Tank teki[5] = {0};
+Tank teki[5] = {{0}};
 int mySpecialValue = 0;
 double kabeList[][3] = {
 		{ 0.0, 2.0, 0.0 },
@@ -221,12 +221,13 @@ void drawteki()
 
 void aim(void)
 {
+	double aim_x, aim_y;
 	glPushMatrix();
 	glBegin(GL_LINES);
 	glColor3d(1.0,0,0);
 	glVertex3d(jiki.x,jiki.y,z);
-	double aim_x = jiki.x + 50*cos(jiki.t);
-	double aim_y = jiki.y + 50*sin(jiki.t);
+	aim_x = jiki.x + 50*cos(jiki.t);
+	aim_y = jiki.y + 50*sin(jiki.t);
 	glVertex3d(aim_x,aim_y,z);
 	glEnd();
 	glPopMatrix();
@@ -242,7 +243,7 @@ void display(void)
 	drawJiki();
 	drawteki();
 	drawkabe();
-	for (index = 0; index < 5;index++) if (jiki.tama[index].flag) drawproj(index);
+	for (index = 0; index < TAMA_MAX; index++) if (jiki.tama[index].flag) drawproj(index);
 	aim();
 	glPopMatrix();
 	glutSwapBuffers();
@@ -267,7 +268,6 @@ void jikiTimerFunc(int value)
 	double MARGIN = 0.05;
 	if (mySpecialValue & (1 << 0))
 	{
-		
 		jiki.x += jiki.v*cos(jiki.t);
 		jiki.y += jiki.v*sin(jiki.t);
 
@@ -312,48 +312,50 @@ void jikiTimerFunc(int value)
 	glutTimerFunc(10, jikiTimerFunc, 0);
 }
 
-void tekiTimerFunc(int value)
+void tekiTimerFunc(int index)
 {
 	int i,sum_kabe;
 	double MARGIN = 0.05;
-	if (teki[0].flag) teki[0].t = rand() % 100;
-	teki[0].x += teki[0].v*cos(teki[0].t) ;
-	teki[0].y += teki[0].v*sin(teki[0].t) ;
+	index = 0;
+	if (teki[index].flag) teki[index].t = rand() % 100;
+	teki[index].x += teki[index].v*cos(teki[index].t) ;
+	teki[index].y += teki[index].v*sin(teki[index].t) ;
 
 	sum_kabe = 0;
 	for (i = 0;i<kabeIndex;i++)
-		sum_kabe += collision(kabeList[i][0], kabeList[i][1], teki[0].x, teki[0].y, MARGIN);
+		sum_kabe += collision(kabeList[i][index], kabeList[i][1], teki[index].x, teki[index].y, MARGIN);
 
-	if ((sum_kabe>0) || (Y*L < teki[0].y - MARGIN) || (0 * L > teki[0].x + MARGIN)
-	    || ((X - 1)*L < teki[0].x - MARGIN) || (0 * L > teki[0].y + MARGIN))
+	if ((sum_kabe>0) || (Y*L < teki[index].y - MARGIN) || (0 * L > teki[index].x + MARGIN)
+	    || ((X - 1)*L < teki[index].x - MARGIN) || (0 * L > teki[index].y + MARGIN))
 	{
-		teki[0].x -= teki[0].v*cos(teki[0].t);
-		teki[0].y -= teki[0].v*sin(teki[0].t);
-		teki[0].flag = 1;
+		teki[index].x -= teki[index].v*cos(teki[index].t);
+		teki[index].y -= teki[index].v*sin(teki[index].t);
+		teki[index].flag = 1;
 	}
-	else teki[0].flag = 0;
+	else teki[index].flag = 0;
 
-	glutTimerFunc(10, tekiTimerFunc, 0);
+	glutTimerFunc(10, tekiTimerFunc, index);
 }
 
 void projJikiTimerFunc(int index)
 {
 	int i,sum_kabe;
 	double MARGIN = 0.25;
-	jiki.tama[index].x += cos(jiki.tama[index].t)*jiki.tama[index].v;
-	jiki.tama[index].y += sin(jiki.tama[index].t)*jiki.tama[index].v;
+	Projectile tama_temp = jiki.tama[index];
+	jiki.tama[index].x += cos(tama_temp.t)*tama_temp.v;
+	jiki.tama[index].y += sin(tama_temp.t)*tama_temp.v;
 
 	sum_kabe = 0;
 	for (i = 0;i<kabeIndex;i++)
-		sum_kabe += collision(kabeList[i][0], kabeList[i][1], jiki.tama[index].x, jiki.tama[index].y, MARGIN*2);
+		sum_kabe += collision(kabeList[i][0], kabeList[i][1], tama_temp.x, tama_temp.y, MARGIN*2);
 
 	if (sum_kabe>0)
 	{
 		jiki.tama[index].flag = 0;
 		//TODO: add processing of delete of kabe object
 	}
-	else if ((Y*L < jiki.tama[index].y - MARGIN) || (0 * L > jiki.tama[index].x + MARGIN)
-		|| ((X - 1)*L < jiki.tama[index].x - MARGIN) || (0 * L > jiki.tama[index].y + MARGIN)) jiki.tama[index].flag = 0;
+	else if ((Y*L < tama_temp.y - MARGIN) || (0 * L > tama_temp.x + MARGIN)
+		|| ((X - 1)*L < tama_temp.x - MARGIN) || (0 * L > tama_temp.y + MARGIN)) jiki.tama[index].flag = 0;
 	else glutTimerFunc(10, projJikiTimerFunc, index);
 }
 
@@ -430,11 +432,11 @@ void init(void)
 	----------------------*/
 	jiki.t = PI/2;
 	jiki.w = 1;
-	jiki.v = 0.2;
+	jiki.v = 0.3;
 	jiki.v_turn = 0.02;
 	jiki.life = 3;
 	int i;
-	for (i = 0; i < 5;i++) {
+	for (i = 0; i < TAMA_MAX; i++) {
 		jiki.tama[i].v = 0.7;
 		jiki.tama[i].damage = 1;
 	}
@@ -445,7 +447,7 @@ void init(void)
 	teki[0].w = 1;
 	teki[0].v = 0.1;
 	teki[0].v_turn = 0.03;
-	for (i = 0;i < 5;i++) {
+	for (i = 0;i < TAMA_MAX; i++) {
 		teki[0].tama[i].v = 0.2;
 		teki[0].tama[i].damage = 1;
 		teki[0].life = 3;
