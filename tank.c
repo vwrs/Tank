@@ -289,6 +289,86 @@ int collision(double x1,double y1,double x2,double y2,double length) // collisio
 /*
 TimerFunc for position of projectiles
 -------------------------------------------*/
+// TODO: unify projTimerFunc
+
+void projTimerFunc(int index)
+{
+    int i, j, k, isTeki = 0;
+    double MARGIN = 0.25;
+    Tank *tank;
+    if (index >= 100) {
+        tank = &jiki;
+        index -= 100;
+    }
+    else {
+        tank = &teki[index];
+        isTeki = 1;
+    }
+    
+    if ((tank->life > 0)&&(tank->tama[index].flag))
+    {
+        tank->tama[index].x += cos(tank->tama[index].t)*tank->tama[index].v;
+        tank->tama[index].y += sin(tank->tama[index].t)*tank->tama[index].v;
+        
+        /* collision check
+        -----------------------*/
+        if (isTeki) {
+            if (collision(jiki.x, jiki.y, tank->tama[j].x, tank->tama[j].y, jiki.w / 2.0 + tank->tama[j].r))
+            {
+                jiki.life -= tank->tama[j].damage;
+                tank->tama[j].flag = 0;
+            }
+        }
+        
+        for (k = 0;k < kabeIndex;k++)
+            if ((flag_kabe[k]) && (collision(kabeList[k][0], kabeList[k][1],
+                                             tank->tama[index].x, tank->tama[index].y, tank->tama[index].r + 0.5))) break;
+        
+        for (i = 0;i < TEKI_MAX;i++)
+        {
+            if (isTeki && index == i) continue;
+            if ((teki[i].life>0) && (collision(teki[i].x, teki[i].y,
+                                               tank->tama[index].x, tank->tama[index].y, teki[i].w / 2.0 + tank->tama[index].r)))
+            {
+                j = TAMA_MAX;
+                break;
+            }
+            for (j = 0;j < TAMA_MAX;j++)
+                if ((teki[i].tama[j].flag) && (collision(teki[i].tama[j].x, teki[i].tama[j].y, tank->tama[index].x, tank->tama[index].y, teki[i].tama[j].r + tank->tama[index].r))) break;
+            if (j < TAMA_MAX) break;
+        }
+        
+        if ((Y*L < tank->tama[index].y - MARGIN) || (0 * L > tank->tama[index].x + MARGIN)
+            || ((X - 1)*L < tank->tama[index].x - MARGIN) || (0 * L > tank->tama[index].y + MARGIN))
+        {
+            tank->tama[index].flag = 0;
+        }
+        else if (collision(tank->x, tank->y, tank->tama[index].x, tank->tama[index].y, tank->w / 2.0 + tank->tama[index].r))
+        {
+            tank->tama[index].flag = 0;
+        }
+        else if (k < kabeIndex)
+        {
+            tank->tama[index].flag = 0;
+            flag_kabe[k] = 0;
+        }
+        else if ((i < TEKI_MAX) && (j < TAMA_MAX))
+        {
+            tank->tama[index].flag = 0;
+            teki[i].tama[j].flag = 0;
+        }
+        else if (i < TEKI_MAX)
+        {
+            tank->tama[index].flag = 0;
+            teki[i].life -= tank->tama[index].damage;
+        }
+        else glutTimerFunc(10, projTimerFunc, index);
+    }
+}
+
+
+
+////////////////////////////////////////////////////////////////////////
 void projJikiTimerFunc(int index)
 {
 	int i, j, k;
