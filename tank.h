@@ -1,6 +1,34 @@
 #ifndef TANK_H
 #define TANK_H
 
+/*
+ includes
+-----------------------*/
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <time.h>
+// ======== Windows ======
+#include <GL/glut.h>
+// ====== Mac OS X =======
+//#include <OpenGL/gl.h>
+//#include <GLUT/glut.h>
+// =======================
+
+/*
+ consts
+-----------------------*/
+#define PI (3.1415926536)
+#define X (50)  //range of the field
+#define Y (50) // range of the field
+#define L (1)
+#define z (0.5) // height of object
+#define kabeIndex (12)
+#define TEKI_MAX (3)
+
+/*
+ structs
+-----------------------*/
 typedef struct projectile
 {
 	double x;  // x coordinate
@@ -26,5 +54,63 @@ typedef struct tank
 	int life;  // life of a tank
 	Projectile tama[TAMA_MAX];
 } Tank;
+
+typedef struct stage
+{
+    int x;
+    int y;
+    int level;  // easy:0 normal: 1 hard: 2
+    int selected;
+    char name[6];  // easy, normal, hard
+} Stage;
+
+/*
+ global variables
+-----------------------*/
+enum COLOR { WHITE, RED, GREEN, BLUE, YELLOW, MAGENTA, CYAN, GRAY, BLACK };
+extern int stage;
+extern Tank jiki;
+extern Tank teki[TEKI_MAX];
+extern int flag_kabe[kabeIndex];
+extern int count_interval[TEKI_MAX];
+extern GLfloat pos0[];
+extern GLfloat pos1[];
+extern GLfloat color[][4];
+extern double kabeList[][3];
+extern int mySpecialValue;
+
+
+/*
+ functions
+-----------------------*/
+// draw.c
+void calcNormal(GLdouble v0[3], GLdouble v1[3], GLdouble v2[3], GLdouble n[3]);
+void drawString(char str[6], int w, int h, int x0, int y0);
+void drawGround(void);
+void drawJiki(void);
+void drawTeki(int i);
+void drawKabe(void);
+void drawJikiProj(int i);
+void drawTekiProj(int i, int j);
+void aim(void);
+
+// timerFunc.c
+int collision(double x1, double y1, double x2, double y2, double length);
+void projTimerFunc(int index);
+void projJikiTimerFunc(int index);  // TODO: delete
+void projTekiTimerFunc(int index);  // TODO: delete
+void jikiTimerFunc(int value);
+void teki0TimerFunc(int index);
+void teki1TimerFunc(int index);
+void teki2TimerFunc(int index);
+
+// tank.c
+void display(void);
+void myTimerFunc(int value);
+void myKeyboardFunc(unsigned char key, int x, int y);
+void mySpcialFunc(int key, int x, int y);
+void mySpcialUpFunc(int key, int x, int y);
+void init(void);
+
 
 #endif
