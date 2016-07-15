@@ -3,9 +3,9 @@
 /*
  Global variables
 ---------------------------------------------------*/
-int current_status = 1;  // 0: start 1: easy 2: normal 3: hard 4: result
+int current_status = 0;  // 0: start 1: easy 2: normal 3: hard 4: result
 int initialized = 0;
-Stage stages[STAGE_MAX] = { 0 };
+Stage stages[STAGE_MAX] = { { 0 } };
 GLfloat pos0[] = { 5.0, 0.0, 0.0, 1.0 };
 GLfloat pos1[] = { 0.0, 0.0, 5.0, 1.0 };
 GLfloat color[][4] = {
@@ -20,7 +20,7 @@ GLfloat color[][4] = {
 		{ 0.0, 0.0, 0.0, 1.0 }
 	};
 Tank jiki = { 0 };
-Tank teki[TEKI_MAX] = { 0 };
+Tank teki[TEKI_MAX] = { { 0 } };
 int flag_kabe[kabeIndex];
 int count_interval[TEKI_MAX] = { 0 };
 int mySpecialValue = 0;

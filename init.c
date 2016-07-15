@@ -9,7 +9,8 @@ void initSelect(void)
 {
     /* variables
      ----------------------*/
-
+    stages[0].selected = 1;
+    stages[0].level = 1;
     /* ------------------ */
     glClearColor(1.0, 1.0, 1.0, 0.0);
     glEnable(GL_DEPTH_TEST);
