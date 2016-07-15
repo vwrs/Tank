@@ -23,6 +23,7 @@
 #define Y (50) // range of the field
 #define L (1)
 #define z (0.5) // height of object
+#define STAGE_MAX (3)
 #define kabeIndex (12)
 #define TEKI_MAX (3)
 
@@ -59,7 +60,7 @@ typedef struct stage
 {
     int x;
     int y;
-    int level;  // easy:0 normal: 1 hard: 2
+    int level;  // easy:1 normal: 2 hard: 3
     int selected;
     char name[6];  // easy, normal, hard
 } Stage;
@@ -68,7 +69,9 @@ typedef struct stage
  global variables
 -----------------------*/
 enum COLOR { WHITE, RED, GREEN, BLUE, YELLOW, MAGENTA, CYAN, GRAY, BLACK };
-extern int stage;
+extern int current_status;  // select: 0 easy: 1 normal: 2 hard: 3 result: 4
+extern int initialized;
+extern Stage stages[STAGE_MAX];
 extern Tank jiki;
 extern Tank teki[TEKI_MAX];
 extern int flag_kabe[kabeIndex];
@@ -86,6 +89,7 @@ extern int mySpecialValue;
 // draw.c
 void calcNormal(GLdouble v0[3], GLdouble v1[3], GLdouble v2[3], GLdouble n[3]);
 void drawString(char str[6], int w, int h, int x0, int y0);
+void drawStageSelect(Stage stages[]);
 void drawGround(void);
 void drawJiki(void);
 void drawTeki(int i);
@@ -104,13 +108,19 @@ void teki0TimerFunc(int index);
 void teki1TimerFunc(int index);
 void teki2TimerFunc(int index);
 
+// keyboardFunc.c
+void selectKeyboardFunc(unsigned char key, int x, int y);
+void selectSpecialFunc(int key, int x, int y);
+void stageKeyboardFunc(unsigned char key, int x, int y);
+void stageSpecialFunc(int key, int x, int y);
+void stageSpecialUpFunc(int key, int x, int y);
+
+// init.c
+void idle(void);
+void initSelect(void);
+void initStage(void);
+
 // tank.c
 void display(void);
-void myTimerFunc(int value);
-void myKeyboardFunc(unsigned char key, int x, int y);
-void mySpcialFunc(int key, int x, int y);
-void mySpcialUpFunc(int key, int x, int y);
-void init(void);
-
 
 #endif

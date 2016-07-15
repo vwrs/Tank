@@ -18,9 +18,7 @@ void calcNormal(GLdouble v0[3], GLdouble v1[3], GLdouble v2[3], GLdouble n[3])
     for (i = 0; i < 3; i++)
         n[i] = vt[i] / abs;
 }
-/*
- drawXXX
- -----------------------------------------*/
+
 void drawString(char str[6], int w, int h, int x0, int y0)
 {
     int i;
@@ -40,6 +38,15 @@ void drawString(char str[6], int w, int h, int x0, int y0)
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
+}
+
+void drawStageSelect(Stage stages[])
+{
+    int i;
+    for (i = 0; i < STAGE_MAX; i++) {
+        stages[i].y = 50;
+    }
+    return;
 }
 
 void drawGround(void)
