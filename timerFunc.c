@@ -25,7 +25,7 @@ int collision(double x1,double y1,double x2,double y2,double length) // collisio
 
 void projTimerFunc(int index)
 {
-    int i, j, k, isTeki = 0;
+    int i, j=0, k, isTeki = 0;
     double MARGIN = 0.25;
     Tank *tank;
     if (index >= 100) {
