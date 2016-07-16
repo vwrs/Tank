@@ -1,18 +1,5 @@
 #include "tank.h"
 
-// collision check
-int collision(double x1, double y1,double x2, double y2, double length) // collision check for kabe
-{ 
-
-    double MARGIN = 0.01;
-    if ((x1 - x2 < length+MARGIN) && (x2 - x1 < length + MARGIN) && (y1 - y2 < length + MARGIN) && (y2 - y1 < length + MARGIN))
-    {
-        printf("(%.02f,%.02f):(%.02f,%.02f)\n", x2, y2, x1, y1);
-        return 1;
-    }
-    return 0;
-}
-
 /*
  TimerFunc for position of projectiles
  -------------------------------------------*/
@@ -193,7 +180,7 @@ void projTekiTimerFunc(int index)
 		{
 			teki[i].tama[j].flag = 0;
 		}
-		else if (decidecrash(jiki.x, jiki.y, jiki.t, jiki.w, jiki.w,
+		else if (decideCrash(jiki.x, jiki.y, jiki.t, jiki.w, jiki.w,
 				teki[i].tama[j].x, teki[i].tama[j].y, teki[i].tama[j].t, teki[i].tama[j].r * 2, teki[i].tama[j].r * 2))
 		{
 			jiki.life -= teki[i].tama[j].damage;

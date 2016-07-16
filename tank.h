@@ -88,7 +88,6 @@ extern int mySpecialValue;
  functions
 -----------------------*/
 // draw.c
-void calcNormal(GLdouble v0[3], GLdouble v1[3], GLdouble v2[3], GLdouble n[3]);
 void drawStageSelect(void);
 void drawGround(void);
 void drawJiki(void);
@@ -98,11 +97,7 @@ void drawJikiProj(int i);
 void drawTekiProj(int i, int j);
 void aim(void);
 
-//decidecrash-1.c
-int decidecrash(double x1, double y1, double t1, double w1, double h1, double x2, double y2, double t2, double w2, double h2);
-
 // timerFunc.c
-int collision(double x1, double y1, double x2, double y2, double length);
 void projTimerFunc(int index);
 void projJikiTimerFunc(int index);  // TODO: delete
 void projTekiTimerFunc(int index);  // TODO: delete
@@ -119,9 +114,17 @@ void stageSpecialFunc(int key, int x, int y);
 void stageSpecialUpFunc(int key, int x, int y);
 
 // init.c
-void idle(void);
 void initSelect(void);
 void initStage(void);
+void initEasy(void);
+void initNormal(void);
+void initHard(void);
+
+// helpers.c
+int collision(double x1, double y1, double x2, double y2, double length);
+int decideCrash(double x1, double y1, double t1, double w1, double h1, double x2, double y2, double t2, double w2, double h2);
+void calcNormal(GLdouble v0[3], GLdouble v1[3], GLdouble v2[3], GLdouble n[3]);
+void idle(void);
 
 // tank.c
 void display(void);
