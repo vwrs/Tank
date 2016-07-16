@@ -222,13 +222,14 @@ void drawTeki(int i)
 
 void aim(void)
 {
-    double aim_x, aim_y;
+    double aim_x = jiki.x + 50*cos(jiki.t);
+    double aim_y = jiki.y + 50*sin(jiki.t);
+    // TODO
+    if (1){}
     glPushMatrix();
     glBegin(GL_LINES);
     glMaterialfv(GL_FRONT, GL_DIFFUSE, color[RED]);
     glVertex3d(jiki.x,jiki.y,z);
-    aim_x = jiki.x + 50*cos(jiki.t);
-    aim_y = jiki.y + 50*sin(jiki.t);
     glVertex3d(aim_x,aim_y,z);
     glEnd();
     glPopMatrix();

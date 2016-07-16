@@ -28,7 +28,14 @@ void initSelect(void)
 
 void initStage(void)
 {
+    int i;
     srand((unsigned)time(NULL));
+    /* variables
+    ----------------------*/
+    for (i = 0;i < kabeIndex;i++) flag_kabe[i] = 1;
+    jiki.t = PI/2.0;
+    jiki.w = 1.0;
+    /*--------------------*/
     glClearColor(1.0, 1.0, 1.0, 0.0);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -62,9 +69,6 @@ void initStage(void)
 void initEasy(void)
 {
     int i, j;
-    for (i = 0;i < kabeIndex;i++) flag_kabe[i] = 1;
-    jiki.t = PI/2.0;
-    jiki.w = 1.0;
     jiki.v = 0.4;
     jiki.v_turn = 0.06;
     jiki.life = 50;
@@ -73,21 +77,19 @@ void initEasy(void)
         jiki.tama[i].r = 0.5;
         jiki.tama[i].damage = 1;
     }
-    
     teki[0].x = X / 2.0;
     teki[0].y = Y / 2.0;
-    teki[0].t = rand();
     teki[1].x = X / 4.0;
     teki[1].y = Y / 4.0;
     teki[2].x = X * 3.0 / 4.0;
     teki[2].y = Y / 4.0;
-    
     for (j = 0;j < TEKI_MAX;j++)
     {
         teki[j].life = 3;
         teki[j].w = 1.0;
         teki[j].v = 0.2;
         teki[j].v_turn = 0.03;
+        teki[j].t = rand();
         for (i = 0;i < TAMA_MAX; i++) {
             teki[j].tama[i].v = 0.5;
             teki[j].tama[i].damage = 1;
@@ -103,9 +105,6 @@ void initEasy(void)
 void initNormal(void)
 {
     int i, j;
-    for (i = 0;i < kabeIndex;i++) flag_kabe[i] = 1;
-    jiki.t = PI/2.0;
-    jiki.w = 1.0;
     jiki.v = 0.4;
     jiki.v_turn = 0.06;
     jiki.life = 20;
@@ -117,7 +116,6 @@ void initNormal(void)
     
     teki[0].x = X / 2.0;
     teki[0].y = Y / 2.0;
-    teki[0].t = rand();
     teki[1].x = X / 4.0;
     teki[1].y = Y / 4.0;
     teki[2].x = X * 3.0 / 4.0;
@@ -129,6 +127,7 @@ void initNormal(void)
         teki[j].w = 1.0;
         teki[j].v = 0.2;
         teki[j].v_turn = 0.03;
+        teki[j].t = rand();
         for (i = 0;i < TAMA_MAX; i++) {
             teki[j].tama[i].v = 0.6;
             teki[j].tama[i].damage = 1;
@@ -144,9 +143,6 @@ void initNormal(void)
 void initHard(void)
 {
     int i, j;
-    for (i = 0;i < kabeIndex;i++) flag_kabe[i] = 1;
-    jiki.t = PI/2.0;
-    jiki.w = 1.0;
     jiki.v = 0.5;
     jiki.v_turn = 0.06;
     jiki.life = 15;
@@ -158,7 +154,6 @@ void initHard(void)
     
     teki[0].x = X / 2.0;
     teki[0].y = Y / 2.0;
-    teki[0].t = rand();
     teki[1].x = X / 4.0;
     teki[1].y = Y / 4.0;
     teki[2].x = X * 3.0 / 4.0;
@@ -170,6 +165,7 @@ void initHard(void)
         teki[j].w = 1.0;
         teki[j].v = 0.5;
         teki[j].v_turn = 0.1;
+        teki[j].t = rand();
         for (i = 0;i < TAMA_MAX; i++) {
             teki[j].tama[i].v = 1.0;
             teki[j].tama[i].damage = 2;
