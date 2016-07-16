@@ -7,35 +7,28 @@ void idle(void)
 
 void initSelect(void)
 {
+    int i;
     /* variables
      ----------------------*/
     stages[0].selected = 1;
-    stages[0].level = 1;
-    /* ------------------ */
-    glClearColor(1.0, 1.0, 1.0, 0.0);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
+    for (i = 0; i < STAGE_MAX; i++) {
+        stages[i].level = i + 1;
+        stages[i].x = (i+1) * 10;
+        if (i < 2) stages[i].x -= 2;
+        stages[i].y = 20;
+    }
+    strncpy(stages[0].name, "easy", 4);
+    strncpy(stages[1].name, "normal", 6);
+    strncpy(stages[2].name, "hard", 4);
     
+    /* ------------------ */
+    glClearColor(1.0, 1.0, 1.0, 1.0);  // background color
     glutKeyboardFunc(selectKeyboardFunc);
     glutSpecialFunc(selectSpecialFunc);
-    
     glutIdleFunc(idle);
-    
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    glEnable(GL_LIGHT1);
-    
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(30.0, 1, .1, 100.0);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt(5.0, 5.0, 10.0, 5.0, 5.0, 0, 0.0, 1.0, 0.0);
-    
-    glLightfv(GL_LIGHT1, GL_POSITION, pos1);
-    glLightfv(GL_LIGHT1, GL_DIFFUSE, color[WHITE]);
-    
+    gluPerspective(120.0, 1, 0, 10);
 }
 
 void initStage(void)

@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+#include <string.h>
 // ======== Windows ======
 #include <GL/glut.h>
 // ====== Mac OS X =======
@@ -62,7 +63,7 @@ typedef struct stage
     int y;
     int level;  // easy:1 normal: 2 hard: 3
     int selected;
-    char name[6];  // easy, normal, hard
+    char name[10];  // easy, normal, hard
 } Stage;
 
 /*
@@ -88,8 +89,7 @@ extern int mySpecialValue;
 -----------------------*/
 // draw.c
 void calcNormal(GLdouble v0[3], GLdouble v1[3], GLdouble v2[3], GLdouble n[3]);
-void drawString(char str[6], int w, int h, int x0, int y0);
-void drawStageSelect(Stage stages[]);
+void drawStageSelect(void);
 void drawGround(void);
 void drawJiki(void);
 void drawTeki(int i);
@@ -100,7 +100,6 @@ void aim(void);
 
 //decidecrash-1.c
 int decidecrash(double x1, double y1, double t1, double w1, double h1, double x2, double y2, double t2, double w2, double h2);
-
 
 // timerFunc.c
 int collision(double x1, double y1, double x2, double y2, double length);
