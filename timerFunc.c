@@ -1,105 +1,5 @@
 #include "tank.h"
 
-// unite collision check
-int collision_check(double x, double y, double t, double w, double h, int *atari)
-{ /*
-  atari[1] has following meanings 
-		atari[0] : isKabe * 2^0 + isTeki * 2^1 +isTama * 2^2  
-		atari[1] : index
-  */
-	int i, j, k, l, m;
-	if ((atari[0]=4))
-	{
-		i = 100;
-		j = atari[1]; // jiki.tama[j]
-	}
-	else if (atari[0]=0)
-	{
-		i = 100;
-		j = 100;    //jiki
-	}
-	else if (atari[0]=6)
-	{
-		i = atari[1] / TAMA_MAX;
-		j = atari[1] % TAMA_MAX; // teki[i].tama[j]
-	}
-	else if(atari[0]=2)
-	{
-		i = atari[1];
-		j = 100;       //teki[i]
-	}
-
-
-	for (k = 0;k < kabeIndex;k++) {
-		if ((decidecrash(kabeList[k][0], kabeList[k][1], 0.0, 1.0, 1.0,
-						x, y, t, w, h))&&(flag_kabe[k]))
-		{
-			atari[0] = 1;
-			atari[1] = k;
-			return 1;
-		}
-	}
-
-	if ((jiki.life > 0) && (atari[0]!=0) &&
-		(decidecrash(jiki.x, jiki.y, jiki.t, jiki.w, jiki.w, x, y, t, w, h)))
-	{
-		atari[0] = 0;
-		atari[1] = 100;
-		return 1;
-	}
-
-	for (m = 0;m < TAMA_MAX;m++)
-	{
-		if ((jiki.tama[m].flag) && ((atari[0] != 4) || (j != m)) && (decidecrash(x, y, t, w, h,
-			jiki.tama[m].x, jiki.tama[m].y, jiki.tama[m].t, jiki.tama[m].r * 2, jiki.tama[m].r * 2)))
-		{
-			atari[0] = 4;
-			atari[1] = m;
-			return 1;
-		}
-
-	}
-
-
-	for (l = 0;l < TEKI_MAX;l++)
-	{
-		if ((teki[l].life>0) && (decidecrash(x, y, t, w, h,
-			teki[l].x, teki[l].y, teki[l].t, teki[l].w, teki[l].w)) && (j != 100) && (i != l))
-		{
-			atari[0] = 2;
-			atari[1] = l;
-			return 1;
-		}
-
-		for (m = 0;m < TAMA_MAX;m++)
-		{
-			if ((teki[l].tama[m].flag) && (i != l) && (j != m) && (decidecrash(x, y, t, w, h,
-				teki[l].tama[m].x, teki[l].tama[m].y, teki[l].tama[m].t, teki[l].tama[m].r * 2, teki[l].tama[m].r * 2)))
-			{
-				atari[0] = 6;
-				atari[1] = l*TAMA_MAX + m;
-				return 1;
-			}
-
-		}
-	}
-	
-	return 0;
-}
-
-// collision check
-int collision(double x1, double y1,double x2, double y2, double length) // collision check for kabe
-{ 
-
-    double MARGIN = 0.01;
-    if ((x1 - x2 < length+MARGIN) && (x2 - x1 < length + MARGIN) && (y1 - y2 < length + MARGIN) && (y2 - y1 < length + MARGIN))
-    {
-        printf("(%.02f,%.02f):(%.02f,%.02f)\n", x2, y2, x1, y1);
-        return 1;
-    }
-    return 0;
-}
-
 /*
  TimerFunc for position of projectiles
  -------------------------------------------*/
@@ -241,7 +141,7 @@ void projJikiTimerFunc(int index)
 
 void projTekiTimerFunc(int index)
 {
-	int i, j, k, l = 0, m = 0;
+	int i, j, k, l = 0, m = 0, atari[2] = { 6,index };
 	double MARGIN = 0.25;
 	j = index % TAMA_MAX;
 	i = index / TAMA_MAX;
@@ -251,7 +151,7 @@ void projTekiTimerFunc(int index)
 		teki[i].tama[j].x += cos(teki[i].tama[j].t)*teki[i].tama[j].v;
 		teki[i].tama[j].y += sin(teki[i].tama[j].t)*teki[i].tama[j].v;
 
-		for (k = 0;k < kabeIndex;k++) // collision check for kabe
+		/*for (k = 0;k < kabeIndex;k++) // collision check for kabe
 			if ((flag_kabe[k]) && (collision(kabeList[k][0], kabeList[k][1],
 				teki[i].tama[j].x, teki[i].tama[j].y, teki[i].tama[j].r + 0.5))) break;
 
@@ -298,6 +198,39 @@ void projTekiTimerFunc(int index)
 			teki[l].tama[m].flag = 0;
 		}
 		else if (l < TEKI_MAX) teki[i].tama[j].flag = 0;
+		else glutTimerFunc(10, projTekiTimerFunc, index);*/
+		
+		if (collision_check(teki[i].tama[j].x, teki[i].tama[j].y, teki[i].tama[j].t, teki[i].tama[j].r * 2, teki[i].tama[j].r * 2, atari))
+		{
+			switch (atari[0])
+			{
+			case 0:
+				teki[i].tama[j].flag = 0;
+				jiki.life -= teki[i].tama[j].damage;
+				break;
+			case 1:
+				teki[i].tama[j].flag = 0;
+				break;
+			case 2:
+				teki[i].tama[j].flag = 0;
+				break;
+			case 4:
+				teki[i].tama[j].flag = 0;
+				jiki.tama[atari[1]].flag = 0;
+				break;
+			case 6:
+				teki[i].tama[j].flag = 0;
+				teki[atari[1] / TAMA_MAX].tama[atari[1] % TAMA_MAX].flag = 0;
+				break;
+			case 8:
+				teki[i].tama[j].flag = 0;
+				break;
+			default:
+				printf("error\n");
+				break;
+			}
+
+		}
 		else glutTimerFunc(10, projTekiTimerFunc, index);
 	}
     else teki[i].tama[j].flag = 0;

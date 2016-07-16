@@ -123,6 +123,7 @@ void initHard(void);
 // helpers.c
 int collision(double x1, double y1, double x2, double y2, double length);
 int decideCrash(double x1, double y1, double t1, double w1, double h1, double x2, double y2, double t2, double w2, double h2);
+int collision_check(double x, double y, double t, double w, double h, int atari[]);
 void calcNormal(GLdouble v0[3], GLdouble v1[3], GLdouble v2[3], GLdouble n[3]);
 void idle(void);
 

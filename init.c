@@ -1,5 +1,9 @@
 #include "tank.h"
 
+//======== for visual studio =======//
+#pragma warning( disable:4996 )
+
+
 void initSelect(void)
 {
     int i;
@@ -105,11 +109,11 @@ void initEasy(void)
 void initNormal(void)
 {
     int i, j;
-    jiki.v = 0.4;
+    jiki.v = 0.13;
     jiki.v_turn = 0.06;
     jiki.life = 20;
     for (i = 0; i < TAMA_MAX; i++) {
-        jiki.tama[i].v = 0.8;
+        jiki.tama[i].v = 0.25;
         jiki.tama[i].r = 0.3;
         jiki.tama[i].damage = 1;
     }
@@ -125,11 +129,11 @@ void initNormal(void)
     {
         teki[j].life = 3;
         teki[j].w = 1.0;
-        teki[j].v = 0.2;
+        teki[j].v = 0.07;
         teki[j].v_turn = 0.03;
         teki[j].t = rand();
         for (i = 0;i < TAMA_MAX; i++) {
-            teki[j].tama[i].v = 0.6;
+            teki[j].tama[i].v = 0.2;
             teki[j].tama[i].damage = 1;
             teki[j].tama[i].r = 0.3;
         }
@@ -143,11 +147,11 @@ void initNormal(void)
 void initHard(void)
 {
     int i, j;
-    jiki.v = 0.5;
+    jiki.v = 0.1;
     jiki.v_turn = 0.06;
     jiki.life = 15;
     for (i = 0; i < TAMA_MAX; i++) {
-        jiki.tama[i].v = 1.0;
+        jiki.tama[i].v = 0.2;
         jiki.tama[i].r = 0.2;
         jiki.tama[i].damage = 1;
     }
@@ -163,11 +167,11 @@ void initHard(void)
     {
         teki[j].life = 10;
         teki[j].w = 1.0;
-        teki[j].v = 0.5;
+        teki[j].v = 0.05;
         teki[j].v_turn = 0.1;
         teki[j].t = rand();
         for (i = 0;i < TAMA_MAX; i++) {
-            teki[j].tama[i].v = 1.0;
+            teki[j].tama[i].v = 0.1;
             teki[j].tama[i].damage = 2;
             teki[j].tama[i].r = 0.3;
         }

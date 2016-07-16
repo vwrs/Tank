@@ -63,6 +63,101 @@ int decideCrash(double x1, double y1, double t1, double w1, double h1,
     else return 0;
 }
 
+// united collision check
+int collision_check(double x, double y, double t, double w, double h, int atari[])
+{ /*
+  atari[2] has following meanings
+		atari[0] : isKabe * 2^0 + isTeki * 2^1 + isTama * 2^2 + isEdge * 2^3
+		atari[1] : index
+  */
+	int i, j, k, l, m;
+	if ((atari[0] == 4))
+	{
+		i = 100;
+		j = atari[1]; // jiki.tama[j]
+	}
+	else if (atari[0] == 0)
+	{
+		i = 100;
+		j = 100;    //jiki
+	}
+	else if (atari[0] == 6)
+	{
+		i = atari[1] / TAMA_MAX;
+		j = atari[1] % TAMA_MAX; // teki[i].tama[j]
+	}
+	else if (atari[0] == 2)
+	{
+		i = atari[1];
+		j = 100;       //teki[i]
+	}
+
+	if (decideCrash(X / 2.0, Y + 5.0, 0, 10.0, X + 20.0, x, y, t, w, h) || decideCrash(X / 2.0, -5.0, 0, 10.0, X + 20.0, x, y, t, w, h) ||
+		decideCrash(-5.0, Y / 2.0, 0, Y + 20.0, 10.0, x, y, t, w, h) || decideCrash(X + 5.0, Y / 2.0, 0, Y + 20.0, 10.0, x, y, t, w, h))
+	{
+		atari[0] = 8;
+		atari[1] = 100;
+		printf("hit to kabe\n");
+		return 1;
+	}
+
+	for (k = 0;k < kabeIndex;k++) {
+		if ((decideCrash(kabeList[k][0], kabeList[k][1], 0.0, 1.0, 1.0,
+			x, y, t, w, h)) && (flag_kabe[k]))
+		{
+			atari[0] = 1;
+			atari[1] = k;
+			return 1;
+		}
+	}
+
+	if ((jiki.life > 0) && (atari[0] != 0) &&
+		(decideCrash(jiki.x, jiki.y, jiki.t, jiki.w, jiki.w, x, y, t, w, h)))
+	{
+		atari[0] = 0;
+		atari[1] = 100;
+		return 1;
+	}
+
+	for (m = 0;m < TAMA_MAX;m++)
+	{
+		if ((jiki.tama[m].flag) && ((atari[0] != 4) || (j != m)) && (decideCrash(x, y, t, w, h,
+			jiki.tama[m].x, jiki.tama[m].y, jiki.tama[m].t, jiki.tama[m].r * 2, jiki.tama[m].r * 2)))
+		{
+			atari[0] = 4;
+			atari[1] = m;
+			return 1;
+		}
+
+	}
+
+
+	for (l = 0;l < TEKI_MAX;l++)
+	{
+		if ((teki[l].life>0) && (decideCrash(x, y, t, w, h,
+			teki[l].x, teki[l].y, teki[l].t, teki[l].w, teki[l].w)) && ((atari[0] != 2) || (i != l)))
+		{
+			atari[0] = 2;
+			atari[1] = l;
+			return 1;
+		}
+
+		for (m = 0;m < TAMA_MAX;m++)
+		{
+			if ((teki[l].tama[m].flag) && ((i != l) || (j != m)) && (decideCrash(x, y, t, w, h,
+				teki[l].tama[m].x, teki[l].tama[m].y, teki[l].tama[m].t, teki[l].tama[m].r * 2, teki[l].tama[m].r * 2)))
+			{
+				atari[0] = 6;
+				atari[1] = l*TAMA_MAX + m;
+				return 1;
+			}
+
+		}
+	}
+
+	return 0;
+}
+
 /*
  for drawGround()
 ----------------------------*/
