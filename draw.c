@@ -1,24 +1,5 @@
 #include "tank.h"
 
-void calcNormal(GLdouble v0[3], GLdouble v1[3], GLdouble v2[3], GLdouble n[3])
-{
-    GLdouble v2v[2][3];
-    GLdouble vt[3];
-    double abs;
-    int i;
-    for (i = 0; i < 3; i++)
-    {
-        v2v[0][i] = v1[i] - v0[i];
-        v2v[1][i] = v2[i] - v0[i];
-    }
-    vt[0] = v2v[0][1] * v2v[1][2] - v2v[0][2] * v2v[1][1];
-    vt[1] = v2v[0][2] * v2v[1][0] - v2v[0][0] * v2v[1][2];
-    vt[2] = v2v[0][0] * v2v[1][1] - v2v[0][1] * v2v[1][0];
-    abs = sqrt(vt[0] * vt[0] + vt[1] * vt[1] + vt[2] * vt[2]);
-    for (i = 0; i < 3; i++)
-        n[i] = vt[i] / abs;
-}
-
 void drawStageSelect(void)
 {
     int i, j, stagex, left, right;
