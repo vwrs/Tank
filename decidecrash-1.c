@@ -1,16 +1,15 @@
-#include <stdio.h>
-#include <math.h>
 #include "tank.h"
 
-int decidecrash(double x1, double y1, double t1, double w1, double h1, 
+/**
+ * Simple Collision Checker
+ * @param t angle of advancing direction of object [rad]
+ * @param w length perpendicular to advancing direction of object
+ * @param h length pararell to its advancing direction of object
+ * @return collided(1) or not(0)
+ */
+int decidecrash(double x1, double y1, double t1, double w1, double h1,
 				double x2, double y2, double t2, double w2, double h2) 
 {
-	// variables have following meanings
-	//
-	//	t : angle of advancing direction  [rad]	
-	//  w : length perpendicular to advancing direction of object 
-	//  h : length pararell to its advancing direction of object 
-
 	int i, j, k, m, u;
 	double a[2], b[2];
 	double x_corner[2][4],y_corner[2][4], w[2] = { w1,w2 }, h[2] = { h1,h2 }, t[2] = { t1,t2 }, x[2] = { x1,x2 }, y[2] = { y1,y2 };
@@ -18,7 +17,6 @@ int decidecrash(double x1, double y1, double t1, double w1, double h1,
 
 	if ((h1*h1 + w1*w1 + h2*h2 + w2*w2) > (2 * (x1 - x2)*(x1 - x2) + 2 * (y1 - y2)*(y1 - y2)))
 	{
-		//長方形の頂点をcornerとして定義
 		for (i = 0; i <= 1; i++) {
 			for (j = 0; j <= 1; j++) {
 				for (k = 0; k <= 1; k++) {
