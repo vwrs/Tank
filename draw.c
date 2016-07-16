@@ -1,52 +1,61 @@
 #include "tank.h"
 
-void calcNormal(GLdouble v0[3], GLdouble v1[3], GLdouble v2[3], GLdouble n[3])
+void drawStageSelect(void)
 {
-    GLdouble v2v[2][3];
-    GLdouble vt[3];
-    double abs;
-    int i;
-    for (i = 0; i < 3; i++)
-    {
-        v2v[0][i] = v1[i] - v0[i];
-        v2v[1][i] = v2[i] - v0[i];
-    }
-    vt[0] = v2v[0][1] * v2v[1][2] - v2v[0][2] * v2v[1][1];
-    vt[1] = v2v[0][2] * v2v[1][0] - v2v[0][0] * v2v[1][2];
-    vt[2] = v2v[0][0] * v2v[1][1] - v2v[0][1] * v2v[1][0];
-    abs = sqrt(vt[0] * vt[0] + vt[1] * vt[1] + vt[2] * vt[2]);
-    for (i = 0; i < 3; i++)
-        n[i] = vt[i] / abs;
-}
-
-void drawString(char str[6], int w, int h, int x0, int y0)
-{
-    int i;
-    glDisable(GL_LIGHTING);
+    int i, j, stagex, left, right;
+    char title[] = "Tank Game";
+    char info1[] = "<- and -> : select level";
+    char info2[] = "Space key : start game!!";
+    glPushMatrix();
     glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
     glLoadIdentity();
-    gluOrtho2D(0, w, h, 0);
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
-    glRasterPos2f(x0, y0);
-    for(i = 0; i < 6; ++i)
-        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, str[i]);
+    gluOrtho2D(0, 40, 0, 40);  // left,right,bottom,top
+    glRasterPos2f(17, 35);
+    for (i = 0; title[i]; i++)
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, title[i]);
+    glRasterPos2f(15, 5);
+    for (i = 0; info1[i]; i++)
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, info1[i]);
+    glRasterPos2f(15, 3);
+    for (i = 0; info2[i]; i++)
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, info2[i]);
     
-    glPopMatrix();
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-}
-
-void drawStageSelect(Stage stages[])
-{
-    int i;
     for (i = 0; i < STAGE_MAX; i++) {
-        stages[i].y = 50;
+        stagex = stages[i].x;
+        /* draw selector
+         ------------------*/
+        if (stages[i].selected) {
+            left = stagex - 4;
+            right = stagex + 6;
+            if (i == 1)  right++;
+            glBegin(GL_LINES);
+            glColor3f(1.0,0.0,0.0);
+            glVertex2f(left,15);
+            glColor3f(0.0,1.0,0.0);
+            glVertex2f(right,15);
+            glColor3f(0.0,0.0,1.0);
+            glVertex2f(right,15);
+            glColor3f(1.0,1.0,0.0);
+            glVertex2f(right,25);
+            glColor3f(1.0,0.0,0.0);
+            glVertex2f(right,25);
+            glColor3f(0.0,1.0,0.0);
+            glVertex2f(left,25);
+            glColor3f(0.0,0.0,1.0);
+            glVertex2f(left,25);
+            glColor3f(1.0,1.0,0.0);
+            glVertex2f(left,15);
+            glEnd();
+        }
+        /* draw string
+         -------------------*/
+        glColor3f(0.0,0.0,0.0);
+        glRasterPos2f(stages[i].x, stages[i].y);
+        for (j = 0; stages[i].name[j]; j++)
+            glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, stages[i].name[j]);
     }
-    return;
+    glPopMatrix();
+    
 }
 
 void drawGround(void)
@@ -213,13 +222,14 @@ void drawTeki(int i)
 
 void aim(void)
 {
-    double aim_x, aim_y;
+    double aim_x = jiki.x + 50*cos(jiki.t);
+    double aim_y = jiki.y + 50*sin(jiki.t);
+    // TODO
+    if (1){}
     glPushMatrix();
     glBegin(GL_LINES);
     glMaterialfv(GL_FRONT, GL_DIFFUSE, color[RED]);
     glVertex3d(jiki.x,jiki.y,z);
-    aim_x = jiki.x + 50*cos(jiki.t);
-    aim_y = jiki.y + 50*sin(jiki.t);
     glVertex3d(aim_x,aim_y,z);
     glEnd();
     glPopMatrix();

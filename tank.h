@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+#include <string.h>
 // ======== Windows ======
 #include <GL/glut.h>
 // ====== Mac OS X =======
@@ -62,7 +63,7 @@ typedef struct stage
     int y;
     int level;  // easy:1 normal: 2 hard: 3
     int selected;
-    char name[6];  // easy, normal, hard
+    char name[10];  // easy, normal, hard
 } Stage;
 
 /*
@@ -87,9 +88,7 @@ extern int mySpecialValue;
  functions
 -----------------------*/
 // draw.c
-void calcNormal(GLdouble v0[3], GLdouble v1[3], GLdouble v2[3], GLdouble n[3]);
-void drawString(char str[6], int w, int h, int x0, int y0);
-void drawStageSelect(Stage stages[]);
+void drawStageSelect(void);
 void drawGround(void);
 void drawJiki(void);
 void drawTeki(int i);
@@ -98,13 +97,7 @@ void drawJikiProj(int i);
 void drawTekiProj(int i, int j);
 void aim(void);
 
-//decidecrash-1.c
-int decidecrash(double x1, double y1, double t1, double w1, double h1, double x2, double y2, double t2, double w2, double h2);
-
-
 // timerFunc.c
-int collision_check(double x, double y, double t, double w, double h, int *atari);
-int collision(double x1, double y1, double x2, double y2, double length);
 void projTimerFunc(int index);
 void projJikiTimerFunc(int index);  // TODO: delete
 void projTekiTimerFunc(int index);  // TODO: delete
@@ -121,9 +114,17 @@ void stageSpecialFunc(int key, int x, int y);
 void stageSpecialUpFunc(int key, int x, int y);
 
 // init.c
-void idle(void);
 void initSelect(void);
 void initStage(void);
+void initEasy(void);
+void initNormal(void);
+void initHard(void);
+
+// helpers.c
+int collision(double x1, double y1, double x2, double y2, double length);
+int decideCrash(double x1, double y1, double t1, double w1, double h1, double x2, double y2, double t2, double w2, double h2);
+void calcNormal(GLdouble v0[3], GLdouble v1[3], GLdouble v2[3], GLdouble n[3]);
+void idle(void);
 
 // tank.c
 void display(void);

@@ -49,12 +49,11 @@ void display(void)
     
     switch (current_status) {
         case 0:
-            drawGround();
-            drawStageSelect(stages);
             if (!initialized) {
                 initSelect();
                 initialized = 1;
             }
+            drawStageSelect();
             break;
 
         // easy
