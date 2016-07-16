@@ -103,6 +103,7 @@ int decidecrash(double x1, double y1, double t1, double w1, double h1, double x2
 
 
 // timerFunc.c
+int collision_check(double x, double y, double t, double w, double h, int *atari);
 int collision(double x1, double y1, double x2, double y2, double length);
 void projTimerFunc(int index);
 void projJikiTimerFunc(int index);  // TODO: delete

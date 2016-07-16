@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <math.h>
 #include "tank.h"
 
 int decidecrash(double x1, double y1, double t1, double w1, double h1, 

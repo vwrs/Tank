@@ -47,11 +47,11 @@ void initStage(void)
     for (i = 0;i < kabeIndex;i++) flag_kabe[i] = 1;
     jiki.t = PI/2.0;
     jiki.w = 1.0;
-    jiki.v = 0.4;
+    jiki.v = 0.2;
     jiki.v_turn = 0.06;
     jiki.life = 50;
     for (i = 0; i < TAMA_MAX; i++) {
-        jiki.tama[i].v = 0.8;
+        jiki.tama[i].v = 0.1;
         jiki.tama[i].r = 0.3;
         jiki.tama[i].damage = 1;
     }
@@ -67,10 +67,10 @@ void initStage(void)
     {
         teki[j].life = 3;
         teki[j].w = 1.0;
-        teki[j].v = 0.2;
+        teki[j].v = 0.08;
         teki[j].v_turn = 0.03;
         for (i = 0;i < TAMA_MAX; i++) {
-            teki[j].tama[i].v = 0.5;
+            teki[j].tama[i].v = 0.1;
             teki[j].tama[i].damage = 1;
             teki[j].tama[i].r = 0.3;
         }
