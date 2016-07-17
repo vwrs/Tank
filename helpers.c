@@ -63,13 +63,14 @@ int decideCrash(double x1, double y1, double t1, double w1, double h1,
     else return 0;
 }
 
-// united collision check
+
+/** United collsion check
+ * atari[2] has following meanings:
+ * atari[0] : isKabe * 2^0 + isTeki * 2^1 + isTama * 2^2 + isEdge * 2^3 
+ * atari[1] : index
+*/
 int collision_check(double x, double y, double t, double w, double h, int atari[])
-{ /*
-  atari[2] has following meanings
-		atari[0] : isKabe * 2^0 + isTeki * 2^1 + isTama * 2^2 + isEdge * 2^3
-		atari[1] : index
-  */
+{ 
 	int i, j, k, l, m;
 	if ((atari[0] == 4))
 	{

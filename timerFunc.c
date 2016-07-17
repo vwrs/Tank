@@ -150,56 +150,6 @@ void projTekiTimerFunc(int index)
 	{
 		teki[i].tama[j].x += cos(teki[i].tama[j].t)*teki[i].tama[j].v;
 		teki[i].tama[j].y += sin(teki[i].tama[j].t)*teki[i].tama[j].v;
-
-		/*for (k = 0;k < kabeIndex;k++) // collision check for kabe
-			if ((flag_kabe[k]) && (collision(kabeList[k][0], kabeList[k][1],
-				teki[i].tama[j].x, teki[i].tama[j].y, teki[i].tama[j].r + 0.5))) break;
-
-		if (k >= kabeIndex) //collison check for other tama and teki
-		{
-			for (l = 0;l < TEKI_MAX;l++)
-			{
-				if ((teki[l].life>0) && (collision(teki[i].tama[j].x, teki[i].tama[j].y,
-					teki[l].x, teki[l].y, teki[i].tama[j].r + teki[l].w / 2.0)))
-				{
-					m = TAMA_MAX;
-					break;
-				}
-				for (m = 0;m < TAMA_MAX;m++)
-					if ((teki[l].tama[m].flag) && (l != i) && (m != j) && (collision(teki[l].tama[m].x, teki[l].tama[m].y,
-						teki[i].tama[j].x, teki[i].tama[j].y, teki[i].tama[j].r + teki[l].tama[m].r)))
-						break;
-				if (m < TAMA_MAX) break;
-			}
-		}
-
-
-
-		if ((Y*L < teki[i].tama[j].y - MARGIN) || (0 * L > teki[i].tama[j].x + MARGIN)
-			|| ((X - 1)*L < teki[i].tama[j].x - MARGIN) || (0 * L > teki[i].tama[j].y + MARGIN))
-		{
-			teki[i].tama[j].flag = 0;
-		}
-		else if (decidecrash(jiki.x, jiki.y, jiki.t, jiki.w, jiki.w,
-				teki[i].tama[j].x, teki[i].tama[j].y, teki[i].tama[j].t, teki[i].tama[j].r * 2, teki[i].tama[j].r * 2))
-		{
-			jiki.life -= teki[i].tama[j].damage;
-			teki[i].tama[j].flag = 0;
-			printf("%d\n", jiki.life);
-		}
-		else if (k < kabeIndex)
-		{
-			flag_kabe[k] = 0;
-			teki[i].tama[j].flag = 0;
-		}
-		else if ((l < TEKI_MAX) && (m < TAMA_MAX))
-		{
-			teki[i].tama[j].flag = 0;
-			teki[l].tama[m].flag = 0;
-		}
-		else if (l < TEKI_MAX) teki[i].tama[j].flag = 0;
-		else glutTimerFunc(10, projTekiTimerFunc, index);*/
-		
 		if (collision_check(teki[i].tama[j].x, teki[i].tama[j].y, teki[i].tama[j].t, teki[i].tama[j].r * 2, teki[i].tama[j].r * 2, atari))
 		{
 			switch (atari[0])
