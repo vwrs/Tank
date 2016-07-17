@@ -72,7 +72,7 @@ void stageKeyboardFunc(unsigned char key, int x, int y)
                 jiki.tama[i].t = jiki.t;
                 jiki.tama[i].x = jiki.x + (jiki.w / 2.0 + jiki.tama[i].r + MARGIN)*cos(jiki.t);
                 jiki.tama[i].y = jiki.y + (jiki.w / 2.0 + jiki.tama[i].r + MARGIN)*sin(jiki.t);
-                projJikiTimerFunc(i);
+				projTimerFunc(100 + i);
             }
             break;
         case 27:  // ESC

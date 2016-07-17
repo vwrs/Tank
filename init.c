@@ -73,11 +73,13 @@ void initStage(void)
 void initEasy(void)
 {
     int i, j;
-    jiki.v = 0.4;
-    jiki.v_turn = 0.06;
+    jiki.v = 0.133;
+	jiki.x = 1;
+	jiki.y = 1;
+    jiki.v_turn = 0.02;
     jiki.life = 50;
     for (i = 0; i < TAMA_MAX; i++) {
-        jiki.tama[i].v = 1.0;
+        jiki.tama[i].v = 0.33;
         jiki.tama[i].r = 0.5;
         jiki.tama[i].damage = 1;
     }
@@ -95,7 +97,7 @@ void initEasy(void)
         teki[j].v_turn = 0.03;
         teki[j].t = rand();
         for (i = 0;i < TAMA_MAX; i++) {
-            teki[j].tama[i].v = 0.5;
+            teki[j].tama[i].v = 0.166;
             teki[j].tama[i].damage = 1;
             teki[j].tama[i].r = 0.3;
         }
