@@ -69,7 +69,7 @@ typedef struct stage
 /*
  global variables
 -----------------------*/
-enum COLOR { WHITE, RED, GREEN, BLUE, YELLOW, MAGENTA, CYAN, GRAY, BLACK };
+enum COLOR { WHITE, RED, GREEN, BLUE, YELLOW, MAGENTA, CYAN, GRAY, BLACK, BROWN };
 extern int current_status;  // select: 0 easy: 1 normal: 2 hard: 3 result: 4
 extern int initialized;
 extern Stage stages[STAGE_MAX];
@@ -99,8 +99,6 @@ void aim(void);
 
 // timerFunc.c
 void projTimerFunc(int index);
-void projJikiTimerFunc(int index);  // TODO: delete
-void projTekiTimerFunc(int index);  // TODO: delete
 void jikiTimerFunc(int value);
 void teki0TimerFunc(int index);
 void teki1TimerFunc(int index);
