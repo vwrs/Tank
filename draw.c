@@ -280,7 +280,7 @@ void drawKabe(void)
         {
             glPushMatrix();
             glTranslatef(kabeList[i][0], kabeList[i][1], kabeList[i][2]);
-            glutSolidCone(0.5, 1, 30, 30);
+			glutSolidCube(1);
             glPopMatrix();
         }
     }

@@ -26,8 +26,7 @@
 #define L (1)
 #define z (0.5) // height of object
 #define STAGE_MAX (3)
-#define kabeIndex (12)
-#define TEKI_MAX (3)
+
 
 /*
  structs
@@ -76,9 +75,11 @@ extern int current_status;  // select: 0 easy: 1 normal: 2 hard: 3 result: 4
 extern int initialized;
 extern Stage stages[STAGE_MAX];
 extern Tank jiki;
-extern Tank teki[TEKI_MAX];
-extern int flag_kabe[kabeIndex];
-extern int count_interval[TEKI_MAX];
+extern Tank teki[10];
+extern int TEKI_MAX;
+extern int flag_kabe[1000];
+extern int kabeIndex;
+extern int count_interval[10];
 extern GLfloat pos0[];
 extern GLfloat pos1[];
 extern GLfloat color[][4];

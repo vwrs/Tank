@@ -87,6 +87,66 @@ void initStage(void)
 void initEasy(void)
 {
     int i, j;
+	for (i = 0;i < X + 1;i++)
+	{
+		kabeList[i][0] = -0.5 + i;
+		kabeList[i][1] = -0.5;
+		kabeList[i][2] = 0.5;
+	}
+	for (i = 0;i < Y + 1;i++)
+	{
+		kabeList[i + X + 1][0] = X + 0.5;
+		kabeList[i + X + 1][1] = i - 0.5;
+		kabeList[i + X + 1][2] = 0.5;
+	}
+	for (i = 0;i < X + 1;i++)
+	{
+		kabeList[i + X + Y + 2][0] = X + 0.5 - i;
+		kabeList[i + X + Y + 2][1] = Y + 0.5;
+		kabeList[i + X + Y + 2][2] = 0.5;
+	}
+	for (i = 0;i < Y + 1;i++)
+	{
+		kabeList[i + X + X + Y + 3][0] = -0.5;
+		kabeList[i + X + X + Y + 3][1] = Y + 0.5 - i;
+		kabeList[i + X + X + Y + 3][2] = 0.5;
+	}
+	for (i = 0;i < 7;i++)
+	{
+		kabeList[i + X + X + Y + Y + 4][0] = 11.5;
+		kabeList[i + X + X + Y + Y + 4][1] = 2.5 + i;
+		kabeList[i + X + X + Y + Y + 4][2] = 0.5;
+	}
+	for (i = 0;i < 7;i++)
+	{
+		kabeList[i + X + X + Y + Y + 11][0] = 2.5 + i;
+		kabeList[i + X + X + Y + Y + 11][1] = 11.5;
+		kabeList[i + X + X + Y + Y + 11][2] = 0.5;
+	}
+	for (i = 0;i < 14;i++)
+	{
+		kabeList[i + 2 * (X + Y) + 18][0] = 2.5 + i;
+		kabeList[i + 2 * (X + Y) + 18][1] = Y / 2;
+		kabeList[i + 2 * (X + Y) + 18][2] = 0.5;
+	}
+	for (i = 0;i < 14;i++)
+	{
+		kabeList[i + 2 * (X + Y) + 32][0] = 18.5 + i;
+		kabeList[i + 2 * (X + Y) + 32][1] = Y / 2;
+		kabeList[i + 2 * (X + Y) + 32][2] = 0.5;
+	}
+	for (i = 0;i < 14;i++)
+	{
+		kabeList[i + 2 * (X + Y) + 46][0] = 34.5 + i;
+		kabeList[i + 2 * (X + Y) + 46][1] = Y / 2;
+		kabeList[i + 2 * (X + Y) + 46][2] = 0.5;
+	}
+
+	kabeIndex = X + X + Y + Y + 60;
+
+	for (i = 0;i < kabeIndex;i++) flag_kabe[i] = 1;
+	TEKI_MAX = 3;
+
     jiki.life = 50;
 	jiki.w = 1.0;
 	jiki.h = 2.0;
