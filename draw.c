@@ -146,15 +146,41 @@ void drawGround(void)
 
 void drawJiki(void)
 {
+	int i = 0;
+	double step;
+	double h = jiki.h;
+	double w = jiki.w;
+
+	step = 60.0*PI / 180.0;
+
     glPushMatrix();
     
-    glTranslatef(jiki.x, jiki.y, z);
-    
+	glTranslatef(jiki.x, jiki.y, 0);
+	glRotatef(jiki.t, 0.0, 0.0, 1);
     glMaterialfv(GL_FRONT, GL_DIFFUSE, color[GREEN]);
     glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
     glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
     glMaterialf(GL_FRONT, GL_SHININESS, 50.0);
     
+	glBegin(GL_QUADS);
+	glVertex3d(-h / 2.0, -jiki.w / 2.0, 0.5);
+	glVertex3d(-(jiki.h - 0.5) / 2.0, -(jiki.w - 0.5) / 2.0, 0);
+	glVertex3d(())
+	glEnd();
+
+
+
+
+
+	glBegin(GL_QUADS);
+	for (i = 0;i < 6;i++) {
+		glVertex3d(0.5*cos(step*(double)i), 0.5*sin(step*(double)i), 0);
+		glVertex3d(0.5*cos(step*(double)(i + 1)), 0.5*sin(step*(double)(i + 1)), 0);
+		glVertex3d(0.5*cos(step*(double)(i + 1)), 0.5*sin(step*(double)(i + 1)), 0.5);
+		glVertex3d(0.5*cos(step*(double)i), 0.5*sin(step*(double)i), 0.5);
+	}
+	glEnd();
+
     glutSolidCube(jiki.w);
     glPopMatrix();
 }
