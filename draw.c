@@ -288,6 +288,43 @@ void drawKabe(void)
     glPopMatrix();
 }
 
+void drawtama(double x,double y,double t,double r)
+{
+	int i;
+	double step;
+	step=PI/180;
+	glPushMatrix();
+	glTranslatef(x,y,r);
+	glRotatef(t*180.0/PI,0.0,0.0,1.0);
+	glBegin(GL_QUADS);
+	for(i=0;i<360;i++)
+	{
+		glNormal3f(0.0,cos(step*(double)(i+1)),sin(step*(double)(i+1)));
+		glVertex3d(0,r*cos(step*(double)(i)),r*sin(step*(double)(i)));
+		glVertex3d(0,r*cos(step*(double)(i+1)),r*sin(step*(double)(i+1)));
+		glVertex3d(r*2,r*cos(step*(double)(i+1)),r*sin(step*(double)(i+1)));
+		glVertex3d(r*2,r*cos(step*(double)(i)),r*sin(step*(double)(i)));
+	}
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	glNormal3f(-1.0,0.0,0.0);
+	for(i=0;i<360;i++) glVertex3d(0,r*cos(step*(double)(-i)),r*sin(step*(double)(-i)));
+	glEnd();
+
+	glBegin(GL_TRIANGLES);
+	for(i=0;i<360;i++)
+	{
+		glNormal3f(0.0,cos(step*i),sin(step*i));
+		glVertex3d(r*2,r*cos(step*(double)(i+1)),r*sin(step*(double)(i+1)));
+		glVertex3d(r*3,0.0,0.0);
+		glVertex3d(r*2,r*cos(step*(double)(i)),r*sin(step*(double)(i)));
+	}
+	glEnd();
+	glPopMatrix();
+
+}
+
 void drawJikiProj(int i)
 {
     glPushMatrix();
@@ -295,8 +332,7 @@ void drawJikiProj(int i)
     glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
     glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
     glMaterialf(GL_FRONT, GL_SHININESS, 100.0);
-    glTranslatef(jiki.tama[i].x, jiki.tama[i].y, z);
-    glutSolidSphere(jiki.tama[i].r, 30, 30);
+    drawtama(jiki.tama[i].x,jiki.tama[i].y,jiki.tama[i].t,jiki.tama[i].r);
     glPopMatrix();
 }
 
@@ -307,8 +343,7 @@ void drawTekiProj(int i, int j)
     glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
     glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
     glMaterialf(GL_FRONT, GL_SHININESS, 100.0);
-    glTranslatef(teki[i].tama[j].x, teki[i].tama[j].y, z);
-    glutSolidSphere(teki[i].tama[j].r, 30, 30);
+    drawtama(teki[i].tama[j].x, teki[i].tama[j].y,teki[i].tama[j].t,teki[i].tama[j].r);
     glPopMatrix();
 }
 
@@ -346,3 +381,4 @@ void drawPowerup(int type, double x, double y)
     
     glPopMatrix();
 }
+

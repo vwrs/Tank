@@ -342,6 +342,7 @@ void initHard(void)
     {
         teki[j].life = 10;
         teki[j].w = 1.0;
+		teki[j].h=2.0;
         teki[j].v = 0.05;
         for (i = 0;i < TAMA_MAX; i++) {
             teki[j].tama[i].v = 0.1;
