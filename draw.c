@@ -323,17 +323,18 @@ void drawPowerup(int index)
     glPushMatrix();
     switch (powerups[index].type) {
         case 0:
-            
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, color[BLUE]);
+            glMaterialfv(GL_FRONT, GL_SPECULAR, color[SKYBLUE]);
             break;
         case 1:
-            
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, color[GREEN]);
+            glMaterialfv(GL_FRONT, GL_SPECULAR, color[SKYBLUE]);
             break;
         case 2:
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, color[RED]);
+            glMaterialfv(GL_FRONT, GL_SPECULAR, color[MAGENTA]);
             break;
     }
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, color[BLUE]);
-    glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLUE]);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, color[SKYBLUE]);
     glTranslatef(powerups[index].x, powerups[index].y, 0.1);
     glutSolidTorus(0.1, 0.5, 10, 10);
     glTranslatef(0, 0, 0.5);

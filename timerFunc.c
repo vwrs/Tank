@@ -372,12 +372,13 @@ void powerupTimerFunc(int index)
                 break;
             // speed up (tank)
             case 1:
-                jiki.v += 0.1;
+                jiki.v += 0.2;
                 break;
             // magnify
             case 2:
                 for (i = 0;i < TAMA_MAX;i++)
-                    jiki.tama[i].r += 0.2;
+                    // TODO: r->w,h
+                    jiki.tama[i].r += 0.15;
                 break;
         }
         powerups[index].flag = 0;
