@@ -102,12 +102,8 @@ void initEasy(void)
     for (j = 0;j < TEKI_MAX;j++)
     {
         teki[j].life = 3;
-<<<<<<< HEAD
         teki[j].w = 1.5;
-=======
-        teki[j].w = 1.0;
 		teki[j].h = 2.0;
->>>>>>> cfa125e05941910d715546f89ae15ed1d91c300a
         teki[j].v = 0.2;
         for (i = 0;i < TAMA_MAX; i++) {
             teki[j].tama[i].v = 0.166;
