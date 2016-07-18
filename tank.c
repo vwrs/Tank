@@ -42,6 +42,12 @@ double kabeList[][3] = {
     { 0.0, 22.0, 0.0 }
 };
 Powerup powerups[POWERUP_MAX] = { 0 };
+int score = 0;
+int teki_scores[5] = {
+    500, 200, 200, 150, 100  // teki0, ... , teki4
+};
+int highscore = 0;
+int old_score[STAGE_MAX] = { 0 };
 
 /*
  display
@@ -122,7 +128,11 @@ void display(void)
  
         // result
         case 4:
-            
+            if (!initialized) {
+                initResult();
+                initialized = 1;
+            }
+            drawResult();
             break;
         default: break;
     }

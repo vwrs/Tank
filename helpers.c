@@ -194,3 +194,46 @@ void idle(void)
 {
     glutPostRedisplay();
 }
+
+void gameover(void)
+{
+    if (jiki.life <= 0) jiki.score *= -1;
+    score += jiki.score;
+    printf("Total Score: %d", score);
+    sleep(1);
+    scoreSave();
+    initialized = 0;
+    current_status = 4;
+}
+
+void scoreRead(void)
+{
+    int i;
+    FILE *fp = fopen("score.txt","r");
+    if (fp == NULL) {
+        printf("cannot read score.txt\n");
+        return;
+    }
+    for(i = 0; i < STAGE_MAX; i++)
+        fscanf(fp, "%d", &old_score[i]);
+    fclose(fp);
+}
+
+void scoreSave(void)
+{
+    int i;
+    int new_score[STAGE_MAX];
+    highscore = old_score[current_status-1];
+    for (i = 0; i < STAGE_MAX; i++)
+        new_score[i] = old_score[i];
+    if (highscore < score)
+        new_score[current_status-1] = score;
+    FILE *fp = fopen("score.txt","w");
+    if (fp == NULL) {
+        printf("cannot write score.txt\n");
+        return;
+    }
+    for (i = 0; i < STAGE_MAX; i++)
+        fprintf(fp, "%d\n", new_score[i]);
+    fclose(fp);
+}

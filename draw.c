@@ -4,6 +4,10 @@ void drawStageSelect(void)
 {
     int i, j, stagex, left, right;
     char title[] = "Tank Game";
+    char high[] = "Highscore";
+    char high1[50]; sprintf(high1, "EASY  : %d", old_score[0]);
+    char high2[50]; sprintf(high2, "NORMAL: %d", old_score[1]);
+    char high3[50]; sprintf(high3, "HARD  : %d", old_score[2]);
     char info1[] = "<- and -> : select level";
     char info2[] = "Space key : start game!!";
     glPushMatrix();
@@ -13,6 +17,18 @@ void drawStageSelect(void)
     glRasterPos2f(17, 35);
     for (i = 0; title[i]; i++)
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, title[i]);
+    glRasterPos2f(17, 30);
+    for (i = 0; high[i]; i++)
+        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, high[i]);
+    glRasterPos2f(17, 28);
+    for (i = 0; high1[i]; i++)
+        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, high1[i]);
+    glRasterPos2f(17, 27);
+    for (i = 0; high2[i]; i++)
+        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, high2[i]);
+    glRasterPos2f(17, 26);
+    for (i = 0; high3[i]; i++)
+        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, high3[i]);
     glRasterPos2f(15, 5);
     for (i = 0; info1[i]; i++)
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, info1[i]);
@@ -60,101 +76,18 @@ void drawStageSelect(void)
 
 void drawGround(void)
 {
-    /*int i, j;
-    GLdouble normal[3] = { 0.0, 0.0, 1.0 };
-    
-    glPushMatrix();
-    
-    glNormal3dv(normal);
-    
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, color[YELLOW]);
-    glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
-    glMaterialf(GL_FRONT, GL_SHININESS, 100.0);
-    glBegin(GL_QUADS);
-    glVertex3d(-0.5*L, -0.5*L, 0.0); // start
-    glVertex3d((X - 0.5)*L, -0.5*L, 0.0);
-    glVertex3d((X - 0.5)*L, 0.5*L, 0.0);
-    glVertex3d(-0.5*L, 0.5*L, 0.0);
-    
-    glVertex3d(-0.5*L, (Y - 0.5)*L, 0.0); // goal
-    glVertex3d((X - 0.5)*L, (Y - 0.5)*L, 0.0);
-    glVertex3d((X - 0.5)*L, (Y + 0.5)*L, 0.0);
-    glVertex3d(-0.5*L, (Y + 0.5)*L, 0.0);
-    glEnd();
-    
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, color[GRAY]);
-    glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
-    glMaterialf(GL_FRONT, GL_SHININESS, 100.0);
-    glBegin(GL_QUADS);
-    for (i = 1; i < Y; i++)
-        for (j = 0; j < X; j++)
-        {
-            GLdouble v[4][3];
-            if (!((i^j) & 1))continue;
-            v[0][0] = (j + 0 - 0.5)*L;
-            v[0][1] = (i + 0 - 0.5)*L;
-            v[0][2] = 0;
-            v[1][0] = (j + 1 - 0.5)*L;
-            v[1][1] = (i + 0 - 0.5)*L;
-            v[1][2] = 0;
-            v[2][0] = (j + 1 - 0.5)*L;
-            v[2][1] = (i + 1 - 0.5)*L;
-            v[2][2] = 0;
-            v[3][0] = (j + 0 - 0.5)*L;
-            v[3][1] = (i + 1 - 0.5)*L;
-            v[3][2] = 0;
-            glVertex3dv(v[0]);
-            glVertex3dv(v[1]);
-            glVertex3dv(v[2]);
-            glVertex3dv(v[3]);
-        }
-    glEnd();
-    
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, color[BLACK]);
-    glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
-    glMaterialf(GL_FRONT, GL_SHININESS, 100.0);
-    glBegin(GL_QUADS);
-    for (i = 0; i < Y; i++)
-        for (j = 0; j < X; j++)
-        {
-            GLdouble v[4][3];
-            if ((i^j) & 1)continue;
-            v[0][0] = (j + 0 - 0.5)*L;
-            v[0][1] = (i + 0 - 0.5)*L;
-            v[0][2] = 0;
-            v[1][0] = (j + 1 - 0.5)*L;
-            v[1][1] = (i + 0 - 0.5)*L;
-            v[1][2] = 0;
-            v[2][0] = (j + 1 - 0.5)*L;
-            v[2][1] = (i + 1 - 0.5)*L;
-            v[2][2] = 0;
-            v[3][0] = (j + 0 - 0.5)*L;
-            v[3][1] = (i + 1 - 0.5)*L;
-            v[3][2] = 0;
-            glVertex3dv(v[0]);
-            glVertex3dv(v[1]);
-            glVertex3dv(v[2]);
-            glVertex3dv(v[3]);
-        }
-    glEnd();
-    
-    glPopMatrix();*/
-
+    double lx, ly;
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[DARK_BROWN]);
 	glBegin(GL_LINES);
-	for (double ly = 0;ly <= Y; ly++) {
+	for (ly = 0;ly <= Y; ly++) {
 		glVertex3d(0, ly, 0);
 		glVertex3d(X, ly, 0);
 	}
-	for (double lx = 0;lx <= X; lx++) {
+	for (lx = 0;lx <= X; lx++) {
 		glVertex3d(lx, Y, 0);
 		glVertex3d(lx, 0, 0);
 	}
 	glEnd();
-
 }
 
 void drawtank(double x, double y, double t, double w, double h, int isTeki)
@@ -353,5 +286,39 @@ void drawPowerup(int index)
     glTranslatef(0, 0, 0.5);
     glScalef(0.5, 0.5, 0.5);
     glutSolidOctahedron();
+    glPopMatrix();
+}
+
+void drawResult(void)
+{
+    int i;
+    char title[] = "Result";
+    char total_score_info[50];
+    sprintf(total_score_info, "Total Score: %d", score);
+    char highscore_info[50];
+    sprintf(highscore_info, "High Score: %d", highscore);
+    char info1[] = "Press ESC to exit";
+    char info2[] = "Press r to restart";
+    glPushMatrix();
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0, 40, 0, 40);
+    glColor3fv(color[BLACK]);
+    glRasterPos2f(17, 35);
+    for (i = 0; title[i]; i++)
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, title[i]);
+    glRasterPos2f(15, 25);
+    for (i = 0; total_score_info[i]; i++)
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, total_score_info[i]);
+    glRasterPos2f(15, 20);
+    for (i = 0; highscore_info[i]; i++)
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, highscore_info[i]);
+    glRasterPos2f(15, 10);
+    for (i = 0; info1[i]; i++)
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, info1[i]);
+    glRasterPos2f(15, 5);
+    for (i = 0; info2[i]; i++)
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, info2[i]);
+    
     glPopMatrix();
 }

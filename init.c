@@ -24,6 +24,7 @@ void initSelect(void)
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(120.0, 1, 0, 10);
+    scoreRead();
 }
 
 void initStage(void)
@@ -35,10 +36,12 @@ void initStage(void)
     for (i = 0;i < kabeIndex;i++) flag_kabe[i] = 1;
     jiki.t = PI/2.0;
     jiki.w = 1.0;
+    jiki.h = 2.0;
     jiki.x = 1.0;
     jiki.y = 1.0;
     jiki.v = 0.14;
     jiki.v_turn = 0.02;
+    jiki.score = 1000;
     for (i = 0;i < TAMA_MAX;i++) {
         jiki.tama[i].damage = 1;
         jiki.tama[i].v = 0.35;
@@ -46,13 +49,9 @@ void initStage(void)
     for (i = 0;i < TEKI_MAX; i++) {
         teki[i].v_turn = 0.03;
         teki[i].t = rand();
+        teki[i].w = 1.0;
+        teki[i].h = 2.0;
     }
-	jiki.h = 2.0;
-	for (i = 0;i < TEKI_MAX;i++)
-	{
-		teki[i].h = 2.0;
-		teki[i].w = 1.0;
-	}
     /*--------------------*/
     glClearColor(1.0, 1.0, 1.0, 0.0);
     glEnable(GL_DEPTH_TEST);
@@ -124,6 +123,9 @@ void initEasy(void)
     powerups[1].type = 2;
     
     jikiTimerFunc(0);
+    teki[0].score = teki_scores[0];
+    teki[1].score = teki_scores[1];
+    teki[2].score = teki_scores[4];
     teki0TimerFunc(0);
     teki1TimerFunc(1);
     teki4TimerFunc(2);
@@ -165,6 +167,9 @@ void initNormal(void)
     powerups[1].type = 2;
     
     jikiTimerFunc(0);
+    teki[0].score = teki_scores[0];
+    teki[1].score = teki_scores[1];
+    teki[2].score = teki_scores[4];
     teki0TimerFunc(0);
     teki1TimerFunc(1);
     teki4TimerFunc(2);
@@ -205,7 +210,23 @@ void initHard(void)
     }
     
     jikiTimerFunc(0);
+    teki[0].score = teki_scores[0];
+    teki[1].score = teki_scores[1];
+    teki[2].score = teki_scores[2];
     teki0TimerFunc(0);
     teki1TimerFunc(1);
     teki2TimerFunc(2);
+}
+
+void initResult(void)
+{
+    glClearColor(1.0, 1.0, 1.0, 1.0);  // background color
+    glutKeyboardFunc(resultKeyboardFunc);
+    glutIdleFunc(idle);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(120.0, 1, 0, 10);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt (0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0);
 }
