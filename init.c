@@ -197,8 +197,10 @@ void initEasy(void)
     teki[0].y = Y*3.0 / 4.0;
     teki[1].x = X / 4.0;
     teki[1].y = Y / 4.0;
+    teki[1].t = 0;
     teki[2].x = X * 3.0 / 4.0;
     teki[2].y = Y / 4.0;
+    teki[2].t = -PI/4;
     for (j = 0;j < TEKI_MAX;j++)
     {
         teki[j].life = 3;
@@ -216,9 +218,11 @@ void initEasy(void)
         powerups[i].x = 10;
         powerups[i].y =  5 + i*15;
         powerups[i].flag = 1;
-        powerups[i].type = 1;
+        powerups[i].type = 2;
     }
-    powerups[1].type = 2;
+    powerups[0].x = 45;
+    powerups[0].y = 5;
+    powerups[0].type = 1;
     
     jikiTimerFunc(0);
     teki[0].score = teki_scores[0];
@@ -281,9 +285,9 @@ void initNormal(void)
 		kabeList[i+X+X+Y+Y+100][2]=0.5;
 	}
 	kabeIndex=2*(X+Y)+132;
-	for(i=0;i<kabeIndex;i++)flag_kabe[i]=1;
+	for(i=0;i<kabeIndex;i++) flag_kabe[i]=1;
 	TEKI_MAX=3;
-    jiki.life = 20;
+    jiki.life = 10;
     for (i = 0; i < TAMA_MAX; i++) {
         jiki.tama[i].r = 0.3;
     }
@@ -353,9 +357,9 @@ void initHard(void)
 		kabeList[i + X + X + Y + 3][2] = 0.5;
 	}
 	kabeIndex=X+X+Y+Y+4;
-	for(i=0;i<kabeIndex;i++) flag_kabe[i]=1;
+	for(i=0;i < kabeIndex;i++) flag_kabe[i]=1;
 	TEKI_MAX=3;
-    jiki.life = 15;
+    jiki.life = 10;
     for (i = 0; i < TAMA_MAX; i++) {
         jiki.tama[i].r = 0.3;
     }
@@ -371,9 +375,9 @@ void initHard(void)
     {
         teki[j].life = 10;
         teki[j].w = 1.0;
-        teki[j].v = 0.05;
+        teki[j].v = 0.1;
         for (i = 0;i < TAMA_MAX; i++) {
-            teki[j].tama[i].v = 0.1;
+            teki[j].tama[i].v = 0.4;
             teki[j].tama[i].damage = 2;
             teki[j].tama[i].r = 0.3;
         }

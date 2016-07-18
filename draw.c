@@ -107,7 +107,7 @@ void drawGround(void)
 void drawTank(double x, double y, double t, double w, double h, int isTeki)
 {
 	int i = 0;
-	double step, init, normal[3] = { 0 };
+	double step, init;
 
 	step = 60.0*PI / 180.0;
 	init = 30.0 * PI / 180.0;
