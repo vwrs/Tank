@@ -68,6 +68,7 @@ void display(void)
             for (index = 0; index < TEKI_MAX; index++)
                 for (j = 0;j < TAMA_MAX; j++) if (teki[index].tama[j].flag) drawTekiProj(index, j);
             aim();
+            drawPowerup(0, 10, 10);
             if (!initialized) {
                 initStage();
                 initialized = 1;

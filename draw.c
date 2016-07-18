@@ -234,3 +234,12 @@ void aim(void)
     glEnd();
     glPopMatrix();
 }
+
+void drawPowerup(int type, double x, double y)
+{
+    glPushMatrix();
+    glTranslatef(x, y, z);
+    glutSolidTorus(0.5, 1.0, 5, 5);
+    
+    glPopMatrix();
+}

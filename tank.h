@@ -97,6 +97,7 @@ void drawKabe(void);
 void drawJikiProj(int i);
 void drawTekiProj(int i, int j);
 void aim(void);
+void drawPowerup(int type, double x, double y);
 
 // timerFunc.c
 void projTimerFunc(int index);
