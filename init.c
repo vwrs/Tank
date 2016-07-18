@@ -116,11 +116,12 @@ void initEasy(void)
     }
     
     for (i = 0;i < POWERUP_MAX;i++) {
-        powerups[i].x = 10 + i*10;
-        powerups[i].y = i*10;
+        powerups[i].x = 10;
+        powerups[i].y =  5 + i*15;
         powerups[i].flag = 1;
-        powerups[i].type = i;
+        powerups[i].type = 1;
     }
+    powerups[1].type = 2;
     
     jikiTimerFunc(0);
     teki0TimerFunc(0);
@@ -154,6 +155,15 @@ void initNormal(void)
             teki[j].tama[i].r = 0.3;
         }
     }
+    
+    for (i = 0;i < POWERUP_MAX;i++) {
+        powerups[i].x = 10;
+        powerups[i].y =  5 + i*15;
+        powerups[i].flag = 1;
+        powerups[i].type = i;
+    }
+    powerups[1].type = 2;
+    
     jikiTimerFunc(0);
     teki0TimerFunc(0);
     teki1TimerFunc(1);
@@ -186,6 +196,14 @@ void initHard(void)
             teki[j].tama[i].r = 0.3;
         }
     }
+    
+    for (i = 0;i < POWERUP_MAX;i++) {
+        powerups[i].x = 10;
+        powerups[i].y =  5 + i*15;
+        powerups[i].flag = 1;
+        powerups[i].type = i;
+    }
+    
     jikiTimerFunc(0);
     teki0TimerFunc(0);
     teki1TimerFunc(1);

@@ -393,7 +393,7 @@ void teki3TimerFunc(int index)
 				(*life)--;
 				break;
 			case 3:
-				teki[atari[1] / TAMA_MAX].tama[atari[1] / TAMA_MAX].flag;
+				teki[atari[1] / TAMA_MAX].tama[atari[1] / TAMA_MAX].flag = 0;
 				break;
 			default:
 				break;
@@ -443,7 +443,6 @@ void teki4TimerFunc(int index)
 		int i, atari[2] = { 2,index };
 		double length;
 		double xx, yy, tt, v, v_turn, w, h;
-		double t_target;
 		double *x, *y, *t;
 		double MARGIN = 0.01;
 		int *life;
@@ -472,7 +471,7 @@ void teki4TimerFunc(int index)
 				(*life)--;
 				break;
 			case 3:
-				teki[atari[1] / TAMA_MAX].tama[atari[1] / TAMA_MAX].flag;
+				teki[atari[1] / TAMA_MAX].tama[atari[1] / TAMA_MAX].flag = 0;
 				break;
 			default:
 				break;
@@ -516,7 +515,7 @@ void powerupTimerFunc(int index)
     
     if (powerups[index].flag && decideCrash(jiki.x, jiki.y, jiki.t, jiki.w, jiki.h, powerups[index].x, powerups[index].y, 0, 1, 1)) {
         switch (powerups[index].type) {
-            // speed up (tama)
+            // speed up (projectile)
             case 0:
                 for (i = 0;i < TAMA_MAX;i++) {
                     jiki.tama[i].v += 1;
@@ -525,8 +524,9 @@ void powerupTimerFunc(int index)
             // speed up (tank)
             case 1:
                 jiki.v += 0.2;
+                jiki.v_turn += 0.01;
                 break;
-            // magnify
+            // magnify projectile
             case 2:
                 for (i = 0;i < TAMA_MAX;i++)
                     // TODO: r->w,h
