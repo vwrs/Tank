@@ -113,71 +113,71 @@ void initEasy(void)
 	}
 	for (i = 0;i < 7;i++)
 	{
-		kabeList[i + X + X + Y + Y + 4][0] = 11.5;
-		kabeList[i + X + X + Y + Y + 4][1] = 2.5 + i;
+		kabeList[i + X + X + Y + Y + 4][0] = 12.5;
+		kabeList[i + X + X + Y + Y + 4][1] = 3.5 + i;
 		kabeList[i + X + X + Y + Y + 4][2] = 0.5;
 	}
 	for (i = 0;i < 7;i++)
 	{
-		kabeList[i + X + X + Y + Y + 11][0] = 2.5 + i;
-		kabeList[i + X + X + Y + Y + 11][1] = 11.5;
+		kabeList[i + X + X + Y + Y + 11][0] = 3.5 + i;
+		kabeList[i + X + X + Y + Y + 11][1] = 12.5;
 		kabeList[i + X + X + Y + Y + 11][2] = 0.5;
 	}
-	for (i = 0;i < 14;i++)
+	for (i = 0;i < 13;i++)
 	{
-		kabeList[i + 2 * (X + Y) + 18][0] = 2.5 + i;
+		kabeList[i + 2 * (X + Y) + 18][0] = 3.5 + i;
 		kabeList[i + 2 * (X + Y) + 18][1] = Y / 2;
 		kabeList[i + 2 * (X + Y) + 18][2] = 0.5;
 	}
-	for (i = 0;i < 14;i++)
+	for (i = 0;i < 13;i++)
 	{
-		kabeList[i + 2 * (X + Y) + 32][0] = 18.5 + i;
-		kabeList[i + 2 * (X + Y) + 32][1] = Y / 2;
-		kabeList[i + 2 * (X + Y) + 32][2] = 0.5;
+		kabeList[i + 2 * (X + Y) + 31][0] = 19.5 + i;
+		kabeList[i + 2 * (X + Y) + 31][1] = Y / 2;
+		kabeList[i + 2 * (X + Y) + 31][2] = 0.5;
 	}
-	for (i = 0;i < 14;i++)
+	for (i = 0;i < 13;i++)
 	{
-		kabeList[i + 2 * (X + Y) + 46][0] = 34.5 + i;
-		kabeList[i + 2 * (X + Y) + 46][1] = Y / 2;
-		kabeList[i + 2 * (X + Y) + 46][2] = 0.5;
-	}
-	for (i = 0;i < 7;i++)
-	{
-		kabeList[i + X + X + Y + Y + 60][0] = 11.5;
-		kabeList[i + X + X + Y + Y + 60][1] = Y-(2.5 + i);
-		kabeList[i + X + X + Y + Y + 60][2] = 0.5;
+		kabeList[i + 2 * (X + Y) + 44][0] = 35.5 + i;
+		kabeList[i + 2 * (X + Y) + 44][1] = Y / 2;
+		kabeList[i + 2 * (X + Y) + 44][2] = 0.5;
 	}
 	for (i = 0;i < 7;i++)
 	{
-		kabeList[i + X + X + Y + Y + 67][0] = 2.5 + i;
-		kabeList[i + X + X + Y + Y + 67][1] = Y-11.5;
-		kabeList[i + X + X + Y + Y + 67][2] = 0.5;
+		kabeList[i + X + X + Y + Y + 57][0] = 12.5;
+		kabeList[i + X + X + Y + Y + 57][1] = Y-(3.5 + i);
+		kabeList[i + X + X + Y + Y + 57][2] = 0.5;
 	}
 	for (i = 0;i < 7;i++)
 	{
-		kabeList[i + X + X + Y + Y + 74][0] = X-11.5;
-		kabeList[i + X + X + Y + Y + 74][1] = 2.5 + i;
-		kabeList[i + X + X + Y + Y + 74][2] = 0.5;
+		kabeList[i + X + X + Y + Y + 64][0] = 3.5 + i;
+		kabeList[i + X + X + Y + Y + 64][1] = Y-12.5;
+		kabeList[i + X + X + Y + Y + 64][2] = 0.5;
 	}
 	for (i = 0;i < 7;i++)
 	{
-		kabeList[i + X + X + Y + Y + 81][0] = X-(2.5 + i);
-		kabeList[i + X + X + Y + Y + 81][1] = 11.5;
-		kabeList[i + X + X + Y + Y + 81][2] = 0.5;
+		kabeList[i + X + X + Y + Y + 71][0] = X-12.5;
+		kabeList[i + X + X + Y + Y + 71][1] = 3.5 + i;
+		kabeList[i + X + X + Y + Y + 71][2] = 0.5;
 	}
 	for (i = 0;i < 7;i++)
 	{
-		kabeList[i + X + X + Y + Y + 88][0] = X-11.5;
-		kabeList[i + X + X + Y + Y + 88][1] = Y-(2.5 + i);
-		kabeList[i + X + X + Y + Y + 88][2] = 0.5;
+		kabeList[i + X + X + Y + Y + 78][0] = X-(3.5 + i);
+		kabeList[i + X + X + Y + Y + 78][1] = 12.5;
+		kabeList[i + X + X + Y + Y + 78][2] = 0.5;
 	}
 	for (i = 0;i < 7;i++)
 	{
-		kabeList[i + X + X + Y + Y + 95][0] = X-(2.5 + i);
-		kabeList[i + X + X + Y + Y + 95][1] = Y-11.5;
-		kabeList[i + X + X + Y + Y + 95][2] = 0.5;
+		kabeList[i + X + X + Y + Y + 85][0] = X-12.5;
+		kabeList[i + X + X + Y + Y + 85][1] = Y-(3.5 + i);
+		kabeList[i + X + X + Y + Y + 85][2] = 0.5;
 	}
-	kabeIndex = X + X + Y + Y + 102;
+	for (i = 0;i < 7;i++)
+	{
+		kabeList[i + X + X + Y + Y + 92][0] = X-(3.5 + i);
+		kabeList[i + X + X + Y + Y + 92][1] = Y-12.5;
+		kabeList[i + X + X + Y + Y + 92][2] = 0.5;
+	}
+	kabeIndex = X + X + Y + Y + 99;
 
 	for (i = 0;i < kabeIndex;i++) flag_kabe[i] = 1;
 	TEKI_MAX = 3;

@@ -270,7 +270,7 @@ void drawKabe(void)
 {
     int i;
     glPushMatrix();
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, color[RED]);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, color[DARK_BROWN]);
     glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
     glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
     glMaterialf(GL_FRONT, GL_SHININESS, 100.0);
