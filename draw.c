@@ -147,41 +147,100 @@ void drawGround(void)
 void drawJiki(void)
 {
 	int i = 0;
-	double step;
+	double step, init;
 	double h = jiki.h;
 	double w = jiki.w;
 
-	step = 60.0*PI / 180.0;
 
+	h = 2, w = 1;
+	step = 60.0*PI / 180.0;
+	init = 30.0 * PI / 180.0;
     glPushMatrix();
     
 	glTranslatef(jiki.x, jiki.y, 0);
-	glRotatef(jiki.t, 0.0, 0.0, 1);
+	glRotatef(jiki.t*180.0 / PI, 0.0, 0.0, 1);
+	
     glMaterialfv(GL_FRONT, GL_DIFFUSE, color[GREEN]);
     glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
     glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
     glMaterialf(GL_FRONT, GL_SHININESS, 50.0);
     
 	glBegin(GL_QUADS);
-	glVertex3d(-h / 2.0, -jiki.w / 2.0, 0.5);
-	glVertex3d(-(jiki.h - 0.5) / 2.0, -(jiki.w - 0.5) / 2.0, 0);
-	glVertex3d(())
+	glVertex3d(-h / 2.0, -w / 2.0, 0.25);
+	glVertex3d(-(h - 0.5) / 2.0, -w / 2.0, 0);
+	glVertex3d((h - 0.5) / 2.0, -w / 2.0, 0);
+	glVertex3d(h / 2.0, -w / 2.0, 0.25);
+
+	glVertex3d(h / 2.0, -w / 2.0, 0.25);
+	glVertex3d((h - 0.5) / 2.0, -w / 2.0, 0);
+	glVertex3d((h - 0.5) / 2.0, w / 2.0, 0);
+	glVertex3d(h / 2.0, w / 2.0, 0.25);
+
+	glVertex3d(h / 2.0, w / 2.0, 0.25);
+	glVertex3d((h - 0.5) / 2.0, w / 2.0, 0);
+	glVertex3d(-(h - 0.5) / 2.0, w / 2.0, 0);
+	glVertex3d(-h / 2.0, w / 2.0, 0.25);
+
+	glVertex3d(-h / 2.0, w / 2.0, 0.25);
+	glVertex3d(-(h - 0.5) / 2.0, w / 2.0, 0);
+	glVertex3d(-(h - 0.5) / 2.0, -w / 2.0, 0);
+	glVertex3d(-h / 2.0, -w / 2.0, 0.25);
+
 	glEnd();
 
+	glTranslatef(0, 0, 0.375);
+	glPushMatrix();
+	glScalef(h, w, 0.25);
+	glutSolidCube(1);
+	glPopMatrix();
 
-
-
-
+	glTranslatef(0, 0, 0.125);
+	
 	glBegin(GL_QUADS);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[RED]);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
+	glMaterialf(GL_FRONT, GL_SHININESS, 10.0);
 	for (i = 0;i < 6;i++) {
-		glVertex3d(0.5*cos(step*(double)i), 0.5*sin(step*(double)i), 0);
-		glVertex3d(0.5*cos(step*(double)(i + 1)), 0.5*sin(step*(double)(i + 1)), 0);
-		glVertex3d(0.5*cos(step*(double)(i + 1)), 0.5*sin(step*(double)(i + 1)), 0.5);
-		glVertex3d(0.5*cos(step*(double)i), 0.5*sin(step*(double)i), 0.5);
+		glVertex3d(0.4*cos(step*(double)i+init), 0.4*sin(step*(double)i+init), 0);
+		glVertex3d(0.4*cos(step*(double)(i + 1)+init), 0.4*sin(step*(double)(i + 1)+init), 0);
+		glVertex3d(0.4*cos(step*(double)(i + 1)+init), 0.4*sin(step*(double)(i + 1)+init), 0.25);
+		glVertex3d(0.4*cos(step*(double)i+init), 0.4*sin(step*(double)i+init), 0.25);
 	}
 	glEnd();
 
-    glutSolidCube(jiki.w);
+	glBegin(GL_POLYGON);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[BROWN]);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
+	glMaterialf(GL_FRONT, GL_SHININESS, 10.0);
+	for (i = 0;i < 6;i++) {
+		glVertex3d(0.4*cos(step*(double)i+init), 0.4*sin(step*(double)i+init), 0.25);
+	}
+
+	glEnd();
+
+	glTranslatef(sqrt(0.4*0.4 + 0.2*0.2), 0, 0.125);
+	step = 180.0 / PI;
+	
+	glBegin(GL_QUADS);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[YELLOW]);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
+	glMaterialf(GL_FRONT, GL_SHININESS, 10.0);
+	for (i = 0; i < 360;i++)
+	{
+		glVertex3d(0,0.1*cos(step*(double)i), 0.1*sin(step*(double)i));
+		glVertex3d(0,0.1*cos(step*(double)(i + 1)), 0.1*sin(step*(double)(i + 1)));
+		glVertex3d(2,0.1*cos(step*(double)(i + 1)), 0.1*sin(step*(double)(i + 1)));
+		glVertex3d(2,0.1*cos(step*(double)i), 0.1*sin(step*(double)i));
+	}
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	for (i = 0;i < 360;i++) glVertex3d(2.0, 0.1*cos(step*(double)i), 0.1*sin(step*(double)i));
+	glEnd();
+
     glPopMatrix();
 }
 
