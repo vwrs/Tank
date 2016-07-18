@@ -215,6 +215,57 @@ void initEasy(void)
 void initNormal(void)
 {
     int i, j;
+	for (i = 0;i < X + 1;i++)
+	{
+		kabeList[i][0] = -0.5 + i;
+		kabeList[i][1] = -0.5;
+		kabeList[i][2] = 0.5;
+	}
+	for (i = 0;i < Y + 1;i++)
+	{
+		kabeList[i + X + 1][0] = X + 0.5;
+		kabeList[i + X + 1][1] = i - 0.5;
+		kabeList[i + X + 1][2] = 0.5;
+	}
+	for (i = 0;i < X + 1;i++)
+	{
+		kabeList[i + X + Y + 2][0] = X + 0.5 - i;
+		kabeList[i + X + Y + 2][1] = Y + 0.5;
+		kabeList[i + X + Y + 2][2] = 0.5;
+	}
+	for (i = 0;i < Y + 1;i++)
+	{
+		kabeList[i + X + X + Y + 3][0] = -0.5;
+		kabeList[i + X + X + Y + 3][1] = Y + 0.5 - i;
+		kabeList[i + X + X + Y + 3][2] = 0.5;
+	}
+	for(i=0;i<32;i++)
+	{
+		kabeList[i+X+X+Y+Y+4][0]=9.5+i;
+		kabeList[i+X+X+Y+Y+4][1]=4.5;
+		kabeList[i+X+X+Y+Y+4][2]=0.5;
+	}
+	for(i=0;i<32;i++)
+	{
+		kabeList[i+X+X+Y+Y+36][0]=4.5;
+		kabeList[i+X+X+Y+Y+36][1]=9.5+i;
+		kabeList[i+X+X+Y+Y+36][2]=0.5;
+	}
+	for(i=0;i<32;i++)
+	{
+		kabeList[i+X+X+Y+Y+68][0]=X-4.5;
+		kabeList[i+X+X+Y+Y+68][1]=9.5+i;
+		kabeList[i+X+X+Y+Y+68][2]=0.5;
+	}
+	for(i=0;i<32;i++)
+	{
+		kabeList[i+X+X+Y+Y+100][0]=9.5+i;
+		kabeList[i+X+X+Y+Y+100][1]=Y-4.5;
+		kabeList[i+X+X+Y+Y+100][2]=0.5;
+	}
+	kabeIndex=2*(X+Y)+132;
+	for(i=0;i<kabeIndex;i++)flag_kabe[i]=1;
+	TEKI_MAX=3;
     jiki.life = 20;
     for (i = 0; i < TAMA_MAX; i++) {
         jiki.tama[i].r = 0.3;
@@ -231,6 +282,7 @@ void initNormal(void)
     {
         teki[j].life = 3;
         teki[j].w = 1.0;
+		teki[j].h=2.0;
         teki[j].v = 0.07;
         for (i = 0;i < TAMA_MAX; i++) {
             teki[j].tama[i].v = 0.2;
@@ -247,6 +299,33 @@ void initNormal(void)
 void initHard(void)
 {
     int i, j;
+	for (i = 0;i < X + 1;i++)
+	{
+		kabeList[i][0] = -0.5 + i;
+		kabeList[i][1] = -0.5;
+		kabeList[i][2] = 0.5;
+	}
+	for (i = 0;i < Y + 1;i++)
+	{
+		kabeList[i + X + 1][0] = X + 0.5;
+		kabeList[i + X + 1][1] = i - 0.5;
+		kabeList[i + X + 1][2] = 0.5;
+	}
+	for (i = 0;i < X + 1;i++)
+	{
+		kabeList[i + X + Y + 2][0] = X + 0.5 - i;
+		kabeList[i + X + Y + 2][1] = Y + 0.5;
+		kabeList[i + X + Y + 2][2] = 0.5;
+	}
+	for (i = 0;i < Y + 1;i++)
+	{
+		kabeList[i + X + X + Y + 3][0] = -0.5;
+		kabeList[i + X + X + Y + 3][1] = Y + 0.5 - i;
+		kabeList[i + X + X + Y + 3][2] = 0.5;
+	}
+	kabeIndex=X+X+Y+Y+4;
+	for(i=0;i<kabeIndex;i++) flag_kabe[i]=1;
+	TEKI_MAX=3;
     jiki.life = 15;
     for (i = 0; i < TAMA_MAX; i++) {
         jiki.tama[i].r = 0.3;
