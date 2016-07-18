@@ -199,7 +199,8 @@ void gameover(void)
 {
     if (jiki.life <= 0) jiki.score *= -1;
     score += jiki.score;
-    printf("Total Score: %d", score);
+    score -= 10 * time_count;
+    printf("Elapsed time: %d", time_count);
     scoreSave();
     initialized = 0;
     current_status = 4;

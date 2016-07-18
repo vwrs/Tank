@@ -10,8 +10,10 @@ void selectKeyboardFunc(unsigned char key, int x, int y)
     {
         case ' ':
             for (i = 0; i < STAGE_MAX; i++) {
-                if (stages[i].selected)
+                if (stages[i].selected){
+                    stages[i].selected = 0;
                     current_status = stages[i].level;
+                }
             }
             initialized = 0;
             break;

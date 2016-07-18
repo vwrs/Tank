@@ -37,6 +37,7 @@ int teki_scores[5] = {
 int highscore = 0;
 int old_score[STAGE_MAX] = { 0 };
 double kabeList[1000][3] = { 0 };
+int time_count = 0;
 
 /*
  display

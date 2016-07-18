@@ -98,6 +98,7 @@ extern int score;
 extern int teki_scores[5];
 extern int highscore;
 extern int old_score[STAGE_MAX];
+extern int time_count;
 
 /*
  functions
@@ -123,6 +124,7 @@ void teki1TimerFunc(int index);
 void teki2TimerFunc(int index);
 void teki3TimerFunc(int index);
 void teki4TimerFunc(int index);
+void timeCount(int value);
 
 
 void powerupTimerFunc(int index);

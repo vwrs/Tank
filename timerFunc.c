@@ -543,9 +543,15 @@ void powerupTimerFunc(int index)
                     jiki.tama[i].r += 0.15;
                 break;
         }
-        score += 10;
+        score += 100;
         powerups[index].flag = 0;
     }
         glutTimerFunc(10, powerupTimerFunc, index);
     }
+}
+
+void timeCount(int value)
+{
+    time_count++;
+    if (current_status != 4) glutTimerFunc(1000, timeCount, 0);
 }

@@ -5,6 +5,8 @@ void initSelect(void)
     int i;
     /* variables
      ----------------------*/
+    score = 0;
+    time_count = 0;
     stages[0].selected = 1;
     for (i = 0; i < STAGE_MAX; i++) {
         stages[i].level = i + 1;
@@ -83,6 +85,7 @@ void initStage(void)
     }
     for (i = 0;i < POWERUP_MAX;i++)
         powerupTimerFunc(i);
+    timeCount(0);
 }
 
 void initEasy(void)
@@ -294,7 +297,7 @@ void initNormal(void)
     
     for (j = 0;j < TEKI_MAX;j++)
     {
-        teki[j].life = 3;
+        teki[j].life = 5;
         teki[j].w = 1.0;
 		teki[j].h=2.0;
         teki[j].v = 0.07;
@@ -307,7 +310,7 @@ void initNormal(void)
     
     for (i = 0;i < POWERUP_MAX;i++) {
         powerups[i].x = 10;
-        powerups[i].y =  5 + i*15;
+        powerups[i].y =  7 + i*15;
         powerups[i].flag = 1;
         powerups[i].type = i;
     }
