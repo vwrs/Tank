@@ -141,8 +141,43 @@ void initEasy(void)
 		kabeList[i + 2 * (X + Y) + 46][1] = Y / 2;
 		kabeList[i + 2 * (X + Y) + 46][2] = 0.5;
 	}
-
-	kabeIndex = X + X + Y + Y + 60;
+	for (i = 0;i < 7;i++)
+	{
+		kabeList[i + X + X + Y + Y + 60][0] = 11.5;
+		kabeList[i + X + X + Y + Y + 60][1] = Y-(2.5 + i);
+		kabeList[i + X + X + Y + Y + 60][2] = 0.5;
+	}
+	for (i = 0;i < 7;i++)
+	{
+		kabeList[i + X + X + Y + Y + 67][0] = 2.5 + i;
+		kabeList[i + X + X + Y + Y + 67][1] = Y-11.5;
+		kabeList[i + X + X + Y + Y + 67][2] = 0.5;
+	}
+	for (i = 0;i < 7;i++)
+	{
+		kabeList[i + X + X + Y + Y + 74][0] = X-11.5;
+		kabeList[i + X + X + Y + Y + 74][1] = 2.5 + i;
+		kabeList[i + X + X + Y + Y + 74][2] = 0.5;
+	}
+	for (i = 0;i < 7;i++)
+	{
+		kabeList[i + X + X + Y + Y + 81][0] = X-(2.5 + i);
+		kabeList[i + X + X + Y + Y + 81][1] = 11.5;
+		kabeList[i + X + X + Y + Y + 81][2] = 0.5;
+	}
+	for (i = 0;i < 7;i++)
+	{
+		kabeList[i + X + X + Y + Y + 88][0] = X-11.5;
+		kabeList[i + X + X + Y + Y + 88][1] = Y-(2.5 + i);
+		kabeList[i + X + X + Y + Y + 88][2] = 0.5;
+	}
+	for (i = 0;i < 7;i++)
+	{
+		kabeList[i + X + X + Y + Y + 95][0] = X-(2.5 + i);
+		kabeList[i + X + X + Y + Y + 95][1] = Y-11.5;
+		kabeList[i + X + X + Y + Y + 95][2] = 0.5;
+	}
+	kabeIndex = X + X + Y + Y + 102;
 
 	for (i = 0;i < kabeIndex;i++) flag_kabe[i] = 1;
 	TEKI_MAX = 3;
@@ -153,8 +188,8 @@ void initEasy(void)
     for (i = 0; i < TAMA_MAX; i++) {
         jiki.tama[i].r = 0.5;
     }
-    teki[0].x = X / 2.0;
-    teki[0].y = Y / 2.0;
+    teki[0].x = X*3.0 / 4.0;
+    teki[0].y = Y*3.0 / 4.0;
     teki[1].x = X / 4.0;
     teki[1].y = Y / 4.0;
     teki[2].x = X * 3.0 / 4.0;
@@ -164,7 +199,7 @@ void initEasy(void)
         teki[j].life = 3;
         teki[j].w = 1.5;
 		teki[j].h = 2.0;
-        teki[j].v = 0.2;
+        teki[j].v = 0.1;
         for (i = 0;i < TAMA_MAX; i++) {
             teki[j].tama[i].v = 0.166;
             teki[j].tama[i].damage = 1;
