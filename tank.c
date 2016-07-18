@@ -20,27 +20,15 @@ GLfloat color[][4] = {
 		{ 0.0, 0.0, 0.0, 1.0 },
 		{ 1.0, 0.8, 0.2, 1.0 },
         { 0.0, 0.1, 0.7, 1.0 },
-		{ 0.6 , 0.2 , 0.0 }
+		{ 0.6, 0.2, 0.0, 1.0}
 };
 Tank jiki = { 0 };
-Tank teki[TEKI_MAX] = { { 0 } };
-int flag_kabe[kabeIndex];
-int count_interval[TEKI_MAX] = { 0 };
+Tank teki[10] = { { 0 } };
+int flag_kabe[1000];
+int TEKI_MAX;
+int kabeIndex;
+int count_interval[10] = { 0 };
 int mySpecialValue = 0;
-double kabeList[][3] = {
-    { 0.0, 2.0, 0.0 },
-    { 4.0, 4.0, 0.0 },
-    { 2.0, 6.0, 0.0 },
-    { 0.0, 10.0, 0.0 },
-    { 4.0, 13.0, 0.0 },
-    { 3.0, 14.0, 0.0 },
-    { 2.0, 15.0, 0.0 },
-    { 1.0, 16.0, 0.0 },
-    { 3.0, 19.0, 0.0 },
-    { 2.0, 20.0, 0.0 },
-    { 1.0, 21.0, 0.0 },
-    { 0.0, 22.0, 0.0 }
-};
 Powerup powerups[POWERUP_MAX] = { 0 };
 int score = 0;
 int teki_scores[5] = {
@@ -48,6 +36,7 @@ int teki_scores[5] = {
 };
 int highscore = 0;
 int old_score[STAGE_MAX] = { 0 };
+double kabeList[1000][3] = { 0 };
 
 /*
  display

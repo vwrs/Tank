@@ -76,6 +76,7 @@ void drawStageSelect(void)
 
 void drawGround(void)
 {
+    int i,j;
     double lx, ly;
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[DARK_BROWN]);
 	glBegin(GL_LINES);
@@ -86,11 +87,21 @@ void drawGround(void)
 	for (lx = 0;lx <= X; lx++) {
 		glVertex3d(lx, Y, 0);
 		glVertex3d(lx, 0, 0);
+    }
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[DARK_BROWN]);
+	glBegin(GL_LINES);
+	for (i = 0;i <= Y; i++) {
+		glVertex3d(0, i, 0);
+		glVertex3d(X, i, 0);
+	}
+	for (j = 0;j <= X; j++) {
+		glVertex3d(j, Y, 0);
+		glVertex3d(j, 0, 0);
 	}
 	glEnd();
 }
 
-void drawtank(double x, double y, double t, double w, double h, int isTeki)
+void drawTank(double x, double y, double t, double w, double h, int isTeki)
 {
 	int i = 0;
 	double step, init;
@@ -134,7 +145,7 @@ void drawtank(double x, double y, double t, double w, double h, int isTeki)
 	glTranslatef(0, 0, 0.375);
 	glPushMatrix();
 	glScalef(h, w, 0.25);
-	if (isTeki)glMaterialfv(GL_FRONT, GL_DIFFUSE, color[BLUE]);
+	if (isTeki) glMaterialfv(GL_FRONT, GL_DIFFUSE, color[BLUE]);
 	else glMaterialfv(GL_FRONT, GL_DIFFUSE, color[GREEN]);
 	glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
@@ -195,14 +206,14 @@ void drawtank(double x, double y, double t, double w, double h, int isTeki)
 
 void drawJiki(void)
 {
-	drawtank(jiki.x, jiki.y, jiki.t, jiki.w, jiki.h, 0);
+	drawTank(jiki.x, jiki.y, jiki.t, jiki.w, jiki.h, 0);
 }
 
 void drawKabe(void)
 {
     int i;
     glPushMatrix();
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, color[RED]);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, color[DARK_BROWN]);
     glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
     glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
     glMaterialf(GL_FRONT, GL_SHININESS, 100.0);
@@ -213,7 +224,7 @@ void drawKabe(void)
         {
             glPushMatrix();
             glTranslatef(kabeList[i][0], kabeList[i][1], kabeList[i][2]);
-            glutSolidCone(0.5, 1, 30, 30);
+			glutSolidCube(1);
             glPopMatrix();
         }
     }
@@ -246,7 +257,7 @@ void drawTekiProj(int i, int j)
 
 void drawTeki(int i)
 {
-	drawtank(teki[i].x, teki[i].y, teki[i].t, teki[i].w, teki[i].h, 1);
+	drawTank(teki[i].x, teki[i].y, teki[i].t, teki[i].w, teki[i].h, 1);
 }
 
 void aim(void)
