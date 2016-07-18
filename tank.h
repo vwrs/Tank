@@ -70,7 +70,7 @@ typedef struct stage
 /*
  global variables
 -----------------------*/
-enum COLOR { WHITE, RED, GREEN, BLUE, YELLOW, MAGENTA, CYAN, GRAY, BLACK, BROWN };
+enum COLOR { WHITE, RED, GREEN, BLUE, YELLOW, MAGENTA, CYAN, GRAY, BLACK, BROWN, SKYBLUE };
 extern int current_status;  // select: 0 easy: 1 normal: 2 hard: 3 result: 4
 extern int initialized;
 extern Stage stages[STAGE_MAX];

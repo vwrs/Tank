@@ -238,8 +238,14 @@ void aim(void)
 void drawPowerup(int type, double x, double y)
 {
     glPushMatrix();
-    glTranslatef(x, y, z);
-    glutSolidTorus(0.5, 1.0, 5, 5);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, color[BLUE]);
+    glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLUE]);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, color[SKYBLUE]);
+        glTranslatef(x, y, 0.1);
+    glutSolidTorus(0.1, 0.5, 10, 10);
+    glTranslatef(0, 0, 0.5);
+    glScalef(0.5, 0.5, 0.5);
+    glutSolidOctahedron();
     
     glPopMatrix();
 }
