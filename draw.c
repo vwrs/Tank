@@ -318,17 +318,26 @@ void aim(void)
     glPopMatrix();
 }
 
-void drawPowerup(int type, double x, double y)
+void drawPowerup(int index)
 {
     glPushMatrix();
+    switch (powerups[index].type) {
+        case 0:
+            
+            break;
+        case 1:
+            
+            break;
+        case 2:
+            break;
+    }
     glMaterialfv(GL_FRONT, GL_DIFFUSE, color[BLUE]);
     glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLUE]);
     glMaterialfv(GL_FRONT, GL_SPECULAR, color[SKYBLUE]);
-    glTranslatef(x, y, 0.1);
+    glTranslatef(powerups[index].x, powerups[index].y, 0.1);
     glutSolidTorus(0.1, 0.5, 10, 10);
     glTranslatef(0, 0, 0.5);
     glScalef(0.5, 0.5, 0.5);
     glutSolidOctahedron();
-    
     glPopMatrix();
 }

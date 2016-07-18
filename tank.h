@@ -28,6 +28,9 @@
 #define STAGE_MAX (3)
 #define kabeIndex (12)
 #define TEKI_MAX (3)
+#define TAMA_MAX (5)
+#define POWERUP_MAX (3)
+
 
 /*
  structs
@@ -42,8 +45,6 @@ typedef struct projectile
 	int damage;  // damage of a projectile
 	int flag; //decide whether to draw the projectile
 } Projectile;
-
-#define TAMA_MAX 5
 
 typedef struct tank
 {
@@ -68,6 +69,14 @@ typedef struct stage
     char name[10];  // easy, normal, hard
 } Stage;
 
+typedef struct powerup
+{
+    int type;
+    double x;
+    double y;
+    int flag;
+} Powerup;
+
 /*
  global variables
 -----------------------*/
@@ -84,7 +93,7 @@ extern GLfloat pos1[];
 extern GLfloat color[][4];
 extern double kabeList[][3];
 extern int mySpecialValue;
-
+extern Powerup powerups[POWERUP_MAX];
 
 /*
  functions
@@ -98,7 +107,7 @@ void drawKabe(void);
 void drawJikiProj(int i);
 void drawTekiProj(int i, int j);
 void aim(void);
-void drawPowerup(int type, double x, double y);
+void drawPowerup(int index);
 
 // timerFunc.c
 void projTimerFunc(int index);
@@ -106,6 +115,9 @@ void jikiTimerFunc(int value);
 void teki0TimerFunc(int index);
 void teki1TimerFunc(int index);
 void teki2TimerFunc(int index);
+
+
+void powerupTimerFunc(int index);
 
 // keyboardFunc.c
 void selectKeyboardFunc(unsigned char key, int x, int y);

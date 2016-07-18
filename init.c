@@ -82,6 +82,8 @@ void initStage(void)
         case 2: initNormal(); break;
         case 3: initHard(); break;
     }
+    for (i = 0;i < POWERUP_MAX;i++)
+        powerupTimerFunc(i);
 }
 
 void initEasy(void)
@@ -93,6 +95,7 @@ void initEasy(void)
     for (i = 0; i < TAMA_MAX; i++) {
         jiki.tama[i].r = 0.5;
     }
+    
     teki[0].x = X / 2.0;
     teki[0].y = Y / 2.0;
     teki[1].x = X / 4.0;
@@ -111,6 +114,14 @@ void initEasy(void)
             teki[j].tama[i].r = 0.3;
         }
     }
+    
+    for (i = 0;i < POWERUP_MAX;i++) {
+        powerups[i].x = 10 + i*10;
+        powerups[i].y = i*10;
+        powerups[i].flag = 1;
+        powerups[i].type = i;
+    }
+    
     jikiTimerFunc(0);
     teki0TimerFunc(0);
     teki1TimerFunc(1);
