@@ -11,6 +11,7 @@
 #include <string.h>
 // ======== Windows ======
 #include <GL/glut.h>
+//#pragma warning( disable:4996 )
 // ====== Mac OS X =======
 //#include <OpenGL/gl.h>
 //#include <GLUT/glut.h>

@@ -76,7 +76,7 @@ int decideCrash(double x1, double y1, double t1, double w1, double h1,
 */
 int collision_check(double x, double y, double t, double w, double h, int atari[])
 { 
-	int i, j, k, l, m;
+	int i = 0, j = 0, k, l, m;
 	switch (atari[0])
 	{
 	case 0:

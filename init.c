@@ -1,9 +1,5 @@
 #include "tank.h"
 
-//======== for visual studio =======//
-#pragma warning( disable:4996 )
-
-
 void initSelect(void)
 {
     int i;
@@ -73,9 +69,9 @@ void initStage(void)
 void initEasy(void)
 {
     int i, j;
+    jiki.x = 1;
+    jiki.y = 1;
     jiki.v = 0.133;
-	jiki.x = 1;
-	jiki.y = 1;
     jiki.v_turn = 0.02;
     jiki.life = 50;
     for (i = 0; i < TAMA_MAX; i++) {
@@ -111,6 +107,8 @@ void initEasy(void)
 void initNormal(void)
 {
     int i, j;
+    jiki.x = 1;
+    jiki.y = 1;
     jiki.v = 0.13;
     jiki.v_turn = 0.06;
     jiki.life = 20;
@@ -149,6 +147,8 @@ void initNormal(void)
 void initHard(void)
 {
     int i, j;
+    jiki.x = 1;
+    jiki.y = 1;
     jiki.v = 0.1;
     jiki.v_turn = 0.06;
     jiki.life = 15;

@@ -3,8 +3,6 @@
 /*
  TimerFunc for position of projectiles
  -------------------------------------------*/
-// TODO: unify projTimerFunc
-
 void projTimerFunc(int index)
 {
 	int i = 0, j = 0,isTeki = 0, atari[2], damage;
@@ -73,7 +71,7 @@ void projTimerFunc(int index)
 
 
 /*
- TimerFunc for position of jiki and teki
+ TimerFunc for position of tanks
  -------------------------------------------*/
 void jikiTimerFunc(int value)
 {
