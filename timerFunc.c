@@ -509,3 +509,31 @@ void teki4TimerFunc(int index)
 
 
 }
+
+void powerupTimerFunc(int index)
+{
+    int i;
+    
+    if (powerups[index].flag && decideCrash(jiki.x, jiki.y, jiki.t, jiki.w, jiki.h, powerups[index].x, powerups[index].y, 0, 1, 1)) {
+        switch (powerups[index].type) {
+            // speed up (tama)
+            case 0:
+                for (i = 0;i < TAMA_MAX;i++) {
+                    jiki.tama[i].v += 1;
+                }
+                break;
+            // speed up (tank)
+            case 1:
+                jiki.v += 0.2;
+                break;
+            // magnify
+            case 2:
+                for (i = 0;i < TAMA_MAX;i++)
+                    // TODO: r->w,h
+                    jiki.tama[i].r += 0.15;
+                break;
+        }
+        powerups[index].flag = 0;
+    }
+    glutTimerFunc(10, powerupTimerFunc, index);
+}

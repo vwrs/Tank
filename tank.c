@@ -41,13 +41,14 @@ double kabeList[][3] = {
     { 1.0, 21.0, 0.0 },
     { 0.0, 22.0, 0.0 }
 };
+Powerup powerups[POWERUP_MAX] = { 0 };
 
 /*
  display
 -----------------------------------*/
 void display(void)
 {
-	int index,j;
+	int i,j;
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     switch (current_status) {
@@ -63,14 +64,16 @@ void display(void)
         case 1:
             drawGround();
             if (jiki.life > 0) drawJiki();
-            for (index = 0;index < TEKI_MAX;index++)
-                if (teki[index].life > 0) drawTeki(index);
+            for (i = 0;i < TEKI_MAX;i++)
+                if (teki[i].life > 0) drawTeki(i);
             drawKabe();
-            for (index = 0; index < TAMA_MAX; index++) if (jiki.tama[index].flag) drawJikiProj(index);
-            for (index = 0; index < TEKI_MAX; index++)
-                for (j = 0;j < TAMA_MAX; j++) if (teki[index].tama[j].flag) drawTekiProj(index, j);
+            for (i = 0; i < TAMA_MAX; i++) if (jiki.tama[i].flag) drawJikiProj(i);
+            for (i = 0; i < TEKI_MAX; i++)
+                for (j = 0;j < TAMA_MAX; j++) if (teki[i].tama[j].flag) drawTekiProj(i, j);
             aim();
-            drawPowerup(0, 10, 10);
+            for (i = 0; i < POWERUP_MAX; i++) if (powerups[i].flag)
+                drawPowerup(i);
+            
             if (!initialized) {
                 initStage();
                 initialized = 1;
@@ -81,13 +84,16 @@ void display(void)
         case 2:
             drawGround();
             if (jiki.life > 0) drawJiki();
-            for (index = 0;index < TEKI_MAX;index++)
-                if (teki[index].life > 0) drawTeki(index);
+            for (i = 0;i < TEKI_MAX;i++)
+                if (teki[i].life > 0) drawTeki(i);
             drawKabe();
-            for (index = 0; index < TAMA_MAX; index++) if (jiki.tama[index].flag) drawJikiProj(index);
-            for (index = 0; index < TEKI_MAX; index++)
-                for (j = 0;j < TAMA_MAX; j++) if (teki[index].tama[j].flag) drawTekiProj(index, j);
+            for (i = 0; i < TAMA_MAX; i++) if (jiki.tama[i].flag) drawJikiProj(i);
+            for (i = 0; i < TEKI_MAX; i++)
+                for (j = 0;j < TAMA_MAX; j++) if (teki[i].tama[j].flag) drawTekiProj(i, j);
             aim();
+            for (i = 0; i < POWERUP_MAX; i++) if (powerups[i].flag)
+                drawPowerup(i);
+            
             if (!initialized) {
                 initStage();
                 initialized = 1;
@@ -98,13 +104,16 @@ void display(void)
         case 3:
             drawGround();
             if (jiki.life > 0) drawJiki();
-            for (index = 0;index < TEKI_MAX;index++)
-                if (teki[index].life > 0) drawTeki(index);
+            for (i = 0;i < TEKI_MAX;i++)
+                if (teki[i].life > 0) drawTeki(i);
             drawKabe();
-            for (index = 0; index < TAMA_MAX; index++) if (jiki.tama[index].flag) drawJikiProj(index);
-            for (index = 0; index < TEKI_MAX; index++)
-                for (j = 0;j < TAMA_MAX; j++) if (teki[index].tama[j].flag) drawTekiProj(index, j);
+            for (i = 0; i < TAMA_MAX; i++) if (jiki.tama[i].flag) drawJikiProj(i);
+            for (i = 0; i < TEKI_MAX; i++)
+                for (j = 0;j < TAMA_MAX; j++) if (teki[i].tama[j].flag) drawTekiProj(i, j);
             aim();
+            for (i = 0; i < POWERUP_MAX; i++) if (powerups[i].flag)
+                drawPowerup(i);
+            
             if (!initialized) {
                 initStage();
                 initialized = 1;
