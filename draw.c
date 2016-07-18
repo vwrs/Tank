@@ -60,7 +60,7 @@ void drawStageSelect(void)
 
 void drawGround(void)
 {
-    int i, j;
+    /*int i, j;
     GLdouble normal[3] = { 0.0, 0.0, 1.0 };
     
     glPushMatrix();
@@ -141,7 +141,20 @@ void drawGround(void)
         }
     glEnd();
     
-    glPopMatrix();
+    glPopMatrix();*/
+
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[DARK_BROWN]);
+	glBegin(GL_LINES);
+	for (double ly = 0;ly <= Y; ly++) {
+		glVertex3d(0, ly, 0);
+		glVertex3d(X, ly, 0);
+	}
+	for (double lx = 0;lx <= X; lx++) {
+		glVertex3d(lx, Y, 0);
+		glVertex3d(lx, 0, 0);
+	}
+	glEnd();
+
 }
 
 void drawtank(double x, double y, double t, double w, double h, int isTeki)
