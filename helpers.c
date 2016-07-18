@@ -190,6 +190,13 @@ void calcNormal(GLdouble v0[3], GLdouble v1[3], GLdouble v2[3], GLdouble n[3])
         n[i] = vt[i] / abs;
 }
 
+void calNorm(double x1,double y1,double z1,double x2,double y2,double z2, double normal[])
+{
+	normal[0] = y1*z2 - y2*z1;
+	normal[1] = z1*x2 - x1*z2;
+	normal[2] = x1*y2 - y1*x2;
+}
+
 void idle(void)
 {
     glutPostRedisplay();

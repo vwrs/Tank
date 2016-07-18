@@ -115,6 +115,7 @@ void drawTekiProj(int i, int j);
 void aim(void);
 void drawPowerup(int index);
 void drawResult(void);
+void drawTama(double x,double y,double t,double r);
 
 // timerFunc.c
 void projTimerFunc(int index);
@@ -154,6 +155,7 @@ void idle(void);
 void gameover(void);
 void scoreRead(void);
 void scoreSave(void);
+void calNorm(double x1,double y1,double z1,double x2,double y2,double z2, double normal[]);
 
 // tank.c
 void display(void);

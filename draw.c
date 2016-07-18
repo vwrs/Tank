@@ -107,7 +107,7 @@ void drawGround(void)
 void drawTank(double x, double y, double t, double w, double h, int isTeki)
 {
 	int i = 0;
-	double step, init;
+	double step, init, normal[3] = { 0 };
 
 	step = 60.0*PI / 180.0;
 	init = 30.0 * PI / 180.0;
@@ -119,25 +119,29 @@ void drawTank(double x, double y, double t, double w, double h, int isTeki)
 
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[GRAY]);
 	glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
-	glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, color[GRAY]);
 	glMaterialf(GL_FRONT, GL_SHININESS, 50.0);
 
 	glBegin(GL_QUADS);
+	glNormal3f(0.0, -1.0, -0.2);
 	glVertex3d(-h / 2.0, -w / 2.0, 0.25);
 	glVertex3d(-(h - 0.5) / 2.0, -w / 2.0, 0);
 	glVertex3d((h - 0.5) / 2.0, -w / 2.0, 0);
 	glVertex3d(h / 2.0, -w / 2.0, 0.25);
 
+	glNormal3f(1.0,0.0,-0.2);
 	glVertex3d(h / 2.0, -w / 2.0, 0.25);
 	glVertex3d((h - 0.5) / 2.0, -w / 2.0, 0);
 	glVertex3d((h - 0.5) / 2.0, w / 2.0, 0);
 	glVertex3d(h / 2.0, w / 2.0, 0.25);
 
+	glNormal3f(0.0, 1.0, -0.2);
 	glVertex3d(h / 2.0, w / 2.0, 0.25);
 	glVertex3d((h - 0.5) / 2.0, w / 2.0, 0);
 	glVertex3d(-(h - 0.5) / 2.0, w / 2.0, 0);
 	glVertex3d(-h / 2.0, w / 2.0, 0.25);
 
+	glNormal3f(-1.0, 0.0, -0.2);
 	glVertex3d(-h / 2.0, w / 2.0, 0.25);
 	glVertex3d(-(h - 0.5) / 2.0, w / 2.0, 0);
 	glVertex3d(-(h - 0.5) / 2.0, -w / 2.0, 0);
@@ -164,6 +168,7 @@ void drawTank(double x, double y, double t, double w, double h, int isTeki)
 	glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
 	glMaterialf(GL_FRONT, GL_SHININESS, 50.0);
 	for (i = 0;i < 6;i++) {
+		glNormal3f(cos(step*(double)(2 * i + 1) / 2.0 + init), sin(step*(double)(2 * i + 1) / 2.0 + init), 0);
 		glVertex3d(0.4*cos(step*(double)i + init), 0.4*sin(step*(double)i + init), 0);
 		glVertex3d(0.4*cos(step*(double)(i + 1) + init), 0.4*sin(step*(double)(i + 1) + init), 0);
 		glVertex3d(0.4*cos(step*(double)(i + 1) + init), 0.4*sin(step*(double)(i + 1) + init), 0.25);
@@ -176,6 +181,7 @@ void drawTank(double x, double y, double t, double w, double h, int isTeki)
 	glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
 	glMaterialf(GL_FRONT, GL_SHININESS, 50.0);
+	glNormal3f(0.0, 0.0, 1.0);
 	for (i = 0;i < 6;i++) {
 		glVertex3d(0.4*cos(step*(double)i + init), 0.4*sin(step*(double)i + init), 0.25);
 	}
@@ -192,6 +198,7 @@ void drawTank(double x, double y, double t, double w, double h, int isTeki)
 	glMaterialf(GL_FRONT, GL_SHININESS, 50.0);
 	for (i = 0; i < 360;i++)
 	{
+		glNormal3f(0, cos(step*(double)i), sin(step*(double)i));
 		glVertex3d(0, 0.1*cos(step*(double)i), 0.1*sin(step*(double)i));
 		glVertex3d(0, 0.1*cos(step*(double)(i + 1)), 0.1*sin(step*(double)(i + 1)));
 		glVertex3d(1.5, 0.1*cos(step*(double)(i + 1)), 0.1*sin(step*(double)(i + 1)));
@@ -200,6 +207,7 @@ void drawTank(double x, double y, double t, double w, double h, int isTeki)
 	glEnd();
 
 	glBegin(GL_POLYGON);
+	glNormal3f(1.0, 0.0, 0.0);
 	for (i = 0;i < 360;i++) glVertex3d(1.5, 0.1*cos(step*(double)i), 0.1*sin(step*(double)i));
 	glEnd();
 
@@ -234,6 +242,41 @@ void drawKabe(void)
     glPopMatrix();
 }
 
+void drawTama(double x,double y,double t,double r)
+{
+	int i;
+	double step;
+	step=PI/180;
+	glPushMatrix();
+	glTranslatef(x,y,r);
+	glRotatef(t*180.0/PI,0.0,0.0,1.0);
+	glBegin(GL_QUADS);
+	for(i=0;i < 360;i++) {
+		glNormal3f(0.0,cos(step*(double)(i+1)),sin(step*(double)(i+1)));
+		glVertex3d(0,r*cos(step*(double)(i)),r*sin(step*(double)(i)));
+		glVertex3d(0,r*cos(step*(double)(i+1)),r*sin(step*(double)(i+1)));
+		glVertex3d(r*2,r*cos(step*(double)(i+1)),r*sin(step*(double)(i+1)));
+		glVertex3d(r*2,r*cos(step*(double)(i)),r*sin(step*(double)(i)));
+	}
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	glNormal3f(-1.0,0.0,0.0);
+	for(i=0;i<360;i++) glVertex3d(0,r*cos(step*(double)(-i)),r*sin(step*(double)(-i)));
+	glEnd();
+
+	glBegin(GL_TRIANGLES);
+	for(i=0;i<360;i++)
+	{
+		glNormal3f(0.0,cos(step*i),sin(step*i));
+		glVertex3d(r*2,r*cos(step*(double)(i+1)),r*sin(step*(double)(i+1)));
+		glVertex3d(r*3,0.0,0.0);
+		glVertex3d(r*2,r*cos(step*(double)(i)),r*sin(step*(double)(i)));
+	}
+	glEnd();
+	glPopMatrix();
+}
+
 void drawJikiProj(int i)
 {
     glPushMatrix();
@@ -241,8 +284,7 @@ void drawJikiProj(int i)
     glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
     glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
     glMaterialf(GL_FRONT, GL_SHININESS, 100.0);
-    glTranslatef(jiki.tama[i].x, jiki.tama[i].y, z);
-    glutSolidSphere(jiki.tama[i].r, 30, 30);
+    drawTama(jiki.tama[i].x,jiki.tama[i].y,jiki.tama[i].t,jiki.tama[i].r);
     glPopMatrix();
 }
 
@@ -253,8 +295,7 @@ void drawTekiProj(int i, int j)
     glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
     glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
     glMaterialf(GL_FRONT, GL_SHININESS, 100.0);
-    glTranslatef(teki[i].tama[j].x, teki[i].tama[j].y, z);
-    glutSolidSphere(teki[i].tama[j].r, 30, 30);
+    drawTama(teki[i].tama[j].x, teki[i].tama[j].y,teki[i].tama[j].t,teki[i].tama[j].r);
     glPopMatrix();
 }
 
