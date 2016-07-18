@@ -49,13 +49,26 @@ void projTimerFunc(int index)
 			switch (atari[0])
 			{
 			case 0:
-				if (isTeki) jiki.life -= damage;
+                if (isTeki) {
+                    jiki.life -= damage;
+                    if (jiki.life <= 0) gameover();
+                }
+                
 				break;
 			case 1:
 				jiki.tama[atari[1]].flag = 0;
 				break;
 			case 2:
-				if (isTeki == 0) teki[atari[1]].life -= damage;
+                if (isTeki == 0) {
+                    teki[atari[1]].life -= damage;
+                    if (teki[atari[1]].life <= 0) {
+                        score += teki[atari[1]].score;
+                        for (i = 0;i < TEKI_MAX; i++) if (teki[i].life > 0) break;
+                        if (i == TEKI_MAX) gameover();
+                    }
+                }
+                
+                break;
 			case 3:
 				teki[atari[1] / TAMA_MAX].tama[atari[1] % TAMA_MAX].flag = 0;
 				break;
@@ -66,8 +79,6 @@ void projTimerFunc(int index)
 		else glutTimerFunc(10, projTimerFunc, index);
     }
 }
-
-
 
 
 /*
@@ -447,7 +458,6 @@ void teki4TimerFunc(int index)
 		double MARGIN = 0.01;
 		int *life;
 
-
 		x = &(teki[index].x);
 		y = &(teki[index].y);
 		t = &(teki[index].t);
@@ -512,8 +522,8 @@ void teki4TimerFunc(int index)
 void powerupTimerFunc(int index)
 {
     int i;
-    
-    if (powerups[index].flag && decideCrash(jiki.x, jiki.y, jiki.t, jiki.w, jiki.h, powerups[index].x, powerups[index].y, 0, 1, 1)) {
+    if (powerups[index].flag) {
+    if (decideCrash(jiki.x, jiki.y, jiki.t, jiki.w, jiki.h, powerups[index].x, powerups[index].y, 0, 1, 1)) {
         switch (powerups[index].type) {
             // speed up (projectile)
             case 0:
@@ -533,7 +543,9 @@ void powerupTimerFunc(int index)
                     jiki.tama[i].r += 0.15;
                 break;
         }
+        score += 10;
         powerups[index].flag = 0;
     }
-    glutTimerFunc(10, powerupTimerFunc, index);
+        glutTimerFunc(10, powerupTimerFunc, index);
+    }
 }

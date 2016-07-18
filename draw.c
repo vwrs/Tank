@@ -4,6 +4,10 @@ void drawStageSelect(void)
 {
     int i, j, stagex, left, right;
     char title[] = "Tank Game";
+    char high[] = "Highscore";
+    char high1[50]; sprintf(high1, "EASY  : %d", old_score[0]);
+    char high2[50]; sprintf(high2, "NORMAL: %d", old_score[1]);
+    char high3[50]; sprintf(high3, "HARD  : %d", old_score[2]);
     char info1[] = "<- and -> : select level";
     char info2[] = "Space key : start game!!";
     glPushMatrix();
@@ -13,6 +17,18 @@ void drawStageSelect(void)
     glRasterPos2f(17, 35);
     for (i = 0; title[i]; i++)
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, title[i]);
+    glRasterPos2f(17, 30);
+    for (i = 0; high[i]; i++)
+        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, high[i]);
+    glRasterPos2f(17, 28);
+    for (i = 0; high1[i]; i++)
+        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, high1[i]);
+    glRasterPos2f(17, 27);
+    for (i = 0; high2[i]; i++)
+        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, high2[i]);
+    glRasterPos2f(17, 26);
+    for (i = 0; high3[i]; i++)
+        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, high3[i]);
     glRasterPos2f(15, 5);
     for (i = 0; info1[i]; i++)
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, info1[i]);
@@ -270,5 +286,39 @@ void drawPowerup(int index)
     glTranslatef(0, 0, 0.5);
     glScalef(0.5, 0.5, 0.5);
     glutSolidOctahedron();
+    glPopMatrix();
+}
+
+void drawResult(void)
+{
+    int i;
+    char title[] = "Result";
+    char total_score_info[50];
+    sprintf(total_score_info, "Total Score: %d", score);
+    char highscore_info[50];
+    sprintf(highscore_info, "High Score: %d", highscore);
+    char info1[] = "Press ESC to exit";
+    char info2[] = "Press r to restart";
+    glPushMatrix();
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0, 40, 0, 40);
+    glColor3fv(color[BLACK]);
+    glRasterPos2f(17, 35);
+    for (i = 0; title[i]; i++)
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, title[i]);
+    glRasterPos2f(15, 25);
+    for (i = 0; total_score_info[i]; i++)
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, total_score_info[i]);
+    glRasterPos2f(15, 20);
+    for (i = 0; highscore_info[i]; i++)
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, highscore_info[i]);
+    glRasterPos2f(15, 10);
+    for (i = 0; info1[i]; i++)
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, info1[i]);
+    glRasterPos2f(15, 5);
+    for (i = 0; info2[i]; i++)
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, info2[i]);
+    
     glPopMatrix();
 }

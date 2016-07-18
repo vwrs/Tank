@@ -123,3 +123,20 @@ void stageSpecialUpFunc(int key, int x, int y)
     }
     
 }
+
+/*
+ result
+ -----------------------*/
+void resultKeyboardFunc(unsigned char key, int x, int y)
+{
+    switch(key)
+    {
+        case 'r':
+            current_status = 0;
+            initialized = 0;
+            break;
+        case 27: // ESC
+            exit(0);
+            break;
+    }
+}
