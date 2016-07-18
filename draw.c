@@ -144,19 +144,112 @@ void drawGround(void)
     glPopMatrix();
 }
 
+void drawtank(double x, double y, double t, double w, double h, int isTeki)
+{
+	int i = 0;
+	double step, init;
+
+	step = 60.0*PI / 180.0;
+	init = 30.0 * PI / 180.0;
+
+	glPushMatrix();
+
+	glTranslatef(x, y, 0);
+	glRotatef(t*180.0 / PI, 0.0, 0.0, 1);
+
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[GRAY]);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
+	glMaterialf(GL_FRONT, GL_SHININESS, 50.0);
+
+	glBegin(GL_QUADS);
+	glVertex3d(-h / 2.0, -w / 2.0, 0.25);
+	glVertex3d(-(h - 0.5) / 2.0, -w / 2.0, 0);
+	glVertex3d((h - 0.5) / 2.0, -w / 2.0, 0);
+	glVertex3d(h / 2.0, -w / 2.0, 0.25);
+
+	glVertex3d(h / 2.0, -w / 2.0, 0.25);
+	glVertex3d((h - 0.5) / 2.0, -w / 2.0, 0);
+	glVertex3d((h - 0.5) / 2.0, w / 2.0, 0);
+	glVertex3d(h / 2.0, w / 2.0, 0.25);
+
+	glVertex3d(h / 2.0, w / 2.0, 0.25);
+	glVertex3d((h - 0.5) / 2.0, w / 2.0, 0);
+	glVertex3d(-(h - 0.5) / 2.0, w / 2.0, 0);
+	glVertex3d(-h / 2.0, w / 2.0, 0.25);
+
+	glVertex3d(-h / 2.0, w / 2.0, 0.25);
+	glVertex3d(-(h - 0.5) / 2.0, w / 2.0, 0);
+	glVertex3d(-(h - 0.5) / 2.0, -w / 2.0, 0);
+	glVertex3d(-h / 2.0, -w / 2.0, 0.25);
+
+	glEnd();
+
+	glTranslatef(0, 0, 0.375);
+	glPushMatrix();
+	glScalef(h, w, 0.25);
+	if(isTeki)glMaterialfv(GL_FRONT, GL_DIFFUSE, color[BLUE]);
+	else glMaterialfv(GL_FRONT, GL_DIFFUSE, color[GREEN]);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
+	glMaterialf(GL_FRONT, GL_SHININESS, 50.0);
+	glutSolidCube(1);
+	glPopMatrix();
+
+	glTranslatef(0, 0, 0.125);
+
+	glBegin(GL_QUADS);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[RED]);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
+	glMaterialf(GL_FRONT, GL_SHININESS, 10.0);
+	for (i = 0;i < 6;i++) {
+		glVertex3d(0.4*cos(step*(double)i + init), 0.4*sin(step*(double)i + init), 0);
+		glVertex3d(0.4*cos(step*(double)(i + 1) + init), 0.4*sin(step*(double)(i + 1) + init), 0);
+		glVertex3d(0.4*cos(step*(double)(i + 1) + init), 0.4*sin(step*(double)(i + 1) + init), 0.25);
+		glVertex3d(0.4*cos(step*(double)i + init), 0.4*sin(step*(double)i + init), 0.25);
+	}
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[BROWN]);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
+	glMaterialf(GL_FRONT, GL_SHININESS, 10.0);
+	for (i = 0;i < 6;i++) {
+		glVertex3d(0.4*cos(step*(double)i + init), 0.4*sin(step*(double)i + init), 0.25);
+	}
+
+	glEnd();
+
+	glTranslatef(sqrt(0.3*0.3 + 0.2*0.2), 0, 0.125);
+	step = 180.0 / PI;
+
+	glBegin(GL_QUADS);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[YELLOW]);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
+	glMaterialf(GL_FRONT, GL_SHININESS, 10.0);
+	for (i = 0; i < 360;i++)
+	{
+		glVertex3d(0, 0.1*cos(step*(double)i), 0.1*sin(step*(double)i));
+		glVertex3d(0, 0.1*cos(step*(double)(i + 1)), 0.1*sin(step*(double)(i + 1)));
+		glVertex3d(1.5, 0.1*cos(step*(double)(i + 1)), 0.1*sin(step*(double)(i + 1)));
+		glVertex3d(1.5, 0.1*cos(step*(double)i), 0.1*sin(step*(double)i));
+	}
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	for (i = 0;i < 360;i++) glVertex3d(1.5, 0.1*cos(step*(double)i), 0.1*sin(step*(double)i));
+	glEnd();
+
+	glPopMatrix();
+
+}
+
 void drawJiki(void)
 {
-    glPushMatrix();
-    
-    glTranslatef(jiki.x, jiki.y, z);
-    
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, color[GREEN]);
-    glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
-    glMaterialf(GL_FRONT, GL_SHININESS, 50.0);
-    
-    glutSolidCube(jiki.w);
-    glPopMatrix();
+	drawtank(jiki.x, jiki.y, jiki.t, jiki.w, jiki.h, 0);
 }
 
 void drawKabe(void)
@@ -207,17 +300,7 @@ void drawTekiProj(int i, int j)
 
 void drawTeki(int i)
 {
-    glPushMatrix();
-    
-    glTranslatef(teki[i].x, teki[i].y, z);
-    
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, color[BLUE]);
-    glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
-    glMaterialf(GL_FRONT, GL_SHININESS, 50.0);
-    
-    glutSolidCube(teki[i].w);
-    glPopMatrix();
+	drawtank(teki[i].x, teki[i].y, teki[i].t, teki[i].w, teki[i].h, 1);
 }
 
 void aim(void)

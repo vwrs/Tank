@@ -47,6 +47,12 @@ void initStage(void)
         teki[i].v_turn = 0.03;
         teki[i].t = rand();
     }
+	jiki.h = 2.0;
+	for (i = 0;i < TEKI_MAX;i++)
+	{
+		teki[i].h = 2.0;
+		teki[i].w = 1.0;
+	}
     /*--------------------*/
     glClearColor(1.0, 1.0, 1.0, 0.0);
     glEnable(GL_DEPTH_TEST);
@@ -82,6 +88,8 @@ void initEasy(void)
 {
     int i, j;
     jiki.life = 50;
+	jiki.w = 1.0;
+	jiki.h = 2.0;
     for (i = 0; i < TAMA_MAX; i++) {
         jiki.tama[i].r = 0.5;
     }
@@ -94,7 +102,12 @@ void initEasy(void)
     for (j = 0;j < TEKI_MAX;j++)
     {
         teki[j].life = 3;
+<<<<<<< HEAD
         teki[j].w = 1.5;
+=======
+        teki[j].w = 1.0;
+		teki[j].h = 2.0;
+>>>>>>> cfa125e05941910d715546f89ae15ed1d91c300a
         teki[j].v = 0.2;
         for (i = 0;i < TAMA_MAX; i++) {
             teki[j].tama[i].v = 0.166;
