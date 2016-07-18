@@ -188,7 +188,7 @@ void drawtank(double x, double y, double t, double w, double h, int isTeki)
 	glTranslatef(0, 0, 0.375);
 	glPushMatrix();
 	glScalef(h, w, 0.25);
-	if(isTeki)glMaterialfv(GL_FRONT, GL_DIFFUSE, color[BLUE]);
+	if (isTeki)glMaterialfv(GL_FRONT, GL_DIFFUSE, color[BLUE]);
 	else glMaterialfv(GL_FRONT, GL_DIFFUSE, color[GREEN]);
 	glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
@@ -202,7 +202,7 @@ void drawtank(double x, double y, double t, double w, double h, int isTeki)
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[RED]);
 	glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
-	glMaterialf(GL_FRONT, GL_SHININESS, 10.0);
+	glMaterialf(GL_FRONT, GL_SHININESS, 50.0);
 	for (i = 0;i < 6;i++) {
 		glVertex3d(0.4*cos(step*(double)i + init), 0.4*sin(step*(double)i + init), 0);
 		glVertex3d(0.4*cos(step*(double)(i + 1) + init), 0.4*sin(step*(double)(i + 1) + init), 0);
@@ -215,7 +215,7 @@ void drawtank(double x, double y, double t, double w, double h, int isTeki)
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[BROWN]);
 	glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
-	glMaterialf(GL_FRONT, GL_SHININESS, 10.0);
+	glMaterialf(GL_FRONT, GL_SHININESS, 50.0);
 	for (i = 0;i < 6;i++) {
 		glVertex3d(0.4*cos(step*(double)i + init), 0.4*sin(step*(double)i + init), 0.25);
 	}
@@ -229,7 +229,7 @@ void drawtank(double x, double y, double t, double w, double h, int isTeki)
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[YELLOW]);
 	glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
-	glMaterialf(GL_FRONT, GL_SHININESS, 10.0);
+	glMaterialf(GL_FRONT, GL_SHININESS, 50.0);
 	for (i = 0; i < 360;i++)
 	{
 		glVertex3d(0, 0.1*cos(step*(double)i), 0.1*sin(step*(double)i));

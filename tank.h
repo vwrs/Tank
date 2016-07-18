@@ -106,6 +106,8 @@ void jikiTimerFunc(int value);
 void teki0TimerFunc(int index);
 void teki1TimerFunc(int index);
 void teki2TimerFunc(int index);
+void teki3TimerFunc(int index);
+void teki4TimerFunc(int index);
 
 // keyboardFunc.c
 void selectKeyboardFunc(unsigned char key, int x, int y);
