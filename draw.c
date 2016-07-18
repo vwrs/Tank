@@ -60,101 +60,18 @@ void drawStageSelect(void)
 
 void drawGround(void)
 {
-    /*int i, j;
-    GLdouble normal[3] = { 0.0, 0.0, 1.0 };
-    
-    glPushMatrix();
-    
-    glNormal3dv(normal);
-    
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, color[YELLOW]);
-    glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
-    glMaterialf(GL_FRONT, GL_SHININESS, 100.0);
-    glBegin(GL_QUADS);
-    glVertex3d(-0.5*L, -0.5*L, 0.0); // start
-    glVertex3d((X - 0.5)*L, -0.5*L, 0.0);
-    glVertex3d((X - 0.5)*L, 0.5*L, 0.0);
-    glVertex3d(-0.5*L, 0.5*L, 0.0);
-    
-    glVertex3d(-0.5*L, (Y - 0.5)*L, 0.0); // goal
-    glVertex3d((X - 0.5)*L, (Y - 0.5)*L, 0.0);
-    glVertex3d((X - 0.5)*L, (Y + 0.5)*L, 0.0);
-    glVertex3d(-0.5*L, (Y + 0.5)*L, 0.0);
-    glEnd();
-    
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, color[GRAY]);
-    glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
-    glMaterialf(GL_FRONT, GL_SHININESS, 100.0);
-    glBegin(GL_QUADS);
-    for (i = 1; i < Y; i++)
-        for (j = 0; j < X; j++)
-        {
-            GLdouble v[4][3];
-            if (!((i^j) & 1))continue;
-            v[0][0] = (j + 0 - 0.5)*L;
-            v[0][1] = (i + 0 - 0.5)*L;
-            v[0][2] = 0;
-            v[1][0] = (j + 1 - 0.5)*L;
-            v[1][1] = (i + 0 - 0.5)*L;
-            v[1][2] = 0;
-            v[2][0] = (j + 1 - 0.5)*L;
-            v[2][1] = (i + 1 - 0.5)*L;
-            v[2][2] = 0;
-            v[3][0] = (j + 0 - 0.5)*L;
-            v[3][1] = (i + 1 - 0.5)*L;
-            v[3][2] = 0;
-            glVertex3dv(v[0]);
-            glVertex3dv(v[1]);
-            glVertex3dv(v[2]);
-            glVertex3dv(v[3]);
-        }
-    glEnd();
-    
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, color[BLACK]);
-    glMaterialfv(GL_FRONT, GL_AMBIENT, color[BLACK]);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, color[WHITE]);
-    glMaterialf(GL_FRONT, GL_SHININESS, 100.0);
-    glBegin(GL_QUADS);
-    for (i = 0; i < Y; i++)
-        for (j = 0; j < X; j++)
-        {
-            GLdouble v[4][3];
-            if ((i^j) & 1)continue;
-            v[0][0] = (j + 0 - 0.5)*L;
-            v[0][1] = (i + 0 - 0.5)*L;
-            v[0][2] = 0;
-            v[1][0] = (j + 1 - 0.5)*L;
-            v[1][1] = (i + 0 - 0.5)*L;
-            v[1][2] = 0;
-            v[2][0] = (j + 1 - 0.5)*L;
-            v[2][1] = (i + 1 - 0.5)*L;
-            v[2][2] = 0;
-            v[3][0] = (j + 0 - 0.5)*L;
-            v[3][1] = (i + 1 - 0.5)*L;
-            v[3][2] = 0;
-            glVertex3dv(v[0]);
-            glVertex3dv(v[1]);
-            glVertex3dv(v[2]);
-            glVertex3dv(v[3]);
-        }
-    glEnd();
-    
-    glPopMatrix();*/
-
+    double lx, ly;
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, color[DARK_BROWN]);
 	glBegin(GL_LINES);
-	for (double ly = 0;ly <= Y; ly++) {
+	for (ly = 0;ly <= Y; ly++) {
 		glVertex3d(0, ly, 0);
 		glVertex3d(X, ly, 0);
 	}
-	for (double lx = 0;lx <= X; lx++) {
+	for (lx = 0;lx <= X; lx++) {
 		glVertex3d(lx, Y, 0);
 		glVertex3d(lx, 0, 0);
 	}
 	glEnd();
-
 }
 
 void drawtank(double x, double y, double t, double w, double h, int isTeki)
