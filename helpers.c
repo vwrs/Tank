@@ -222,12 +222,13 @@ void scoreSave(void)
 {
     int i;
     int new_score[STAGE_MAX];
+    FILE *fp;
     highscore = old_score[current_status-1];
     for (i = 0; i < STAGE_MAX; i++)
         new_score[i] = old_score[i];
     if (highscore < score)
         new_score[current_status-1] = score;
-    FILE *fp = fopen("score.txt","w");
+    fp = fopen("score.txt","w");
     if (fp == NULL) {
         printf("cannot write score.txt\n");
         return;
