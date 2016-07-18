@@ -200,7 +200,6 @@ void gameover(void)
     if (jiki.life <= 0) jiki.score *= -1;
     score += jiki.score;
     printf("Total Score: %d", score);
-    sleep(1);
     scoreSave();
     initialized = 0;
     current_status = 4;
