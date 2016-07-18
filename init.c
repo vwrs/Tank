@@ -114,7 +114,7 @@ void initEasy(void)
     jikiTimerFunc(0);
     teki0TimerFunc(0);
     teki1TimerFunc(1);
-    teki2TimerFunc(2);
+    teki4TimerFunc(2);
 }
 
 void initNormal(void)
@@ -146,7 +146,7 @@ void initNormal(void)
     jikiTimerFunc(0);
     teki0TimerFunc(0);
     teki1TimerFunc(1);
-    teki2TimerFunc(2);
+    teki4TimerFunc(2);
 }
 
 void initHard(void)

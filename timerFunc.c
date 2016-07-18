@@ -357,3 +357,155 @@ void teki2TimerFunc(int index)
         glutTimerFunc(10, teki2TimerFunc, index);
     }
 }
+
+void teki3TimerFunc(int index)
+{
+	if (teki[index].life > 0) {
+		int i, atari[2] = { 2,index };
+		double length;
+		double xx, yy, tt, v, v_turn, w, h;
+		double t_target;
+		double *x, *y, *t;
+		double MARGIN = 0.01;
+		int *life;
+
+		
+		x = &(teki[index].x);
+		y = &(teki[index].y);
+		t = &(teki[index].t);
+		life = &(teki[index].life);
+		xx = *x;
+		yy = *y;
+		tt = *t;
+		v = teki[index].v;
+		v_turn = teki[index].v_turn;
+		w = teki[index].w;
+		h = teki[index].h;
+
+		length = sqrt((jiki.x - xx)*(jiki.x - xx) + (jiki.y - yy)*(jiki.y - yy));
+
+		if (collision_check(xx, yy, tt, w, h, atari))
+		{
+			switch (atari[0])
+			{
+			case 1:
+				jiki.tama[atari[1]].flag = 0;
+				(*life)--;
+				break;
+			case 3:
+				teki[atari[1] / TAMA_MAX].tama[atari[1] / TAMA_MAX].flag;
+				break;
+			default:
+				break;
+			}
+
+
+		}
+
+		if (length < 40)
+		{
+			t_target = atan2(jiki.y - yy, jiki.x - xx);
+		
+			if (fabs(t_target - tt) < 0.2)
+			{
+				for (i = 0;i < TAMA_MAX;i++)
+					if (teki[index].tama[i].flag == 0) break;
+
+				if (i < TAMA_MAX)
+				{
+					count_interval[index]++;
+					if ((count_interval[index] % 100) == 1)
+					{
+						count_interval[index] = 1;
+						teki[index].tama[i].flag = 1;
+						teki[index].tama[i].t = tt;
+						teki[index].tama[i].x =
+							teki[index].x + (teki[index].w / 2.0 + teki[index].tama[i].r + MARGIN)*cos(tt);
+						teki[index].tama[i].y =
+							teki[index].y + (teki[index].w / 2.0 + teki[index].tama[i].r + MARGIN)*sin(tt);
+						projTimerFunc(i + index * TAMA_MAX);
+					}
+				}
+			}
+			else if (t_target>tt) *t = tt + v_turn;
+			else *t = tt - v_turn;
+
+		}
+
+		glutTimerFunc(10, teki3TimerFunc, index);
+	}
+}
+
+void teki4TimerFunc(int index)
+{
+
+	if (teki[index].life > 0) {
+		int i, atari[2] = { 2,index };
+		double length;
+		double xx, yy, tt, v, v_turn, w, h;
+		double t_target;
+		double *x, *y, *t;
+		double MARGIN = 0.01;
+		int *life;
+
+
+		x = &(teki[index].x);
+		y = &(teki[index].y);
+		t = &(teki[index].t);
+		life = &(teki[index].life);
+		xx = *x;
+		yy = *y;
+		tt = *t;
+		v = teki[index].v;
+		v_turn = teki[index].v_turn;
+		w = teki[index].w;
+		h = teki[index].h;
+
+		length = sqrt((jiki.x - xx)*(jiki.x - xx) + (jiki.y - yy)*(jiki.y - yy));
+
+		if (collision_check(xx, yy, tt, w, h, atari))
+		{
+			switch (atari[0])
+			{
+			case 1:
+				jiki.tama[atari[1]].flag = 0;
+				(*life)--;
+				break;
+			case 3:
+				teki[atari[1] / TAMA_MAX].tama[atari[1] / TAMA_MAX].flag;
+				break;
+			default:
+				break;
+			}
+
+
+		}
+
+		if (length < 40)
+		{
+			for (i = 0;i < TAMA_MAX;i++)
+				if (teki[index].tama[i].flag == 0) break;
+
+			if (i < TAMA_MAX)
+			{
+				count_interval[index]++;
+				if ((count_interval[index] % 100) == 1)
+				{
+					count_interval[index] = 1;
+					teki[index].tama[i].flag = 1;
+					teki[index].tama[i].t = tt;
+					teki[index].tama[i].x =
+						teki[index].x + (teki[index].w / 2.0 + teki[index].tama[i].r + MARGIN)*cos(tt);
+					teki[index].tama[i].y =
+						teki[index].y + (teki[index].w / 2.0 + teki[index].tama[i].r + MARGIN)*sin(tt);
+					projTimerFunc(i + index * TAMA_MAX);
+				}
+			}
+
+		}
+
+		glutTimerFunc(10, teki4TimerFunc, index);
+	}
+
+
+}
