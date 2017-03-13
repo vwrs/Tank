@@ -3,7 +3,7 @@
 // collision check
 int collision(double x1, double y1,double x2, double y2, double length) // collision check for kabe
 {
-    
+
     double MARGIN = 0.01;
     if ((x1 - x2 < length+MARGIN) && (x2 - x1 < length + MARGIN) && (y1 - y2 < length + MARGIN) && (y2 - y1 < length + MARGIN))
     {
@@ -27,7 +27,7 @@ int decideCrash(double x1, double y1, double t1, double w1, double h1,
     double a[2], b[2];
     double x_corner[2][4],y_corner[2][4], w[2] = { w1,w2 }, h[2] = { h1,h2 }, t[2] = { t1,t2 }, x[2] = { x1,x2 }, y[2] = { y1,y2 };
     double x_corner_turned[2][4], y_corner_turned[2][4];
-    
+
     if ((h1*h1 + w1*w1 + h2*h2 + w2*w2) > (2 * (x1 - x2)*(x1 - x2) + 2 * (y1 - y2)*(y1 - y2)))
     {
         for (i = 0; i <= 1; i++) {
@@ -40,9 +40,9 @@ int decideCrash(double x1, double y1, double t1, double w1, double h1,
                 }
             }
         }
-        
+
         // a[i] = -h[i]/2, b[i] = -w[i]/2
-        
+
         for (i = 0;i < 2;i++) {
             for (j = 0;j < 2;j++) {
                 for (k = 0;k < 2;k++)
@@ -75,7 +75,7 @@ int decideCrash(double x1, double y1, double t1, double w1, double h1,
  * atari[1] : index
 */
 int collision_check(double x, double y, double t, double w, double h, int atari[])
-{ 
+{
 	int i = 0, j = 0, k, l, m;
 	switch (atari[0])
 	{
@@ -107,7 +107,7 @@ int collision_check(double x, double y, double t, double w, double h, int atari[
 	{
 		atari[0] = 5;
 		atari[1] = 100;
-		printf("hit to kabe\n");
+		printf("hit to wall\n");
 		return 1;
 	}
 

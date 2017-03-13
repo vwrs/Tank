@@ -10,11 +10,11 @@
 #include <time.h>
 #include <string.h>
 // ======== Windows ======
-#include <GL/glut.h>
-#pragma warning( disable:4996 )
+//#include <GL/glut.h>
+//#pragma warning( disable:4996 )
 // ====== Mac OS X =======
-//#include <OpenGL/gl.h>
-//#include <GLUT/glut.h>
+#include <OpenGL/gl.h>
+#include <GLUT/glut.h>
 // =======================
 
 /*
